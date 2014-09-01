@@ -1,0 +1,236 @@
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(AD38EC10-9A00-445A-9020-CF93906EA488),
+	pointer_default(unique),
+	local
+]
+interface IObjArray : IUnknown
+{
+	HRESULT GetCount([out]  UINT *pcObjects);
+	HRESULT GetAt([in]   UINT uiIndex, [in]   REFIID riid, [out]  void **ppv);
+};
+
+[
+	object,
+	uuid(98DF6FB2-CF06-47CC-A254-809AB878583F),
+	pointer_default(unique)
+]
+interface IObjCollection : IObjArray
+{
+	HRESULT AddObject([in]  IUnknown *punk);
+	HRESULT Clear();
+	HRESULT RemoveObjectAt([in]  UINT *uiIndex);
+};
+
+[
+	object,
+	uuid(2F79AE6C-299C-4ECB-AB4B-19726B5522D6),
+	pointer_default(unique)
+]
+interface IBstrCollection : IUnknown
+{
+	HRESULT AddItem([in] BSTR bstr);
+	HRESULT GetCount([out, retval] UINT_PTR* pdwCount);
+	HRESULT GetItem([in] UINT_PTR dwIndex, [out, retval] BSTR* pbstr);
+	HRESULT RemoveAt([in] UINT_PTR dwIndex);
+};
+
+[
+	object,
+	uuid(539D2A55-35B0-4816-ADFB-207F434296C8),
+	pointer_default(unique)
+]
+interface IVariantObject : IUnknown
+{
+	HRESULT GetVariantValue([in] BSTR key, [out, retval] VARIANT* v);
+	HRESULT SetVariantValue([in] BSTR key, [out, retval] VARIANT* v);
+	HRESULT RemoveVariantValue([in] BSTR key);
+	HRESULT CopyTo([in] IVariantObject* pVariantObject);
+	HRESULT GetCount([out, retval] UINT_PTR* puiCount);
+	HRESULT GetKeyByIndex([in] UINT_PTR uiIndex, [out, retval] BSTR* pbstrKey);
+};
+
+[
+	object,
+	uuid(B011BA17-57D8-401A-AA57-565BA71A3C6E),
+	pointer_default(unique)
+]
+interface ISettings : IVariantObject
+{
+	HRESULT OpenSubSettings([in] BSTR bstrPath, [out, retval] ISettings** ppSettings);
+	HRESULT GetSubSettingsKeys([out, retval] IBstrCollection** ppArray);
+	HRESULT RemoveSubSettings([in] BSTR bstrPath);
+};
+
+[
+	object,
+	uuid(E520CA31-A9CF-4758-AD64-EC70CB738C20),
+	pointer_default(unique)
+]
+interface ISettingsFactory : IUnknown
+{
+	HRESULT CreateSettings(ISettings** ppSettings);
+};
+
+[
+	object,
+	uuid(E40AF28A-6D04-478D-97CD-99E28925A407),
+	pointer_default(unique)
+]
+interface IInitializeWithSettings : IUnknown
+{
+	HRESULT Load([in] ISettings* pSettings);
+};
+
+[
+	object,
+	uuid(1343D2EB-06FD-4759-ADD2-45EB81E0578D),
+	pointer_default(unique)
+]
+interface IPersistSettings : IInitializeWithSettings
+{
+	HRESULT Save([in] ISettings* pSettings);
+	HRESULT Reset([in] ISettings* pSettings);
+};
+
+[
+	object,
+	uuid(3E8284CE-FECE-41F5-8F7D-510DAB24117C),
+	pointer_default(unique)
+]
+interface IVariantTable : IUnknown
+{
+	HRESULT GetColumns([out, retval] IObjArray** ppObjectArray);
+	HRESULT SetColumns([in] IObjArray* pObjectArray);
+	HRESULT SetObjects([in] IObjArray* pObjectArray);
+
+	HRESULT GetVariantObject([in] UINT uiRowIndex, [out, retval] IVariantObject** ppVariantObject);
+	HRESULT GetVariantValue([in] UINT uiRowIndex, [in] BSTR bstrColumnKey, [out, retval] VARIANT* v);
+	HRESULT GetCount([out] UINT* uiCount);
+
+	HRESULT SetSort([in] BSTR bstrColumnKey, [in] BOOL dDesc);
+	HRESULT ResetSort();
+
+	HRESULT SetFilter([in] BSTR bstrColumnKey, [out, retval] VARIANT* value);
+	HRESULT ResetFilter();
+};
+
+[
+	object,
+	uuid(9460B1EA-337C-4E9E-95AC-D9B45791E426),
+	pointer_default(unique)
+]
+interface IPluginInfo : IUnknown
+{
+	HRESULT GetName([out, retval] BSTR* bstrName);
+	HRESULT GetDescription([out, retval] BSTR* bstrName);
+	HRESULT GetNamespace([out, retval] GUID* guidNamespace);
+	HRESULT GetType([out, retval] GUID* guidType);
+	HRESULT GetId([out, retval] GUID* guidId);
+	HRESULT GetCLSID([out, retval] GUID* guidCLSID);
+	HRESULT CreateInstance([out, retval] IUnknown** ppUnknown);
+};
+
+interface IPluginManager;
+
+[
+	object,
+	uuid(AAC1B12F-4094-41A9-B9BF-E4CAD8F6DB81),
+	pointer_default(unique)
+]
+interface IInitializeWithPluginInfo : IUnknown
+{
+	HRESULT GetPluginInfo([out, retval] IPluginInfo** ppPluginInfo);
+	HRESULT SetPluginInfo([in] IPluginInfo* pPluginInfo);
+};
+
+[
+	object,
+	uuid(EF4AC286-ADD7-43FF-B709-967ED8BE6291),
+	pointer_default(unique),
+	local
+]
+interface IPluginManager : IUnknown
+{
+	HRESULT GetPluginInfoCollection([in] REFGUID guidNamespace, [in] REFGUID guidType, [out, retval] IObjArray** ppPluginInfos);
+	HRESULT GetPluginInfo([in] REFGUID guidNamespace, [in] REFGUID guidType, [in] REFGUID guidId, [out, retval] IPluginInfo** ppPluginInfo);
+	HRESULT CreatePluginInstance([in] REFGUID guidNamespace, [in] REFGUID guidType, [in] REFGUID guidId, [out, retval] IUnknown** ppUnknown);
+	HRESULT RegisterPluginInfo([in] IPluginInfo* pPluginInfo);
+	HRESULT RegisterPluginInfo2([in] IVariantObject* pVariantObject);
+	HRESULT LoadPlugins([in] BSTR bstrFileMask);
+	HRESULT InitializePluginLibraryByHandle([in] HMODULE hModule);
+	HRESULT InitializePluginLibraryByName([in] BSTR bstrDllName);
+	HRESULT CoCreateInstance([in] REFCLSID rclsid, [in] REFIID riid, [in] LPVOID* lpvoid);
+	HRESULT SetDirectory([in]BSTR bstrPath);
+};
+
+[
+	object,
+	uuid(5DF11D20-8632-42BC-89D0-C8C1226ACA3D),
+	pointer_default(unique)
+]
+interface IInitializeWithVariantObject : IUnknown
+{
+	HRESULT SetVariantObject([in] IVariantObject* pVariantObject);
+};
+
+[
+	object,
+	uuid(C5E90D1A-1411-498B-B1E4-A72340C39082),
+	pointer_default(unique),
+	local
+]
+interface IPluginTable : IUnknown
+{
+	HRESULT Initialize(HMODULE hObjMdl);
+	HRESULT GetPluginTable([out, retval] IObjArray** ppObjectArray);
+};
+
+[
+	object,
+	uuid(D0BFFC9A-9416-46B1-93F1-7B85651A852A),
+	pointer_default(unique)
+]
+interface IPluginSupportNotifications : IUnknown
+{
+	HRESULT OnInitialized(IServiceProvider* pServiceProvider);
+	HRESULT OnShutdown();
+};
+
+[
+	object,
+	uuid(C59CD088-CA92-44D2-A99F-5A564ADAD70A),
+	pointer_default(unique)
+]
+interface IPluginSupportNotifications2 : IUnknown
+{
+	HRESULT OnInitializing(IServiceProvider* pServiceProvider);
+};
+
+[object, uuid(0E2F3EB7-9566-42CC-8DFD-EE8A447EC221), pointer_default(unique)]
+interface IProgressService : IUnknown
+{
+	HRESULT StartProgress([defaultvalue(TRUE)]BOOL bMarquee);
+	HRESULT SetProgressText(BSTR bstrText);
+	HRESULT SetProgressCaption(BSTR bstrText);
+	HRESULT SetProgress(ULONG ulCompleted, ULONG ulTotal);
+	HRESULT EndProgress();
+};
+
+[
+	object,
+	uuid(335C5575-9788-48A2-BE45-30167632A930),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IVariantCollection : IUnknown
+{
+	HRESULT AddItem(VARIANT* v);
+	HRESULT GetCount(ULONG* pdwCount);
+	HRESULT GetItem(ULONG dwIndex, VARIANT* pv);
+	HRESULT RemoveAt(ULONG dwIndex);
+};

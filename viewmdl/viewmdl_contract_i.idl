@@ -1,0 +1,440 @@
+import "oaidl.idl";
+import "ocidl.idl";
+import "..\ObjMdl\objmdl_contract_i.idl";
+
+interface ICommand;
+interface ICommand2;
+interface ICommandContainer;
+
+[
+	object,
+	uuid(3248C333-AC44-4F6E-9554-DE87D1FEB776),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IMenu : IUnknown
+{
+	HRESULT AddMenuCommand(REFGUID guidParentCommand, REFGUID guidCommand, ICommand* pCommand);
+	HRESULT InsertMenuCommand(REFGUID guidParentCommand, REFGUID guidCommand, UINT ulIndex, ICommand* pCommand);
+	HRESULT EnableCommand(REFGUID guidCommand, BOOL bEnable);
+};
+
+[
+	object,
+	uuid(60CD93AA-0911-4ABE-A72A-359388C11D8D),
+	nonextensible,
+	pointer_default(unique)
+]
+interface IToolbar : IUnknown
+{
+	HRESULT GetHWND(HWND* hWnd);
+	HRESULT AddToolbarCommand(REFGUID guidCommand, ICommand2* pCommand);
+	HRESULT InsertToolbarCommand(REFGUID guidCommand, UINT ulIndex, ICommand2* pCommand);
+	HRESULT EnableCommand(REFGUID guidCommand, BOOL bEnable);
+};
+
+[
+	object,
+	uuid(06A66E06-EC53-4BBC-A294-5E48CAC2511B),
+	nonextensible,
+	pointer_default(unique)
+]
+interface IStatusBar : IControl
+{
+	HRESULT GetPartsCount(int* pdwPartsCount);
+	HRESULT GetParts(int nParts, int* pWidths);
+	HRESULT SetParts(int nParts, int* pWidths);
+	HRESULT GetPartRect(int nPart, LPRECT lpRect);
+};
+
+[
+	object,
+	uuid(4FC42F0A-FA87-42BD-B78E-D16A3B9C5AC4),
+	nonextensible,
+	pointer_default(unique)
+]
+interface ICommand : IUnknown
+{
+	HRESULT GetCommandText(REFGUID guidCommand, BSTR* bstrText);
+	HRESULT Invoke(REFGUID guidCommand);
+	HRESULT InstallMenu(IMenu* pMenu);
+};
+
+[
+	object,
+	uuid(BD8C3D71-4B16-47AA-B706-802D534E7461),
+	nonextensible,
+	pointer_default(unique)
+]
+interface ICommand2 : ICommand
+{
+	HRESULT GetEnabled(REFGUID guidCommand, BOOL* pbEnabled);
+	HRESULT GetHBITMAP(REFGUID guidCommand, HBITMAP* pHBITMAP);
+	HRESULT InstallToolbar(IToolbar* pToolbar);
+}
+
+[
+	object,
+	uuid(1F40BA22-4C38-4BFF-B8B2-253AC01F93BD),
+	nonextensible,
+	pointer_default(unique)
+]
+interface IDialog : IUnknown
+{
+	HRESULT DoModal(HWND hWnd, INT_PTR* pResult);
+};
+
+[
+	object,
+	uuid(68A6A837-76B7-4A9F-8561-07D71DFCE4CF),
+	nonextensible,
+	pointer_default(unique)
+]
+interface IControl : IUnknown
+{
+	HRESULT GetHWND(HWND* hWnd);
+	HRESULT CreateEx(HWND hWndParent, HWND* hWnd);
+	HRESULT PreTranslateMessage(MSG* pMsg, BOOL* pbResult);
+};
+
+[
+	object,
+	uuid(80F95223-6B57-4BCA-A26B-1054F0E6F637),
+	nonextensible,
+	pointer_default(unique)
+]
+interface IControl2 : IControl
+{
+	HRESULT CreateEx2(HWND hWndParent, RECT rect, HWND* hWnd);
+	HRESULT GetText(BSTR* pbstr);
+	HRESULT OnActivate();
+	HRESULT OnDeactivate();
+	HRESULT OnClose();
+};
+
+[
+	object,
+	uuid(697F4215-E4B9-4672-9181-24830C399071),
+	pointer_default(unique)
+]
+interface IFormManager : IUnknown
+{
+	HRESULT OpenForm(GUID guidId, IControl** ppControl);
+	HRESULT ActivateForm(GUID guidId);
+	HRESULT FindForm(GUID guidId, IControl** ppControl);
+	HRESULT CloseAll();
+};
+
+[
+	object,
+	uuid(5EC0DA53-9E8F-4F2F-A03E-5ED66951F291),
+	nonextensible,
+	pointer_default(unique)
+]
+interface ITabbedControl : IContainerControl
+{
+	HRESULT EnableCommands(BOOL bEnabled);
+	HRESULT AddPage(IControl* pControl);
+	HRESULT GetCurrentPage(IControl** ppControl);
+	HRESULT RemovePage(IControl* pControl);
+	HRESULT ActivatePage(IControl* pControl);
+	HRESULT GetPageCount(DWORD* pdwCount);
+	HRESULT GetPage(DWORD dwIndex, IControl** ppControl);
+};
+
+[
+	object,
+	uuid(267930E4-00F0-4E81-8387-A86DA4DB4606),
+	nonextensible,
+	pointer_default(unique)
+]
+interface ITabbedControlEventSink : IUnknown
+{
+	HRESULT OnClose(IControl* pControl);
+};
+
+[
+	object,
+	uuid(845ACAA1-EB91-4EE7-B7CB-AB8A8FB36080),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IIdleHandler : IUnknown
+{
+	HRESULT OnIdle(BOOL* bResult);
+};
+
+[
+	object,
+	uuid(D7B7150E-1328-406B-8AEC-BD1C413C9BA7),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IMsgFilter : IUnknown
+{
+	HRESULT PreTranslateMessage(MSG* pMsg, BOOL* bResult);
+};
+
+[
+	object,
+	uuid(961A5C69-B5B2-4C52-8C78-AC99BAC4F338),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IMsgHandler : IUnknown
+{
+	HRESULT ProcessWindowMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT* plResult, BOOL* bResult);
+};
+
+[
+	object,
+	uuid(D5A0D29F-6AAC-41F6-80E0-E9B2934CF5C6),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IMessageLoop : IUnknown
+{
+	HRESULT AddMessageFilter(IMsgFilter* pMsgFilter);
+	HRESULT AddIdleHandler(IIdleHandler* pIdleHandler);
+	HRESULT RemoveMessageFilter(IMsgFilter* pMsgFilter);
+	HRESULT RemoveIdleHandler(IIdleHandler* pIdleHandler);
+};
+
+[
+	object,
+	uuid(1655B2A2-8376-435D-89AF-91DAB27BB208),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IContainerControl : IUnknown
+{
+	HRESULT UpdateControl(IControl* pControl);
+};
+
+interface IPluginManager;
+
+interface ICommand;
+interface IMenu;
+interface IToolbar;
+
+typedef enum
+{
+	MainWindowNone = 0,
+	MainWindowToolBar = 1,
+	MainWindowStatusBar = 2,
+	MainWindowMenuBar = 4,
+	MainWindowAll = 0xFFFF
+} MainWindowFlags;
+
+[
+	object,
+	uuid(50A5BECA-378B-43CA-8C78-27E5CF67B183),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IMainWindow : IControl
+{
+	HRESULT SetFlags(MainWindowFlags flags);
+	HRESULT GetMessageLoop(IMessageLoop** ppMessageLoop);
+	HRESULT SetMessageLoop(IMessageLoop* pMessageLoop);
+	HRESULT ShowWindow(int cmd, BOOL* bResult);
+	HRESULT GetContainerControl(IContainerControl** ppContainerControl);
+	HRESULT SetContainerControl(IContainerControl* pContainerControl);
+	HRESULT GetMainMenu(IMenu** ppMenu);
+	HRESULT GetToolbar(IToolbar** ppToolbar);
+	HRESULT GetStatusBar(IStatusBar** ppStatusBar);
+	HRESULT SetIcon(HICON hIcon, BOOL bLarge);
+};
+
+[
+	object,
+	uuid(90461CD7-13A5-4E88-9551-F67119E18BEE),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IInitializeWithControl : IUnknown
+{
+	HRESULT SetControl(IControl* pControl);
+};
+
+[
+	object,
+	uuid(C85D9005-F40C-4587-842B-06A557EFA331),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IBitmapService : IUnknown
+{
+	HRESULT MakeBitMapTransparent(HBITMAP hbmSrc, HBITMAP* phbmDest);
+};
+
+[
+	object,
+	uuid(EB48E674-6740-4275-A286-E3BF48B6B659),
+	nonextensible,
+	pointer_default(unique)
+]
+interface ICommandSupportEventSink : IUnknown
+{
+	HRESULT OnCommandInvoke(REFGUID guidCommand);
+};
+
+[
+	object,
+	uuid(DE3BADE4-F0DA-474A-90E8-3AFCB1C88E9F),
+	nonextensible,
+	pointer_default(unique)
+]
+interface IPluginSupport : IUnknown
+{
+	HRESULT InitializePlugins(REFGUID guidNamespace, REFGUID guidType);
+	HRESULT GetPlugins(IObjArray** ppObjectArray);
+	HRESULT UninstallAll();
+	HRESULT OnInitialized();
+	HRESULT OnShutdown();
+};
+
+[
+	object,
+	uuid(E8134966-5E4D-40F8-8903-1659823FA01E),
+	nonextensible,
+	pointer_default(unique)
+]
+interface ICommandSupport : IUnknown
+{
+	HRESULT EnableStdCommands(BOOL bEnable);
+	HRESULT InstallCommand(ICommand* pCommand);
+	HRESULT InstallCommands(IPluginSupport* pPluginSupport);
+	HRESULT UninstallAll();
+	HRESULT SetMenu(HMENU hMenu);
+	HRESULT SetToolbar(HWND hToolbar);
+	HRESULT SetBitmapService(IBitmapService* pBitmapService);
+	HRESULT ProcessWindowMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT* plResult, BOOL* bResult);
+	HRESULT QueueCommandExecution(GUID guidCommand, VARIANT* vParam);
+	HRESULT EnableCommand(REFGUID guidCommand, BOOL bEnable);
+};
+
+[
+	object,
+	uuid(EE647479-EADE-405C-93D5-9FC1EF4D9FDA),
+	nonextensible,
+	pointer_default(unique)
+]
+interface ISimpleListView : IUnknown
+{
+	HRESULT ProcessWindowMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT* plResult, BOOL* bResult);
+	HRESULT SetFilterVisible(BOOL bVisible);
+};
+
+[
+	object,
+	uuid(C0D34695-D2ED-4AF3-934F-29FED57E742C),
+	nonextensible,
+	pointer_default(unique)
+]
+interface IInitializeWithColumnName : IUnknown
+{
+	HRESULT SetColumnName(LPCTSTR lpszColumnName);
+};
+
+typedef enum
+{
+	Warning,
+	Error,
+	Info,
+	None,
+	User
+} SystrayBalloonStyle;
+
+[
+	object,
+	uuid(8C10C2CC-6B28-45F7-9521-C168BA5D8A09),
+	nonextensible,
+	pointer_default(unique)
+]
+interface ISystrayWindow : IUnknown
+{
+	HRESULT SetIcon(HICON hIcon);
+	HRESULT SetMenu(HMENU hMenu);
+	HRESULT OnTrayNotify(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT* lpResult, BOOL* pbHandled);
+	HRESULT ShowBaloon(BSTR bstrText, BSTR bstrCaption, SystrayBalloonStyle style, UINT uTimeout);
+	HRESULT Hide();
+};
+
+[
+	object,
+	uuid(EA69DFCB-2AF8-4AF2-AF96-11FC32A4955F),
+	nonextensible,
+	pointer_default(unique)
+]
+interface ISystrayWindowEventSink : IUnknown
+{
+	HRESULT OnTrayNotification(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT lpResult, BOOL pbHandled);
+};
+
+[
+	object,
+	uuid(38549D68-0A38-4762-AA2A-A1FB9DB74F29),
+	nonextensible,
+	pointer_default(unique)
+]
+interface ISystrayManager : IUnknown
+{
+	HRESULT CreateSystrayWindow(HWND hwndParent, ISystrayWindow** ppWindow);
+};
+
+[object, uuid(4C3B8BC2-6780-47D1-A38B-67B0AF3F4B85), pointer_default(unique)]
+interface IAction : IUnknown
+{
+	HRESULT GetId(GUID* gId);
+	HRESULT Execute();
+};
+
+[object, uuid(5FCADB01-E0E8-4EE3-8A69-933BDD205CFF), pointer_default(unique)]
+interface IAction2 : IAction
+{
+	HRESULT AfterExecute();
+};
+
+[object, uuid(04CA55E1-4A8B-44F4-8E86-6EB4ED55FBD1), pointer_default(unique)]
+interface IActionQueueService : IUnknown
+{
+	HRESULT QueueAction(IAction* pAction);
+};
+
+[object, uuid(B08E7053-DDE4-4805-805A-F97370994F91), pointer_default(unique)]
+interface IActionQueueServiceEvents : IUnknown
+{
+	HRESULT OnBeforeActionExecution(IAction* pAction);
+	HRESULT OnAfterActionExecution(IAction* pAction);
+};
+
+[object, uuid(D981B6E5-A7EE-42D2-8AD9-FFB05E8067C4), pointer_default(unique)]
+interface IInfoControlEventSink : IUnknown
+{
+	HRESULT OnLinkClick(HWND hWnd);
+};
+
+[object, uuid(87E68992-618A-4598-BFD6-0293BBA0089C), pointer_default(unique)]
+interface IInfoControl : IControl
+{
+	HRESULT SetMessage(BSTR bstrMessage, BOOL bError);
+	HRESULT EnableHyperLink();
+};
+
+[object, uuid(31D6DF29-0061-4EBB-BA9D-69DA2030FEE0), pointer_default(unique)]
+interface IInfoControlService : IUnknown
+{
+	HRESULT ShowControl(HWND hwndParent, BSTR bstrMessage, BOOL bError, BOOL bMoveChild);
+	HRESULT EnableHyperLink(HWND hwndParent);
+	HRESULT HideControl(HWND hwndParent);
+};

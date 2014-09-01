@@ -1,0 +1,62 @@
+import "oaidl.idl";
+import "ocidl.idl";
+import "..\objmdl\objmdl_contract_i.idl";
+
+[
+	object,
+	uuid(92973E38-3CD8-477C-BD18-F3F351787012),
+	pointer_default(unique)
+]
+interface ITimerService : IUnknown
+{
+	HRESULT StartTimer(UINT uiMilliseconds);
+	HRESULT ResumeTimer();
+	HRESULT StopTimer();
+};
+
+[
+	object,
+	uuid(B7DB9DEE-2FCD-4982-97FB-F7E4382E2787),
+	pointer_default(unique)
+]
+interface ITimerServiceEventSink : IUnknown
+{
+	HRESULT OnTimer();
+};
+
+[
+	object,
+	uuid(21099132-4E2A-4FB1-8D63-9A8F08DC3395),
+	pointer_default(unique)
+]
+interface IThreadService : IUnknown
+{
+	HRESULT SetTimerService(GUID gServiceId);
+	HRESULT Run();
+	HRESULT Join();
+};
+
+[
+	object,
+	uuid(0A4130A2-C0F5-40E1-9D61-F11101461A87),
+	pointer_default(unique)
+]
+interface IThreadServiceEventSink : IUnknown
+{
+	HRESULT OnStart(IVariantObject* pResult);
+	HRESULT OnRun(IVariantObject* pResult);
+	HRESULT OnFinish(IVariantObject* pResult);
+};
+
+[
+	object,
+	uuid(B1453609-6269-47D7-B16D-F68503535BAC),
+	pointer_default(unique)
+]
+interface IThreadPoolService : IUnknown
+{
+	HRESULT SetThreadCount(DWORD dwCount);
+	HRESULT AddTask(IVariantObject* pVariantObject);
+	HRESULT Start();
+	HRESULT Stop();
+};

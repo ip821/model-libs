@@ -1,0 +1,79 @@
+// ThreadPoolService.h : Declaration of the CThreadPoolService
+
+#pragma once
+#include "resource.h"       // main symbols
+#include "objmdl_contract_i.h"
+#include "NotificationServices_i.h"
+#include "..\ViewMdl\IInitializeWithControlImpl.h"
+#include <boost/thread/condition_variable.hpp>
+
+using namespace ATL;
+using namespace std;
+
+// CThreadPoolService
+
+class ATL_NO_VTABLE CThreadPoolService :
+	public CComObjectRootEx<CComSingleThreadModel>,
+	public CComCoClass<CThreadPoolService, &CLSID_ThreadPoolService>,
+	public IThreadPoolService,
+	public IInitializeWithControlImpl,
+	public IPluginSupportNotifications,
+	public IThreadServiceEventSink,
+	public IConnectionPointContainerImpl<CThreadPoolService>,
+	public IConnectionPointImpl<CThreadPoolService, &__uuidof(IThreadServiceEventSink)>
+{
+public:
+	CThreadPoolService()
+	{
+	}
+
+	DECLARE_REGISTRY_RESOURCEID(IDR_THREADPOOLSERVICE)
+
+	BEGIN_COM_MAP(CThreadPoolService)
+		COM_INTERFACE_ENTRY(IThreadPoolService)
+		COM_INTERFACE_ENTRY(IInitializeWithControl)
+		COM_INTERFACE_ENTRY(IConnectionPointContainer)
+		COM_INTERFACE_ENTRY(IPluginSupportNotifications)
+		COM_INTERFACE_ENTRY(IThreadServiceEventSink)
+	END_COM_MAP()
+
+	BEGIN_CONNECTION_POINT_MAP(CThreadPoolService)
+		CONNECTION_POINT_ENTRY(__uuidof(IThreadServiceEventSink))
+	END_CONNECTION_POINT_MAP()
+
+private:
+	vector<CAdapt<CComPtr<IThreadService> > > m_threads;
+	vector<CAdapt<CComPtr<IThreadService> > > m_threadsInWork;
+	map<CAdapt<CComPtr<IThreadService> >, CAdapt<CComPtr<IVariantObject> > > m_threadsTaskContex;
+
+	vector<DWORD> m_advices;
+	queue<CAdapt<CComPtr<IVariantObject> > > m_taskQueue;
+	BOOL m_bWaitingForStop = FALSE;
+	BOOL m_bRunning = FALSE;
+	boost::mutex m_mutex;
+	boost::mutex m_waitMutex;
+	thread m_queueThread;
+	boost::condition_variable m_condition;
+
+	STDMETHOD(Run)();
+
+	HRESULT Fire_OnStart(IVariantObject *pResult);
+	HRESULT Fire_OnRun(IVariantObject *pResult);
+	HRESULT Fire_OnFinish(IVariantObject *pResult);
+
+public:
+
+	STDMETHOD(SetThreadCount)(DWORD dwCount);
+	STDMETHOD(Start)();
+	STDMETHOD(Stop)();
+	STDMETHOD(AddTask)(IVariantObject* pVariantObject);
+
+	STDMETHOD(OnInitialized)(IServiceProvider *pServiceProvider);
+	STDMETHOD(OnShutdown)();
+
+	STDMETHOD(OnStart)(IVariantObject *pResult);
+	STDMETHOD(OnRun)(IVariantObject *pResult);
+	STDMETHOD(OnFinish)(IVariantObject *pResult);
+};
+
+OBJECT_ENTRY_AUTO(__uuidof(ThreadPoolService), CThreadPoolService)

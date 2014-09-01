@@ -1,0 +1,83 @@
+// ObjMdl.idl : IDL source for ObjMdl
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (ObjMdl.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "objmdl_contract_i.idl";
+
+[
+	uuid(196E3D54-0CA9-456E-87C7-8EA8A9EF5A7D),
+	version(1.0),
+]
+library ObjMdlLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(1A745482-7D5C-4AF2-90B7-63F8B2C7592E)		
+	]
+	coclass PluginManager
+	{
+		[default] interface IPluginManager;
+	};
+	[
+		uuid(77DE0EC2-0D91-44F1-80B3-79CA21E82A50)		
+	]
+	coclass VariantObject
+	{
+		[default] interface IVariantObject;
+	};
+	[
+		uuid(96429F94-DAFC-499F-9E3F-09A17636DA25)		
+	]
+	coclass PluginInfo
+	{
+		[default] interface IPluginInfo;
+	};
+	[
+		uuid(6B48163A-A52E-4A71-B32C-2AB67EF42B97)		
+	]
+	coclass VariantTable
+	{
+		[default] interface IVariantTable;
+	};
+	[
+		uuid(6EA78630-DC6D-4D2B-91F0-686B260F29D6)		
+	]
+	coclass PluginTable
+	{
+		[default] interface IPluginTable;
+	};
+	[
+		uuid(6AD26BCE-4DA5-47B3-AAE8-5A1A7AD4FC19)		
+	]
+	coclass RegistrySettings
+	{
+		[default] interface ISettings;
+	};
+	[
+		uuid(C83FBC99-9A5A-4AB8-A193-76BA6FE85CAA)		
+	]
+	coclass BstrCollection
+	{
+		[default] interface IBstrCollection;
+	};
+	[
+		uuid(35069F9E-B291-41E2-8A5F-6F43C1A3EEAE)		
+	]
+	coclass VariantCollection
+	{
+		[default] interface IVariantCollection;
+	};
+	[
+		uuid(80F1F34B-90E6-4892-8584-7B9349E5E146)		
+	]
+	coclass ObjectCollection
+	{
+		[default] interface IObjCollection;
+	};
+};
+
+import "shobjidl.idl";

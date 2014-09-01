@@ -1,0 +1,195 @@
+// ViewMdl.idl : IDL source for ViewMdl
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (ViewMdl.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "..\ObjMdl\objmdl_contract_i.idl";
+import "viewmdl_contract_i.idl";
+
+[
+	uuid(552AFC63-C1CC-4D75-B517-BA0E70CD01F2),
+	version(1.0),
+]
+library ViewMdlLib
+{
+	importlib("stdole2.tlb");
+
+	[
+		uuid(6EA78630-DC6D-4D2B-91F0-686B260F29D6)		
+	]
+	coclass PluginTable
+	{
+		[default] interface IPluginTable;
+	};
+
+	[
+		uuid(D1C913D3-B392-498E-9BC0-6632D19F494B)		
+	]
+	coclass MainFrame
+	{
+		[default] interface IMainWindow;
+	};
+	[
+		uuid(8BB1887D-1654-4D47-A834-CB4EAA87C1A8)		
+	]
+	coclass TabbedControl
+	{
+		[default] interface ITabbedControl;
+		[source] interface ITabbedControlEventSink;
+	};
+	[
+		uuid(D3BE015B-BF23-4C6B-AD6B-2E2B4DFFA34E)		
+	]
+	coclass ExitCommand
+	{
+		[default] interface ICommand;
+	};
+	[
+		uuid(26053E53-848A-4422-8B25-A7CCE68CE738)		
+	]
+	coclass ViewCommand
+	{
+		[default] interface ICommand;
+	};
+	[
+		uuid(B230DABD-93ED-486A-BDDE-400AEF15F720)
+	]
+	coclass ToolsCommand
+	{
+		[default] interface ICommand;
+	};
+	[
+		uuid(20D713B1-9B30-4548-9197-57C8C7796A48)		
+	]
+	coclass FileCommand
+	{
+		[default] interface ICommand;
+	};
+	[
+		uuid(AA8C74DB-0AB4-4D4E-B706-B78CD517851D)		
+	]
+	coclass HelpCommand
+	{
+		[default] interface ICommand;
+	};
+	[
+		uuid(CC8C5200-510C-4054-8711-A0A7EA1217DC)
+	]
+	coclass AboutCommand
+	{
+		[default] interface ICommand;
+	};
+	[
+		uuid(53E14F32-4D8E-4720-BBC4-5F8A045235D4)		
+	]
+	coclass TabCloseCommand
+	{
+		[default] interface ICommand;
+	};
+	[
+		uuid(801779AF-1D60-418A-B595-FED1923C6C6E)		
+	]
+	coclass CopyCommand
+	{
+		[default] interface ICommand;
+	};
+	[
+		uuid(B45901A4-C53B-4B61-9B93-B23ED9EC9F20)		
+	]
+	coclass FormManager
+	{
+		[default] interface IFormManager;
+	};
+	[
+		uuid(AE39588D-880B-43B0-B47C-8981DB2025C1)		
+	]
+	coclass BitmapService
+	{
+		[default] interface IBitmapService;
+	};
+	[
+		uuid(FBC830ED-3899-4C3A-9211-08605E92F22B)		
+	]
+	coclass CommandSupport
+	{
+		[default] interface ICommandSupport;
+	};
+	[
+		uuid(DE43DB64-FC75-4854-B3F0-F8ECACC9FE11)		
+	]
+	coclass PluginSupport
+	{
+		[default] interface IPluginSupport;
+	};
+	[
+		uuid(70C0FC00-2683-4A6A-9A9B-BFAE59EAA317)		
+	]
+	coclass SimpleListView
+	{
+		[default] interface ISimpleListView;
+	};
+	[
+		uuid(500048F4-ADDD-4E25-B525-258F8B0FAFF3)		
+	]
+	coclass AboutDialog
+	{
+		[default] interface IDialog;
+	};
+	[
+		uuid(A1D064C1-6786-4DC1-8BEB-D41F6467181D)		
+	]
+	coclass StatusBarSupport
+	{
+		[default] interface IStatusBar;
+	};
+	[
+		uuid(02401CAC-39D1-4123-8829-C7406CAC80D4)		
+	]
+	coclass SystrayManager
+	{
+		[default] interface ISystrayManager;
+	};
+	[
+		uuid(56940D7E-5BC0-4A92-A4CF-58541F2E91F3)		
+	]
+	coclass SystrayWindow
+	{
+		[default] interface ISystrayWindow;
+	};
+	[
+		uuid(37813A8C-28A2-43AF-8F5C-2529A89677FE)		
+	]
+	coclass HostDialog
+	{
+		[default] interface IDialog;
+	};
+	[uuid(E1B762AD-5586-4DEB-9570-2E5F12A0F9B9)]
+	coclass ActionQueueService
+	{
+		[default] interface IActionQueueService;
+	};
+	[uuid(69B6C23D-D2CE-412A-91D4-FE8FEF75C0B5)]
+	coclass ProgressDialogService
+	{
+		[default] interface IProgressService;
+	};
+	[
+		uuid(721FF180-6E2E-4C0A-B212-BE44BC4AEEC1)		
+	]
+	coclass InfoControl
+	{
+		[default] interface IInfoControl;
+	};
+	[
+		uuid(D29D5D39-00F0-4657-97A9-6C41553818D2)		
+	]
+	coclass InfoControlService
+	{
+		[default] interface IInfoControlService;
+	};
+};
+
+import "shobjidl.idl";

@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Include">
+      <UniqueIdentifier>{2d6b1d22-81bc-403d-a87a-1af19e57f894}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands">
+      <UniqueIdentifier>{69982fa8-8b0f-42b6-b52e-1e2f2283bba6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Std">
+      <UniqueIdentifier>{a4612f8e-aad0-424d-b63f-aee81089821b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainFrame">
+      <UniqueIdentifier>{2a4cf0d7-6e0c-43b3-8671-e1044eb27bbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TabbedControl">
+      <UniqueIdentifier>{4d516c25-46d2-4a17-a238-c8a1099f056c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Services">
+      <UniqueIdentifier>{251f081d-4c6b-4fb3-bb57-5e97ec18d613}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Services\BitmapService">
+      <UniqueIdentifier>{11e7de9b-c259-4c0c-a1da-ca3b59129719}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TabbedControl\Commands">
+      <UniqueIdentifier>{225f8320-3b1c-4376-b839-9730a31897b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Services\FormManager">
+      <UniqueIdentifier>{b4bdfff6-78ff-4c71-ae3a-8e5c0096602f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Views">
+      <UniqueIdentifier>{3a52f8af-aea6-49e0-9b23-3943be399d04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Views\SimpleList">
+      <UniqueIdentifier>{b37a657e-d16b-4d8f-90eb-8e3fec6828e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Views\SimpleList\Controls">
+      <UniqueIdentifier>{20863993-b38f-40dd-92b4-c2dc4ef75648}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Views\About">
+      <UniqueIdentifier>{d14691c3-5c8e-40f5-b3f4-f199822c75da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Views\SimpleList\Commands">
+      <UniqueIdentifier>{67ca4120-b0d0-4b5c-acb6-a175072f84f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SysTray">
+      <UniqueIdentifier>{fc02f3e2-b69a-46e7-b65d-54d4e86604bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HostDialog">
+      <UniqueIdentifier>{cb4a17c2-45b5-4d2c-b57c-596baeff7624}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Services\ActionService">
+      <UniqueIdentifier>{7d489033-ffc7-4412-a932-f9d23bfbe11a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Services\ProgressDialogService">
+      <UniqueIdentifier>{a1ca4a0d-b5eb-40f2-b473-bc9b26e36f74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ZZZMisc">
+      <UniqueIdentifier>{9d8c38cb-6da8-4175-b96c-4ef22738a909}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ZZZMisc\Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="ZZZMisc\Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ZZZMisc\Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ZZZMisc\Generated Files">
+      <UniqueIdentifier>{cb5a4513-48b5-4fec-ba81-7dec8203a61e}</UniqueIdentifier>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="InfoControl">
+      <UniqueIdentifier>{70831e08-157f-480c-8415-242212e68880}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>ZZZMisc\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewMdl.cpp">
+      <Filter>ZZZMisc\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>ZZZMisc\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="xdlldata.c">
+      <Filter>ZZZMisc\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewMdl_i.c">
+      <Filter>ZZZMisc\Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TabbedControl.cpp">
+      <Filter>TabbedControl</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>MainFrame</Filter>
+    </ClCompile>
+    <ClCompile Include="FormManager.cpp">
+      <Filter>Services\FormManager</Filter>
+    </ClCompile>
+    <ClCompile Include="BitmapService.cpp">
+      <Filter>Services\BitmapService</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandSupport.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="PluginSupport.cpp">
+      <Filter>MainFrame</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleListView.cpp">
+      <Filter>Views\SimpleList</Filter>
+    </ClCompile>
+    <ClCompile Include="AboutDialog.cpp">
+      <Filter>Views\About</Filter>
+    </ClCompile>
+    <ClCompile Include="StatusBarSupport.cpp">
+      <Filter>MainFrame</Filter>
+    </ClCompile>
+    <ClCompile Include="NTray.cpp">
+      <Filter>SysTray</Filter>
+    </ClCompile>
+    <ClCompile Include="SystrayManager.cpp">
+      <Filter>SysTray</Filter>
+    </ClCompile>
+    <ClCompile Include="SystrayWindow.cpp">
+      <Filter>SysTray</Filter>
+    </ClCompile>
+    <ClCompile Include="HostDialog.cpp">
+      <Filter>HostDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionQueueService.cpp">
+      <Filter>Services\ActionService</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressDialogService.cpp">
+      <Filter>Services\ProgressDialogService</Filter>
+    </ClCompile>
+    <ClCompile Include="viewmdl_contract_i.c">
+      <Filter>ZZZMisc\Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="objmdl_contract_i.c">
+      <Filter>ZZZMisc\Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PluginTable.cpp">
+      <Filter>ZZZMisc\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InfoControl.cpp">
+      <Filter>InfoControl</Filter>
+    </ClCompile>
+    <ClCompile Include="InfoControlService.cpp">
+      <Filter>InfoControl</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>ZZZMisc\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>ZZZMisc\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>ZZZMisc\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dllmain.h">
+      <Filter>ZZZMisc\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="xdlldata.h">
+      <Filter>ZZZMisc\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewMdl_i.h">
+      <Filter>ZZZMisc\Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PluginTable.h">
+      <Filter>ZZZMisc\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TabbedControl.h">
+      <Filter>TabbedControl</Filter>
+    </ClInclude>
+    <ClInclude Include="ExitCommand.h">
+      <Filter>Commands\Std</Filter>
+    </ClInclude>
+    <ClInclude Include="FileCommand.h">
+      <Filter>Commands\Std</Filter>
+    </ClInclude>
+    <ClInclude Include="IInitializeWithControlImpl.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>MainFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="FormManager.h">
+      <Filter>Services\FormManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Plugins.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewCommand.h">
+      <Filter>Commands\Std</Filter>
+    </ClInclude>
+    <ClInclude Include="BitmapService.h">
+      <Filter>Services\BitmapService</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandSupport.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="TabCloseCommand.h">
+      <Filter>TabbedControl\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="PluginSupport.h">
+      <Filter>MainFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="ITabbedControlEventSink_CP.h">
+      <Filter>TabbedControl</Filter>
+    </ClInclude>
+    <ClInclude Include="CProxyICommandSupportEventSink.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="EditEx.h">
+      <Filter>Views\SimpleList\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="SortListViewCtrlEx.h">
+      <Filter>Views\SimpleList\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleListView.h">
+      <Filter>Views\SimpleList</Filter>
+    </ClInclude>
+    <ClInclude Include="HelpCommand.h">
+      <Filter>Commands\Std</Filter>
+    </ClInclude>
+    <ClInclude Include="AboutCommand.h">
+      <Filter>Commands\Std</Filter>
+    </ClInclude>
+    <ClInclude Include="AboutDialog.h">
+      <Filter>Views\About</Filter>
+    </ClInclude>
+    <ClInclude Include="ChildDialogControl.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Functions.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="CopyCommand.h">
+      <Filter>Views\SimpleList\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="StatusBarSupport.h">
+      <Filter>MainFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="NTray.h">
+      <Filter>SysTray</Filter>
+    </ClInclude>
+    <ClInclude Include="SystrayManager.h">
+      <Filter>SysTray</Filter>
+    </ClInclude>
+    <ClInclude Include="SystrayWindow.h">
+      <Filter>SysTray</Filter>
+    </ClInclude>
+    <ClInclude Include="HostDialog.h">
+      <Filter>HostDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionQueueService.h">
+      <Filter>Services\ActionService</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionQueueServiceEventSink.h">
+      <Filter>Services\ActionService</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionContext.h">
+      <Filter>Services\ActionService</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolsCommand.h">
+      <Filter>Commands\Std</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressDialogService.h">
+      <Filter>Services\ProgressDialogService</Filter>
+    </ClInclude>
+    <ClInclude Include="viewmdl_contract_i.h">
+      <Filter>ZZZMisc\Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="objmdl_contract_i.h">
+      <Filter>ZZZMisc\Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InfoControl.h">
+      <Filter>InfoControl</Filter>
+    </ClInclude>
+    <ClInclude Include="InfoControlService.h">
+      <Filter>InfoControl</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ViewMdl.rc">
+      <Filter>ZZZMisc\Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ViewMdl.def">
+      <Filter>ZZZMisc\Source Files</Filter>
+    </None>
+    <None Include="InfoControl.rgs">
+      <Filter>ZZZMisc\Resource Files</Filter>
+    </None>
+    <None Include="InfoControlService.rgs">
+      <Filter>ZZZMisc\Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="ViewMdl.idl">
+      <Filter>ZZZMisc\Source Files</Filter>
+    </Midl>
+    <Midl Include="viewmdl_contract_i.idl">
+      <Filter>Include</Filter>
+    </Midl>
+    <Midl Include="..\ObjMdl\objmdl_contract_i.idl">
+      <Filter>Include</Filter>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="bitmap1.bmp">
+      <Filter>ZZZMisc\Resource Files</Filter>
+    </Image>
+    <Image Include="res\Error.bmp">
+      <Filter>ZZZMisc\Resource Files</Filter>
+    </Image>
+    <Image Include="res\Information.bmp">
+      <Filter>ZZZMisc\Resource Files</Filter>
+    </Image>
+    <Image Include="res\Info.ico">
+      <Filter>ZZZMisc\Resource Files</Filter>
+    </Image>
+    <Image Include="res\Error.ico">
+      <Filter>ZZZMisc\Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

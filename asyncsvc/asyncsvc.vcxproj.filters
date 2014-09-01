@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="TimerService">
+      <UniqueIdentifier>{96a886ef-d0c3-41f9-89cb-76ded51fe4ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ZZZMisc">
+      <UniqueIdentifier>{955e7bdc-c825-4d72-ab88-c07c63276210}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ZZZMisc\Generated Files">
+      <UniqueIdentifier>{dd7402db-021e-401f-bcb4-11e68717bda3}</UniqueIdentifier>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="ZZZMisc\Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="ZZZMisc\Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ZZZMisc\Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="PluginTable">
+      <UniqueIdentifier>{9a8c37e9-93e1-4e2f-a346-b5030c2c0e5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThreadService">
+      <UniqueIdentifier>{0ab0f5f4-2340-4d9d-8bef-42713ec272b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThreadPoolService">
+      <UniqueIdentifier>{d6c16776-b96b-4b3b-9ad8-c4cbdc67283a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>ZZZMisc\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NotificationServices.cpp">
+      <Filter>ZZZMisc\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>ZZZMisc\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="xdlldata.c">
+      <Filter>ZZZMisc\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NotificationServices_i.c">
+      <Filter>ZZZMisc\Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TimerService.cpp">
+      <Filter>TimerService</Filter>
+    </ClCompile>
+    <ClCompile Include="PluginTable.cpp">
+      <Filter>PluginTable</Filter>
+    </ClCompile>
+    <ClCompile Include="objmdl_contract_i.c">
+      <Filter>ZZZMisc\Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="viewmdl_contract_i.c">
+      <Filter>ZZZMisc\Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadService.cpp">
+      <Filter>ThreadService</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadOperation.cpp">
+      <Filter>ThreadService</Filter>
+    </ClCompile>
+    <ClCompile Include="asyncsvc_contract_i.c">
+      <Filter>ZZZMisc\Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadPoolService.cpp">
+      <Filter>ThreadPoolService</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>ZZZMisc\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>ZZZMisc\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>ZZZMisc\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dllmain.h">
+      <Filter>ZZZMisc\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="xdlldata.h">
+      <Filter>ZZZMisc\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NotificationServices_i.h">
+      <Filter>ZZZMisc\Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TimerService.h">
+      <Filter>TimerService</Filter>
+    </ClInclude>
+    <ClInclude Include="Plugins.h">
+      <Filter>PluginTable</Filter>
+    </ClInclude>
+    <ClInclude Include="PluginTable.h">
+      <Filter>PluginTable</Filter>
+    </ClInclude>
+    <ClInclude Include="objmdl_contract_i.h">
+      <Filter>ZZZMisc\Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="viewmdl_contract_i.h">
+      <Filter>ZZZMisc\Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadService.h">
+      <Filter>ThreadService</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadOperation.h">
+      <Filter>ThreadService</Filter>
+    </ClInclude>
+    <ClInclude Include="asyncsvc_contract_i.h">
+      <Filter>ZZZMisc\Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadPoolService.h">
+      <Filter>ThreadPoolService</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="NotificationServices.rc">
+      <Filter>ZZZMisc\Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NotificationServices.rgs">
+      <Filter>ZZZMisc\Resource Files</Filter>
+    </None>
+    <None Include="NotificationServices.def">
+      <Filter>ZZZMisc\Source Files</Filter>
+    </None>
+    <None Include="ThreadService.rgs">
+      <Filter>ZZZMisc\Resource Files</Filter>
+    </None>
+    <None Include="ThreadPoolService.rgs">
+      <Filter>ZZZMisc\Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="NotificationServices.idl">
+      <Filter>ZZZMisc\Source Files</Filter>
+    </Midl>
+    <Midl Include="..\ObjMdl\objmdl_contract_i.idl">
+      <Filter>ZZZMisc\Source Files</Filter>
+    </Midl>
+    <Midl Include="..\ViewMdl\viewmdl_contract_i.idl">
+      <Filter>ZZZMisc\Source Files</Filter>
+    </Midl>
+    <Midl Include="asyncsvc_contract_i.idl">
+      <Filter>ZZZMisc\Source Files</Filter>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt">
+      <Filter>ZZZMisc</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

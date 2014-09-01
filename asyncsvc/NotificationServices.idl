@@ -1,0 +1,52 @@
+// NotificationServices.idl : IDL source for NotificationServices
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (NotificationServices.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+import "..\objmdl\objmdl_contract_i.idl";
+import "..\viewmdl\viewmdl_contract_i.idl";
+import "asyncsvc_contract_i.idl";
+
+[
+	uuid(615BB430-F917-462B-A53E-D2599F45D33E),
+	version(1.0),
+]
+library NotificationServicesLib
+{
+	importlib("stdole2.tlb");
+
+	[
+		uuid(6EA78630-DC6D-4D2B-91F0-686B260F29D6)
+	]
+	coclass PluginTable
+	{
+		[default] interface IPluginTable;
+	};
+	[
+		uuid(994A333F-BC1C-4251-8487-26878F7C50F4)
+	]
+	coclass TimerService
+	{
+		[default] interface IThreadService;
+	};
+	[
+		uuid(76423978-493C-4634-A640-ADDA32608F92)		
+	]
+	coclass ThreadService
+	{
+		[default] interface IThreadService;
+	};
+	[
+		uuid(2218CA83-E3CE-4395-833B-5D083F3460AB)		
+	]
+	coclass ThreadPoolService
+	{
+		[default] interface IThreadPoolService;
+	};
+};
+
+import "shobjidl.idl";
