@@ -64,6 +64,7 @@ public:
 	STDMETHOD(OnShutdown)();
 	STDMETHOD(OnTimer)();
 	STDMETHOD(ProcessWindowMessage)(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT *plResult, BOOL *bResult);
+	STDMETHOD(SetThreadContext)(IVariantObject* pVariantObject);
 	STDMETHOD(Run)();
 	STDMETHOD(SetTimerService)(GUID gServiceId);
 

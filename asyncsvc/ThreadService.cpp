@@ -26,6 +26,12 @@ STDMETHODIMP CThreadService::SetTimerService(GUID gServiceId)
 	return S_OK;
 }
 
+STDMETHODIMP CThreadService::SetThreadContext(IVariantObject* pVariantObject)
+{
+	m_pResult = pVariantObject;
+	return S_OK;
+}
+
 STDMETHODIMP CThreadService::OnShutdown()
 {
 	if (m_thread.joinable())
@@ -115,7 +121,11 @@ void CThreadService::OnStop()
 
 HRESULT CThreadService::Fire_OnStart()
 {
-	RETURN_IF_FAILED(HrCoCreateInstance(CLSID_VariantObject, &m_pResult));
+	if (!m_pResult)
+	{
+		RETURN_IF_FAILED(HrCoCreateInstance(CLSID_VariantObject, &m_pResult));
+	}
+
 	CComPtr<IUnknown> pUnk;
 	RETURN_IF_FAILED(this->QueryInterface(__uuidof(IUnknown), (LPVOID*)&pUnk));
 	RETURN_IF_FAILED(m_pResult->SetVariantValue(KEY_THREAD_ID, &CComVariant(pUnk)));

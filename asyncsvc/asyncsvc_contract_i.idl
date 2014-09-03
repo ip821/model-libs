@@ -32,6 +32,7 @@ interface ITimerServiceEventSink : IUnknown
 interface IThreadService : IUnknown
 {
 	HRESULT SetTimerService(GUID gServiceId);
+	HRESULT SetThreadContext(IVariantObject* pVariantObject);
 	HRESULT Run();
 	HRESULT Join();
 };
