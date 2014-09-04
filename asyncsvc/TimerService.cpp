@@ -65,7 +65,7 @@ HRESULT CTimerService::Fire_OnTimer()
 
 		if (pConnection)
 		{
-			hr = pConnection->OnTimer();
+			hr = pConnection->OnTimer(this);
 		}
 	}
 	return hr;

@@ -21,7 +21,7 @@ interface ITimerService : IUnknown
 ]
 interface ITimerServiceEventSink : IUnknown
 {
-	HRESULT OnTimer();
+	HRESULT OnTimer(ITimerService* pTimerService);
 };
 
 [

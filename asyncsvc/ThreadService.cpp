@@ -50,7 +50,7 @@ STDMETHODIMP CThreadService::OnShutdown()
 	return S_OK;
 }
 
-STDMETHODIMP CThreadService::OnTimer()
+STDMETHODIMP CThreadService::OnTimer(ITimerService* pTimerService)
 {
 	RETURN_IF_FAILED(m_pTimerService->StopTimer());
 	RETURN_IF_FAILED(Fire_OnStart());

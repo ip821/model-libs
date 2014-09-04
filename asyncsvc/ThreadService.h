@@ -62,7 +62,7 @@ public:
 	
 	STDMETHOD(OnInitialized)(IServiceProvider *pServiceProvider);
 	STDMETHOD(OnShutdown)();
-	STDMETHOD(OnTimer)();
+	STDMETHOD(OnTimer)(ITimerService* pTimerService);
 	STDMETHOD(ProcessWindowMessage)(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT *plResult, BOOL *bResult);
 	STDMETHOD(SetThreadContext)(IVariantObject* pVariantObject);
 	STDMETHOD(Run)();
