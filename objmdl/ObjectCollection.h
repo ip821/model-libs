@@ -31,6 +31,7 @@ private:
 public:
 
 	STDMETHOD(AddObject)(IUnknown *punk);
+	STDMETHOD(InsertObject)(IUnknown *punk, UINT uiIndex);
 	STDMETHOD(Clear)();
 	STDMETHOD(RemoveObjectAt)(UINT *uiIndex);
 

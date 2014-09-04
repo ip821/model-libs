@@ -13,6 +13,12 @@ STDMETHODIMP CObjectCollection::AddObject(IUnknown *punk)
 	return S_OK;
 }
 
+STDMETHODIMP CObjectCollection::InsertObject(IUnknown *punk, UINT uiIndex)
+{
+	m_objects.insert(m_objects.begin() + uiIndex, CAdapt<CComPtr<IUnknown> >(punk));
+	return S_OK;
+}
+
 STDMETHODIMP CObjectCollection::Clear()
 {
 	m_objects.clear();

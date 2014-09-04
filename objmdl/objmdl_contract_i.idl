@@ -21,6 +21,7 @@ interface IObjArray : IUnknown
 interface IObjCollection : IObjArray
 {
 	HRESULT AddObject([in]  IUnknown *punk);
+	HRESULT InsertObject(IUnknown *punk, UINT uiIndex);
 	HRESULT Clear();
 	HRESULT RemoveObjectAt([in]  UINT *uiIndex);
 };
