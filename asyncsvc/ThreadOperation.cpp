@@ -8,13 +8,6 @@ CThreadOperation::CThreadOperation()
 
 CThreadOperation::~CThreadOperation()
 {
-	try
-	{
-		Stop();
-	}
-	catch (...)
-	{
-	}
 }
 
 void CThreadOperation::Stop()

@@ -34,11 +34,6 @@ STDMETHODIMP CThreadService::SetThreadContext(IVariantObject* pVariantObject)
 
 STDMETHODIMP CThreadService::OnShutdown()
 {
-	if (m_thread.joinable())
-		m_thread.join();
-	
-	RETURN_IF_FAILED(IInitializeWithControlImpl::OnShutdown());
-	
 	if (m_pTimerService && m_dwAdvice)
 		RETURN_IF_FAILED(AtlUnadvise(m_pTimerService, __uuidof(ITimerServiceEventSink), m_dwAdvice));
 
@@ -46,6 +41,8 @@ STDMETHODIMP CThreadService::OnShutdown()
 	
 	if (m_pResult)
 		m_pResult.Release();
+
+	RETURN_IF_FAILED(IInitializeWithControlImpl::OnShutdown());
 
 	return S_OK;
 }

@@ -43,9 +43,7 @@ STDMETHODIMP CTimerService::StopTimer()
 
 STDMETHODIMP CTimerService::OnUpdateTimer()
 {
-	StopTimer();
 	Fire_OnTimer();
-	ResumeTimer();
 	return S_OK;
 }
 
