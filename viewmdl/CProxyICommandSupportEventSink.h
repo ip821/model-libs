@@ -29,5 +29,27 @@ public:
 		}
 		return hr;
 	}
+
+	HRESULT Fire_OnBeforeCommandInvoke(REFGUID guidCommand, ICommand* pCommand)
+	{
+		HRESULT hr = S_OK;
+		T * pThis = static_cast<T *>(this);
+		int cConnections = m_vec.GetSize();
+
+		for (int iConnection = 0; iConnection < cConnections; iConnection++)
+		{
+			pThis->Lock();
+			CComPtr<IUnknown> punkConnection = m_vec.GetAt(iConnection);
+			pThis->Unlock();
+
+			ICommandSupportEventSink * pConnection = static_cast<ICommandSupportEventSink*>(punkConnection.p);
+
+			if (pConnection)
+			{
+				hr = pConnection->OnBeforeCommandInvoke(guidCommand, pCommand);
+			}
+		}
+		return hr;
+	}
 };
 

@@ -15,13 +15,13 @@ STDMETHODIMP CCommandSupport::AddToolbarCommand(REFGUID guidCommand, ICommand2* 
 STDMETHODIMP CCommandSupport::InsertToolbarCommand(REFGUID guidCommand, UINT ulIndex, ICommand2* pCommand2)
 {
 	CHECK_E_POINTER(pCommand2);
-	if(!m_toolBar)
+	if (!m_toolBar)
 		return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
 
-	HBITMAP hBitmap = {0};
+	HBITMAP hBitmap = { 0 };
 	HRESULT hr = pCommand2->GetHBITMAP(guidCommand, &hBitmap);
 
-	if(hr != S_OK && hr != E_NOTIMPL)
+	if (hr != S_OK && hr != E_NOTIMPL)
 		return hr;
 
 	int iIndex = m_imageList.Add(hBitmap, (COLORREF)0);
@@ -33,7 +33,7 @@ STDMETHODIMP CCommandSupport::InsertToolbarCommand(REFGUID guidCommand, UINT ulI
 	++m_CmdIdCounter;
 	RegisterCommand(pCommand2, guidCommand, m_CmdIdCounter);
 
-	TBBUTTON tb = {0};
+	TBBUTTON tb = { 0 };
 	tb.iBitmap = iIndex;
 	tb.idCommand = m_CmdIdCounter;
 	tb.fsState = TBSTATE_ENABLED;
@@ -59,13 +59,13 @@ STDMETHODIMP CCommandSupport::AddMenuCommand(REFGUID guidParentCommand, REFGUID 
 STDMETHODIMP CCommandSupport::EnableCommandInternal(REFGUID guidCommand, BOOL bEnable)
 {
 	auto itGuid = m_InstalledCommandsGuidToIdMap.find(guidCommand);
-	if(itGuid == m_InstalledCommandsGuidToIdMap.end())
+	if (itGuid == m_InstalledCommandsGuidToIdMap.end())
 		return HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND);
 
-	for(auto it = itGuid->second.begin(); it != itGuid->second.end(); it++)
+	for (auto it = itGuid->second.begin(); it != itGuid->second.end(); it++)
 	{
 		EnableMenuItem(m_menu, *it, MF_BYCOMMAND | (bEnable ? MF_ENABLED : MF_DISABLED));
-		if(m_toolBar)
+		if (m_toolBar)
 			m_toolBar.EnableButton(*it, bEnable);
 	}
 
@@ -75,18 +75,18 @@ STDMETHODIMP CCommandSupport::EnableCommandInternal(REFGUID guidCommand, BOOL bE
 STDMETHODIMP CCommandSupport::InsertCommandToMenu(REFGUID guidParentCommand, REFGUID guidCommand, UINT ulIndex, ICommand* pCommand)
 {
 	CHECK_E_POINTER(pCommand);
-	if(!m_menu)
+	if (!m_menu)
 		return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
 
 	HRESULT hr = InstallStdParentMenuItemsIfNeed(guidParentCommand);
-	if(FAILED(hr))
+	if (FAILED(hr))
 		return hr;
 
 	UINT parentId = 0;
-	for(auto it = m_InstalledCommandsMap.begin(); it != m_InstalledCommandsMap.end(); it++)
+	for (auto it = m_InstalledCommandsMap.begin(); it != m_InstalledCommandsMap.end(); it++)
 	{
 		GUID guidId = m_InstalledCommandsIdToGuidMap[it->first];
-		if(guidId == guidParentCommand)
+		if (guidId == guidParentCommand)
 		{
 			parentId = it->first;
 			break;
@@ -102,14 +102,14 @@ STDMETHODIMP CCommandSupport::InsertCommandToMenu(REFGUID guidParentCommand, REF
 	HMENU hMenu = m_menu;
 	BOOL bRes = FALSE;
 
-	if(parentId)
+	if (parentId)
 	{
-		MENUITEMINFO mii = {0};
+		MENUITEMINFO mii = { 0 };
 		mii.cbSize = sizeof(MENUITEMINFO);
 		mii.fMask = MIIM_SUBMENU;
 
 		bRes = GetMenuItemInfo(m_menu, parentId, FALSE, &mii);
-		if(!mii.hSubMenu)
+		if (!mii.hSubMenu)
 		{
 			HMENU hSubMenu = CreateMenu();
 			mii.hSubMenu = hSubMenu;
@@ -123,16 +123,16 @@ STDMETHODIMP CCommandSupport::InsertCommandToMenu(REFGUID guidParentCommand, REF
 	bRes = InsertMenu(hMenu, ulIndex, MF_BYPOSITION | MF_STRING, m_CmdIdCounter, lpw);
 
 	CComQIPtr<ICommand2> pCommand2 = pCommand;
-	if(pCommand2)
+	if (pCommand2)
 	{
-		HBITMAP hBitmap = {0};
-		if(pCommand2->GetHBITMAP(guidCommand, &hBitmap) == S_OK)
+		HBITMAP hBitmap = { 0 };
+		if (pCommand2->GetHBITMAP(guidCommand, &hBitmap) == S_OK)
 		{
-			MENUITEMINFO menuInfo = {0};
+			MENUITEMINFO menuInfo = { 0 };
 			menuInfo.cbSize = sizeof(MENUITEMINFO);
 			menuInfo.fMask = MIIM_BITMAP;
 
-			if(m_pBitmapService)
+			if (m_pBitmapService)
 			{
 				//TODO HBITMAP leak
 				//fix when implement menu item remove
@@ -158,6 +158,39 @@ STDMETHODIMP CCommandSupport::RegisterCommand(ICommand* pCommand, REFGUID gComma
 	m_InstalledCommandsMap[m_CmdIdCounter] = pCommand;
 	m_InstalledCommandsGuidToIdMap[gCommand].push_back(cmdId);
 	m_InstalledCommandsIdToGuidMap[cmdId] = gCommand;
+
+	CComQIPtr<IAcceleratorSupport> pAccelSupport = pCommand;
+	if (pAccelSupport)
+	{
+		TACCEL accel = { 0 };
+		RETURN_IF_FAILED(pAccelSupport->GetAccelerator(gCommand, &accel));
+		accel.cmd = (WORD)cmdId;
+		m_accels.push_back(accel);
+	}
+
+	if (m_accels.size())
+	{
+		if (m_hAccel)
+			::DestroyAcceleratorTable(m_hAccel);
+		m_hAccel = CreateAcceleratorTable((LPACCEL)&m_accels[0], m_accels.size());
+	}
+
+	return S_OK;
+}
+
+STDMETHODIMP CCommandSupport::PreTranslateMessage(HWND hWnd, MSG *pMsg, BOOL *pbResult)
+{
+	CHECK_E_POINTER(pMsg);
+	CHECK_E_POINTER(pbResult);
+	auto hwnd1 = GetAncestor(pMsg->hwnd, GA_ROOT); hwnd1;
+	auto hwnd2 = GetAncestor(hWnd, GA_ROOT); hwnd2;
+	if (
+		hWnd &&
+		((pMsg->hwnd == hWnd) || (GetAncestor(pMsg->hwnd, GA_ROOT) == GetAncestor(hWnd, GA_ROOT))) &&
+		m_hAccel &&
+		::TranslateAccelerator(hWnd, m_hAccel, pMsg)
+		)
+		*pbResult = TRUE;
 	return S_OK;
 }
 
@@ -197,37 +230,39 @@ LRESULT CCommandSupport::OnCommandClick(WORD /*wNotifyCode*/, WORD wID, HWND /*h
 {
 	bHandled = FALSE;
 	auto it = m_InstalledCommandsMap.find(wID);
-	if(it != m_InstalledCommandsMap.end())
+	if (it != m_InstalledCommandsMap.end())
 	{
 		auto guidCommand = m_InstalledCommandsIdToGuidMap[wID];
 		CComQIPtr<IInitializeWithVariantObject> pInitializeWithVariantObject = it->second.m_T;
-		if(pInitializeWithVariantObject)
+		if (pInitializeWithVariantObject)
 		{
 			RETURN_IF_FAILED(pInitializeWithVariantObject->SetVariantObject(m_pVariantObject));
 		}
 		CComQIPtr<IInitializeWithColumnName> pInitializeWithColumnName = it->second.m_T;
-		if(pInitializeWithColumnName)
+		if (pInitializeWithColumnName)
 		{
 			RETURN_IF_FAILED(pInitializeWithColumnName->SetColumnName(m_strColumnName));
 		}
 
+		Fire_OnBeforeCommandInvoke(guidCommand, it->second.m_T);
+
 		HRESULT hr = it->second.m_T->Invoke(guidCommand);
-		if(hr == S_OK)
+		if (hr == S_OK)
 		{
 			Fire_OnCommandInvoke(guidCommand);
 		}
 
-		if(pInitializeWithVariantObject)
+		if (pInitializeWithVariantObject)
 		{
 			RETURN_IF_FAILED(pInitializeWithVariantObject->SetVariantObject(NULL));
 		}
 
-		if(pInitializeWithColumnName)
+		if (pInitializeWithColumnName)
 		{
 			RETURN_IF_FAILED(pInitializeWithColumnName->SetColumnName(NULL));
 		}
 
-		if(FAILED(hr) && hr != HRESULT_FROM_WIN32(ERROR_CANCELLED))
+		if (FAILED(hr) && hr != HRESULT_FROM_WIN32(ERROR_CANCELLED))
 		{
 			MessageBox(GetActiveWindow(), _com_error(hr).ErrorMessage(), L"Error", MB_ICONERROR);
 		}
@@ -238,14 +273,18 @@ LRESULT CCommandSupport::OnCommandClick(WORD /*wNotifyCode*/, WORD wID, HWND /*h
 
 STDMETHODIMP CCommandSupport::UninstallAll()
 {
+	if (m_hAccel)
+		::DestroyAcceleratorTable(m_hAccel);
+
 	m_InstalledCommandsMap.clear();
+	m_InstalledCommandsIdToGuidMap.clear();
 	m_InstalledCommandsGuidToIdMap.clear();
 	return S_OK;
 }
 
 STDMETHODIMP CCommandSupport::InstallStdParentMenuItemsIfNeed(REFGUID guidParentCommand)
 {
-	if(!m_bInstallStdCommands)
+	if (!m_bInstallStdCommands)
 		return S_OK;
 
 	if (guidParentCommand == COMMAND_TOOLS && m_InstalledCommandsGuidToIdMap.find(COMMAND_TOOLS) == m_InstalledCommandsGuidToIdMap.end())
@@ -259,25 +298,25 @@ STDMETHODIMP CCommandSupport::InstallStdParentMenuItemsIfNeed(REFGUID guidParent
 			return hr;
 	}
 
-	if(guidParentCommand == COMMAND_VIEW && m_InstalledCommandsGuidToIdMap.find(COMMAND_VIEW) == m_InstalledCommandsGuidToIdMap.end())
+	if (guidParentCommand == COMMAND_VIEW && m_InstalledCommandsGuidToIdMap.find(COMMAND_VIEW) == m_InstalledCommandsGuidToIdMap.end())
 	{
 		CComPtr<ICommand> pCommand;
 		HRESULT hr = CViewCommand::_CreatorClass::CreateInstance(NULL, IID_ICommand, (LPVOID*)&pCommand);
-		if(FAILED(hr))
+		if (FAILED(hr))
 			return hr;
 		hr = pCommand->InstallMenu(this);
-		if(FAILED(hr))
+		if (FAILED(hr))
 			return hr;
 	}
 
-	if(guidParentCommand == COMMAND_HELP && m_InstalledCommandsGuidToIdMap.find(COMMAND_HELP) == m_InstalledCommandsGuidToIdMap.end())
+	if (guidParentCommand == COMMAND_HELP && m_InstalledCommandsGuidToIdMap.find(COMMAND_HELP) == m_InstalledCommandsGuidToIdMap.end())
 	{
 		CComPtr<ICommand> pCommand;
 		HRESULT hr = CHelpCommand::_CreatorClass::CreateInstance(NULL, IID_ICommand, (LPVOID*)&pCommand);
-		if(FAILED(hr))
+		if (FAILED(hr))
 			return hr;
 		hr = pCommand->InstallMenu(this);
-		if(FAILED(hr))
+		if (FAILED(hr))
 			return hr;
 	}
 
@@ -327,7 +366,7 @@ STDMETHODIMP CCommandSupport::InstallCommand(ICommand* pCommand)
 	}
 
 	CComQIPtr<ICommand2> pCommand2 = pCommand;
-	if(pCommand2 && m_toolBar)
+	if (pCommand2 && m_toolBar)
 	{
 		return pCommand2->InstallToolbar(this);
 	}
@@ -342,26 +381,27 @@ STDMETHODIMP CCommandSupport::InstallCommands(IPluginSupport* pPluginSupport)
 
 	UINT uiCount = 0;
 	RETURN_IF_FAILED(pObjectArray->GetCount(&uiCount));
-	for(UINT i = 0; i < uiCount; i++)
+	for (UINT i = 0; i < uiCount; i++)
 	{
 		CComPtr<ICommand> pCommand;
 		HRESULT hr = pObjectArray->GetAt(i, IID_ICommand, (LPVOID*)&pCommand);
-		if(hr != S_OK && hr != E_NOINTERFACE)
+		if (hr != S_OK && hr != E_NOINTERFACE)
 			return hr;
 
-		if(hr == S_OK)
+		if (hr == S_OK)
 		{
 			hr = InstallCommand(pCommand);
 			ATLASSERT(hr == S_OK || hr == E_NOTIMPL);
 		}
 	}
+
 	return S_OK;
 }
 
 STDMETHODIMP CCommandSupport::OnIdle(BOOL* bResult)
 {
 	CHECK_E_POINTER(bResult);
-	for(auto it = m_InstalledCommandsGuidToIdMap.begin(); it != m_InstalledCommandsGuidToIdMap.end(); it++)
+	for (auto it = m_InstalledCommandsGuidToIdMap.begin(); it != m_InstalledCommandsGuidToIdMap.end(); it++)
 	{
 		auto itCommandId = it->second.begin();
 		{

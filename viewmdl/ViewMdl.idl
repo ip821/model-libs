@@ -190,6 +190,6 @@ library ViewMdlLib
 	{
 		[default] interface IInfoControlService;
 	};
-};
+	};
 
 import "shobjidl.idl";

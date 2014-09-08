@@ -7,6 +7,7 @@
 #include "..\ObjMdl\GUIDComparer.h"
 
 using namespace ATL;
+using namespace std;
 
 // CCommandSupport
 
@@ -45,6 +46,7 @@ public:
 
 	BEGIN_MSG_MAP(CCommandSupport)
 		COMMAND_CODE_HANDLER(0, OnCommandClick)
+		COMMAND_CODE_HANDLER(1, OnCommandClick)
 	END_MSG_MAP()
 
 	BEGIN_CONNECTION_POINT_MAP(CCommandSupport)
@@ -57,6 +59,8 @@ private:
 	std::map<int, GUID> m_InstalledCommandsIdToGuidMap;
 	std::map<GUID, BOOL, GUIDComparer> m_commandState;
 	int m_CmdIdCounter;
+	vector<TACCEL> m_accels;
+	HACCEL m_hAccel = 0;
 
 	LRESULT OnCommandClick(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	STDMETHOD(InsertCommandToMenu)(REFGUID guidParentCommand, REFGUID guidCommand, UINT ulIndex, ICommand* pCommand);
@@ -100,6 +104,8 @@ public:
 	STDMETHOD(EnableStdCommands)(BOOL bEnable);
 	STDMETHOD(QueueCommandExecution)(GUID guidCommand, VARIANT* vParam);
 	STDMETHOD(EnableCommand)(REFGUID guidCommand, BOOL bEnable);
+
+	STDMETHOD(PreTranslateMessage)(HWND hWnd, MSG *pMsg, BOOL *pbResult);
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(CommandSupport), CCommandSupport)

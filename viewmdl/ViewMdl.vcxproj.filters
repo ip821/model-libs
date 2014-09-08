@@ -216,9 +216,6 @@
     <ClInclude Include="ITabbedControlEventSink_CP.h">
       <Filter>TabbedControl</Filter>
     </ClInclude>
-    <ClInclude Include="CProxyICommandSupportEventSink.h">
-      <Filter>Commands</Filter>
-    </ClInclude>
     <ClInclude Include="EditEx.h">
       <Filter>Views\SimpleList\Controls</Filter>
     </ClInclude>
@@ -287,6 +284,9 @@
     </ClInclude>
     <ClInclude Include="InfoControlService.h">
       <Filter>InfoControl</Filter>
+    </ClInclude>
+    <ClInclude Include="CProxyICommandSupportEventSink.h">
+      <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -285,6 +285,7 @@ interface IBitmapService : IUnknown
 ]
 interface ICommandSupportEventSink : IUnknown
 {
+	HRESULT OnBeforeCommandInvoke(REFGUID guidCommand, ICommand* pCommand);
 	HRESULT OnCommandInvoke(REFGUID guidCommand);
 };
 
@@ -303,6 +304,24 @@ interface IPluginSupport : IUnknown
 	HRESULT OnShutdown();
 };
 
+typedef struct TtagACCEL
+{
+	BYTE fVirt;
+	WORD key;
+	WORD cmd;
+} TACCEL;
+
+[
+	object,
+	uuid(D8542FB9-A027-4745-923E-65CC5577F6A0),
+	nonextensible,
+	pointer_default(unique)
+]
+interface IAcceleratorSupport : IUnknown
+{
+	HRESULT GetAccelerator(REFGUID guidCommand, TACCEL* pAccel);
+};
+
 [
 	object,
 	uuid(E8134966-5E4D-40F8-8903-1659823FA01E),
@@ -318,6 +337,7 @@ interface ICommandSupport : IUnknown
 	HRESULT SetMenu(HMENU hMenu);
 	HRESULT SetToolbar(HWND hToolbar);
 	HRESULT SetBitmapService(IBitmapService* pBitmapService);
+	HRESULT PreTranslateMessage(HWND hWnd, MSG *pMsg, BOOL *pbResult);
 	HRESULT ProcessWindowMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT* plResult, BOOL* bResult);
 	HRESULT QueueCommandExecution(GUID guidCommand, VARIANT* vParam);
 	HRESULT EnableCommand(REFGUID guidCommand, BOOL bEnable);
