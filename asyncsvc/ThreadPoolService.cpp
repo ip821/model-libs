@@ -13,6 +13,7 @@ STDMETHODIMP CThreadPoolService::OnInitialized(IServiceProvider *pServiceProvide
 
 STDMETHODIMP CThreadPoolService::OnShutdown()
 {
+	SetThreadCount(0);
 	return S_OK;
 }
 

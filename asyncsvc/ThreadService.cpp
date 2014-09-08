@@ -38,7 +38,10 @@ STDMETHODIMP CThreadService::OnShutdown()
 		RETURN_IF_FAILED(AtlUnadvise(m_pTimerService, __uuidof(ITimerServiceEventSink), m_dwAdvice));
 
 	m_pTimerService.Release();
-	
+
+	if (m_thread.joinable())
+		m_thread.join();
+
 	if (m_pResult)
 		m_pResult.Release();
 
