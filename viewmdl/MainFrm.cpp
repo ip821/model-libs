@@ -206,6 +206,12 @@ LRESULT CMainFrame::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*
 {
 	GetWindowPlacement(&m_placement);
 	GetWindowRect(&m_rectForSettingsSave);
+
+	CComQIPtr<IPluginSupportNotifications> pPluginSupportNotifications = m_pContainerControl;
+	if (pPluginSupportNotifications)
+	{
+		pPluginSupportNotifications->OnShutdown();
+	}
 	m_pCommandSupport->UninstallAll();
 	m_pPluginSupport->UninstallAll();
 	// unregister message filtering and idle updates
