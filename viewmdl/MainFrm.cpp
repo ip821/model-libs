@@ -207,6 +207,8 @@ LRESULT CMainFrame::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*
 	GetWindowPlacement(&m_placement);
 	GetWindowRect(&m_rectForSettingsSave);
 
+	Save(m_pSettings);
+
 	CComQIPtr<IPluginSupportNotifications> pPluginSupportNotifications = m_pContainerControl;
 	if (pPluginSupportNotifications)
 	{
