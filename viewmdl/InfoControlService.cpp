@@ -49,9 +49,9 @@ STDMETHODIMP CInfoControlService::ShowControl(HWND hwndParent, BSTR bstrMessage,
 		RETURN_IF_FAILED(AtlAdvise(controlData.m_pControl, pUnk, __uuidof(IInfoControlEventSink), &controlData.m_dwAdvice));
 		m_controls[hwndParent] = controlData;
 		it = m_controls.find(hwndParent);
-		*phWnd = controlData.m_ControlHwnd;
 	}
 
+	*phWnd = it->second.m_ControlHwnd;
 	RETURN_IF_FAILED(it->second.m_pControl->SetMessage(bstrMessage, bError));
 
 	return S_OK;
