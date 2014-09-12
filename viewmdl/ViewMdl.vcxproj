@@ -100,7 +100,7 @@
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>true</LinkIncremental>
     <CodeAnalysisRuleSet>C:\_dev\WinDbgTool\AnalyzeRuleSet.ruleset</CodeAnalysisRuleSet>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\objmdl\;..boost\</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\objmdl\;..boost</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
@@ -111,13 +111,13 @@
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>false</LinkIncremental>
     <CodeAnalysisRuleSet>C:\_dev\WinDbgTool\AnalyzeRuleSet.ruleset</CodeAnalysisRuleSet>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\objmdl\;..boost\</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\objmdl\;..boost</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_XP|Win32'">
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>false</LinkIncremental>
     <CodeAnalysisRuleSet>C:\_dev\WinDbgTool\AnalyzeRuleSet.ruleset</CodeAnalysisRuleSet>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\objmdl\;..boost\</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\objmdl\;..boost</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IgnoreImportLibrary>true</IgnoreImportLibrary>

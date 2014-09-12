@@ -54,12 +54,12 @@ LRESULT CInfoControl::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lP
 	GetWindowRect(&rect);
 	ScreenToClient(&rect);
 	MoveWindow(rect.left, rect.top, rect.right - rect.left, INFO_CONTROL_HEIGHT);
-	m_pictureBox.MoveWindow(3, 3, 16, 16);
+	m_pictureBox.MoveWindow(10, 3, 16, 16);
 
 	CRect labelRect;
 	m_label.GetWindowRect(&labelRect);
 	labelRect.top -= 6;
-	labelRect.left -= 5;
+	//labelRect.left -= 5;
 	ScreenToClient(&labelRect);
 	m_label.MoveWindow(labelRect);
 	return 0;
