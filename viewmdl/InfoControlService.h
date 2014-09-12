@@ -53,7 +53,7 @@ private:
 
 public:
 
-	STDMETHOD(ShowControl)(HWND hwndParent, BSTR bstrMessage, BOOL bError, BOOL bMoveChild);
+	STDMETHOD(ShowControl)(HWND hwndParent, BSTR bstrMessage, BOOL bError, BOOL bMoveChild, HWND* phWnd);
 	STDMETHOD(HideControl)(HWND hwndParent);
 	STDMETHOD(EnableHyperLink)(HWND hwndParent);
 

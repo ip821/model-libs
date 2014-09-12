@@ -454,7 +454,7 @@ interface IInfoControl : IControl
 [object, uuid(31D6DF29-0061-4EBB-BA9D-69DA2030FEE0), pointer_default(unique)]
 interface IInfoControlService : IUnknown
 {
-	HRESULT ShowControl(HWND hwndParent, BSTR bstrMessage, BOOL bError, BOOL bMoveChild);
+	HRESULT ShowControl(HWND hwndParent, BSTR bstrMessage, BOOL bError, BOOL bMoveChild, HWND* phWnd);
 	HRESULT EnableHyperLink(HWND hwndParent);
 	HRESULT HideControl(HWND hwndParent);
 };

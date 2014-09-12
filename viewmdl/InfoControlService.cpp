@@ -18,7 +18,7 @@ STDMETHODIMP CInfoControlService::EnableHyperLink(HWND hwndParent)
 	return S_OK;
 }
 
-STDMETHODIMP CInfoControlService::ShowControl(HWND hwndParent, BSTR bstrMessage, BOOL bError, BOOL bMoveChild)
+STDMETHODIMP CInfoControlService::ShowControl(HWND hwndParent, BSTR bstrMessage, BOOL bError, BOOL bMoveChild, HWND* phWnd)
 {
 	auto it = m_controls.find(hwndParent);
 	if (it == m_controls.end())
@@ -49,7 +49,7 @@ STDMETHODIMP CInfoControlService::ShowControl(HWND hwndParent, BSTR bstrMessage,
 		RETURN_IF_FAILED(AtlAdvise(controlData.m_pControl, pUnk, __uuidof(IInfoControlEventSink), &controlData.m_dwAdvice));
 		m_controls[hwndParent] = controlData;
 		it = m_controls.find(hwndParent);
-
+		*phWnd = controlData.m_ControlHwnd;
 	}
 
 	RETURN_IF_FAILED(it->second.m_pControl->SetMessage(bstrMessage, bError));
