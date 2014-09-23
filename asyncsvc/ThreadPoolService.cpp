@@ -88,6 +88,20 @@ STDMETHODIMP CThreadPoolService::AddTask(IVariantObject* pVariantObject)
 	return S_OK;
 }
 
+STDMETHODIMP CThreadPoolService::Suspend()
+{
+	m_cSuspendRefs++;
+	return S_OK;
+}
+
+STDMETHODIMP CThreadPoolService::Resume()
+{
+	m_cSuspendRefs--;
+	if (!m_cSuspendRefs)
+		m_condition.notify_one();
+	return S_OK;
+}
+
 STDMETHODIMP CThreadPoolService::Run()
 {
 	{
@@ -101,9 +115,11 @@ STDMETHODIMP CThreadPoolService::Run()
 		boost::unique_lock<boost::mutex> lockWaitThread(m_waitMutex);
 		m_condition.wait(lockWaitThread);
 
+		if (m_cSuspendRefs > 0)
+			continue;
+
 		while (true)
 		{
-			CComPtr<IThreadService> pThread;
 			CComPtr<IVariantObject> pTaskObject;
 			BOOL bRetry = FALSE;
 			{
@@ -119,25 +135,34 @@ STDMETHODIMP CThreadPoolService::Run()
 				if (m_taskQueue.empty())
 					break;
 
-				vector<CAdapt<CComPtr<IThreadService> > > freeThreads(m_threads.size());
+				while (m_taskQueue.size())
 				{
-					std::sort(m_threads.begin(), m_threads.end());
-					std::sort(m_threadsInWork.begin(), m_threadsInWork.end());
-					auto it = set_difference(m_threads.begin(), m_threads.end(), m_threadsInWork.begin(), m_threadsInWork.end(), freeThreads.begin());
-					freeThreads.resize(it - freeThreads.begin());
-				}
+					vector<CAdapt<CComPtr<IThreadService> > > freeThreads(m_threads.size());
+					{
+						std::sort(m_threads.begin(), m_threads.end());
+						std::sort(m_threadsInWork.begin(), m_threadsInWork.end());
+						auto it = set_difference(m_threads.begin(), m_threads.end(), m_threadsInWork.begin(), m_threadsInWork.end(), freeThreads.begin());
+						freeThreads.resize(it - freeThreads.begin());
+					}
 
-				if (freeThreads.empty())
-				{ //no free threads
-					bRetry = TRUE;
-				}
-				else
-				{
-					pThread = freeThreads[0];
-					pTaskObject = m_taskQueue.front();
-					m_taskQueue.pop();
-					m_threadsInWork.push_back(pThread);
-					m_threadsTaskContex[pThread] = pTaskObject;
+					if (freeThreads.empty())
+					{ //no free threads
+						bRetry = TRUE;
+						break;
+					}
+					else
+					{
+						CComPtr<IThreadService> pThread;
+
+						pThread = freeThreads[0];
+						pTaskObject = m_taskQueue.front();
+						m_taskQueue.pop();
+						m_threadsInWork.push_back(pThread);
+						m_threadsTaskContex[pThread] = pTaskObject;
+
+						pThread->Join();
+						pThread->Run();
+					}
 				}
 			}
 
@@ -146,9 +171,6 @@ STDMETHODIMP CThreadPoolService::Run()
 				Sleep(1000);
 				continue;
 			}
-
-			pThread->Join();
-			pThread->Run();
 		}
 	}
 	return S_OK;
@@ -163,7 +185,7 @@ STDMETHODIMP CThreadPoolService::OnStart(IVariantObject *pResult)
 	CComQIPtr<IThreadService> pThreadService = pUnk;
 
 	{
-		boost::lock_guard<boost::mutex> lock(m_mutex);
+		//boost::lock_guard<boost::mutex> lock(m_mutex);
 		CComPtr<IVariantObject> pTaskContext = m_threadsTaskContex[pThreadService];
 		RETURN_IF_FAILED(pTaskContext->CopyTo(pResult));
 		m_threadsTaskContex.erase(pThreadService);

@@ -60,4 +60,6 @@ interface IThreadPoolService : IUnknown
 	HRESULT AddTask(IVariantObject* pVariantObject);
 	HRESULT Start();
 	HRESULT Stop();
+	HRESULT Suspend();
+	HRESULT Resume();
 };

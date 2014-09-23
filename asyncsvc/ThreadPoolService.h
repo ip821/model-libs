@@ -54,6 +54,7 @@ private:
 	boost::mutex m_waitMutex;
 	thread m_queueThread;
 	boost::condition_variable m_condition;
+	volatile int m_cSuspendRefs = 0;
 
 	STDMETHOD(Run)();
 
@@ -74,6 +75,9 @@ public:
 	STDMETHOD(OnStart)(IVariantObject *pResult);
 	STDMETHOD(OnRun)(IVariantObject *pResult);
 	STDMETHOD(OnFinish)(IVariantObject *pResult);
+
+	STDMETHOD(Suspend)();
+	STDMETHOD(Resume)();
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(ThreadPoolService), CThreadPoolService)
