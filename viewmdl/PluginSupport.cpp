@@ -190,5 +190,5 @@ STDMETHODIMP CPluginSupport::QueryService(REFGUID guidService, REFIID iid, void*
 			return S_OK;
 		}
 	}
-	return E_INVALIDARG;
+	return S_OK;
 }

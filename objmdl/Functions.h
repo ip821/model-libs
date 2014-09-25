@@ -52,6 +52,11 @@ std::wstring ToHexString(T t)
 	return oss.str();
 }
 
+static unsigned long FromHexString(std::wstring str)
+{
+	return std::wcstoul(str.c_str(), NULL, 16);
+}
+
 template<class Q> 
 HRESULT HrCoCreateInstance(REFCLSID rclsid, Q** pp)
 {
