@@ -34,13 +34,42 @@ static HRESULT HrAddColumn(IPluginManager* pPluginManager, IVariantObject* pVari
 	return S_OK;
 }
 
+static HRESULT HrInitializeWithSettings(IUnknown* pObject, ISettings* pSettings)
+{
+	CHECK_E_POINTER(pObject);
+	CHECK_E_POINTER(pSettings);
+	CComQIPtr<IInitializeWithSettings> pObj = pObject;
+	if (pObj)
+	{
+		RETURN_IF_FAILED(pObj->Load(pSettings));
+	}
+	return S_OK;
+}
+
 static HRESULT HrInitializeWithControl(IUnknown* pObject, IUnknown* pControl)
 {
 	CHECK_E_POINTER(pObject);
 	CHECK_E_POINTER(pControl);
 	CComQIPtr<IInitializeWithControl> pObj = pObject;
 	CComQIPtr<IControl> pCtrl = pControl;
-	return pObj->SetControl(pCtrl);
+	if (pObj)
+	{
+		RETURN_IF_FAILED(pObj->SetControl(pCtrl));
+	}
+	return S_OK;
+}
+
+static HRESULT HrNotifyOnInitialized(IUnknown* pObject, IUnknown* pServiceProviderObj)
+{
+	CHECK_E_POINTER(pObject);
+	CHECK_E_POINTER(pServiceProviderObj);
+	CComQIPtr<IPluginSupportNotifications> pObj = pObject;
+	CComQIPtr<IServiceProvider> pServiceProvider = pServiceProviderObj;
+	if (pObj)
+	{
+		RETURN_IF_FAILED(pObj->OnInitialized(pServiceProvider));
+	}
+	return S_OK;
 }
 
 static HRESULT HrWrapToVariantTable(IPluginManager* pPluginManager, IVariantObject* pVariantObject, IObjCollection* pObjectCollection, IVariantTable** ppVariantTable)

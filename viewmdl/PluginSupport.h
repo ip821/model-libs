@@ -42,12 +42,14 @@ private:
 	CComPtr<IControl> m_pControl;
 	CComPtr<IPluginManager> m_pPluginManager;
 	CComPtr<ISettings> m_pSettings;
+	CComPtr<IServiceProvider> m_pServiceProvider;
 
 	STDMETHOD(InitWithControl)(IUnknown* pUnk);
 	STDMETHOD(InitWithSettings)(IUnknown* pUnk);
 
 public:
 
+	STDMETHOD(SetParentServiceProvider)(IServiceProvider* pServiceProvider);
 	STDMETHOD(InitializePlugins)(REFGUID guidNamespace, REFGUID guidType);
 	STDMETHOD(GetPlugins)(IObjArray** ppObjectArray);
 	STDMETHOD(SetControl)(IControl* pControl);

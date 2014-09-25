@@ -81,7 +81,7 @@ STDMETHODIMP CPluginSupport::InitializePlugins(REFGUID guidNamespace, REFGUID gu
 	CComPtr<IObjArray> pObjectArray;
 	HRESULT hr = m_pPluginManager->GetPluginInfoCollection(guidNamespace, guidType, &pObjectArray);
 	if(hr == HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND))
-		return hr;
+		return S_OK;
 
 	RETURN_IF_FAILED(hr);
 
@@ -161,6 +161,13 @@ STDMETHODIMP CPluginSupport::SetControl(IControl* pControl)
 	return S_OK;
 }
 
+STDMETHODIMP CPluginSupport::SetParentServiceProvider(IServiceProvider* pServiceProvider)
+{
+	CHECK_E_POINTER(pServiceProvider);
+	m_pServiceProvider = pServiceProvider;
+	return S_OK;
+}
+
 STDMETHODIMP CPluginSupport::QueryService(REFGUID guidService, REFIID iid, void** ppServiceObject)
 {
 	CHECK_E_POINTER(ppServiceObject);
@@ -171,14 +178,17 @@ STDMETHODIMP CPluginSupport::QueryService(REFGUID guidService, REFIID iid, void*
 	}
 
 	//search in parent
-	CComQIPtr<IServiceProvider> pServiceProvider = m_pControl;
-	if (pServiceProvider == this)
-		return E_INVALIDARG;
-
-	if (pServiceProvider)
+	if (!m_pServiceProvider || FAILED(m_pServiceProvider->QueryService(guidService, iid, ppServiceObject)))
 	{
-		RETURN_IF_FAILED(pServiceProvider->QueryService(guidService, iid, ppServiceObject));
-		return S_OK;
+		CComQIPtr<IServiceProvider> pServiceProvider = m_pControl;
+		if (pServiceProvider == this)
+			return E_INVALIDARG;
+
+		if (pServiceProvider)
+		{
+			RETURN_IF_FAILED(pServiceProvider->QueryService(guidService, iid, ppServiceObject));
+			return S_OK;
+		}
 	}
 	return E_INVALIDARG;
 }

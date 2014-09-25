@@ -76,3 +76,15 @@ static HRESULT HrSettingsGetBSTR(ISettings* pSettings, BSTR bstrKey, BSTR* pbstr
 	*pbstrValue = bstrResult.Copy();
 	return S_OK;
 }
+
+static HRESULT HrInitializeWithVariantObject(IUnknown* pObject, IVariantObject* pVariantObject)
+{
+	CHECK_E_POINTER(pObject);
+	CHECK_E_POINTER(pVariantObject);
+	CComQIPtr<IInitializeWithVariantObject> pObj = pObject;
+	if (pObj)
+	{
+		RETURN_IF_FAILED(pObj->SetVariantObject(pVariantObject));
+	}
+	return S_OK;
+}
