@@ -198,6 +198,7 @@ LRESULT CMainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
 	}
 
 	m_pPluginSupport->OnInitialized();
+	m_pPluginSupport->OnInitCompleted();
 
 	return 0;
 }

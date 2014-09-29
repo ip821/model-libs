@@ -57,6 +57,7 @@ public:
 	STDMETHOD(OnInitialized)();
 	STDMETHOD(OnShutdown)();
 	STDMETHOD(OnInitializing)();
+	STDMETHOD(OnInitCompleted)();
 
 	STDMETHOD(QueryService)(REFGUID guidService, REFIID iid, void** ppServiceObject);
 	STDMETHOD(Load)(ISettings* pSettings);

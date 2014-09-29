@@ -48,6 +48,20 @@ STDMETHODIMP CPluginSupport::OnShutdown()
 	return S_OK;
 }
 
+STDMETHODIMP CPluginSupport::OnInitCompleted()
+{
+	for (auto it = m_Plugins.cbegin(); it != m_Plugins.cend(); it++)
+	{
+		CComQIPtr<IPluginSupportNotifications2> pPluginSupportNotifications = it->m_T;
+		if (pPluginSupportNotifications)
+		{
+			RETURN_IF_FAILED(pPluginSupportNotifications->OnInitCompleted());
+		}
+	}
+
+	return S_OK;
+}
+
 STDMETHODIMP CPluginSupport::OnInitializing()
 {
 	for (auto it = m_Plugins.cbegin(); it != m_Plugins.cend(); it++)
