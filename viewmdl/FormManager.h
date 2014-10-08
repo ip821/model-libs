@@ -4,9 +4,9 @@
 #include "resource.h"       // main symbols
 #include "ViewMdl_i.h"
 #include "..\ObjMdl\GUIDComparer.h"
+#include "..\ObjMdl\Macros.h"
 
 using namespace ATL;
-
 
 // CFormManager
 
@@ -41,6 +41,7 @@ public:
 	STDMETHOD(FindForm)(GUID guidId, IControl** ppControl);
 	STDMETHOD(ActivateForm)(GUID guidId);
 	STDMETHOD(OnClose)(IControl* pControl);
+	STDMETHOD(OnDeactivate)(IControl* pControl);
 	STDMETHOD(CloseAll)();
 };
 

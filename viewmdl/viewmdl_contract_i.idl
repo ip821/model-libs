@@ -151,6 +151,7 @@ interface ITabbedControl : IContainerControl
 ]
 interface ITabbedControlEventSink : IUnknown
 {
+	HRESULT OnDeactivate(IControl* pControl);
 	HRESULT OnClose(IControl* pControl);
 };
 
