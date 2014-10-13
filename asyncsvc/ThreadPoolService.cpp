@@ -13,7 +13,8 @@ STDMETHODIMP CThreadPoolService::OnInitialized(IServiceProvider *pServiceProvide
 
 STDMETHODIMP CThreadPoolService::OnShutdown()
 {
-	SetThreadCount(0);
+	//SetThreadCount(0);
+	RETURN_IF_FAILED(IInitializeWithControlImpl::OnShutdown());
 	return S_OK;
 }
 

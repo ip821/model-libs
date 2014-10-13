@@ -45,6 +45,12 @@ STDMETHODIMP CPluginSupport::OnShutdown()
 		}
 	}
 
+	m_Plugins.clear();
+	m_pControl.Release();
+	m_pSettings.Release();
+	m_pPluginManager.Release();
+	m_pServiceProvider.Release();
+
 	return S_OK;
 }
 

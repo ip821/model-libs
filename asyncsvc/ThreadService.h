@@ -7,6 +7,7 @@
 #include "ThreadOperation.h"
 
 using namespace ATL;
+using namespace std;
 
 // CThreadService
 
@@ -48,6 +49,7 @@ private:
 	DWORD m_dwAdvice = 0;
 	HRESULT m_hr = S_OK;
 	CComPtr<IVariantObject> m_pResult;
+	mutex m_mutex;
 
 	HRESULT Fire_OnStart();
 	HRESULT Fire_OnRun();

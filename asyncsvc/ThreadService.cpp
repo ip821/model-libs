@@ -35,15 +35,20 @@ STDMETHODIMP CThreadService::SetThreadContext(IVariantObject* pVariantObject)
 STDMETHODIMP CThreadService::OnShutdown()
 {
 	if (m_pTimerService && m_dwAdvice)
+	{
 		RETURN_IF_FAILED(AtlUnadvise(m_pTimerService, __uuidof(ITimerServiceEventSink), m_dwAdvice));
+	}
 
 	m_pTimerService.Release();
 
-	if (m_thread.joinable())
-		m_thread.join();
+	//if (m_thread.joinable())
+	//	m_thread.join();
 
-	if (m_pResult)
-		m_pResult.Release();
+	{
+		lock_guard<mutex> lock(m_mutex);
+		if (m_pResult)
+			m_pResult.Release();
+	}
 
 	RETURN_IF_FAILED(IInitializeWithControlImpl::OnShutdown());
 
@@ -101,14 +106,21 @@ void CThreadService::OnRun()
 	auto errInfo = _com_error(m_hr, pErrorInfo, true);
 	CComBSTR bstrDesc(errInfo.Description().Detach());
 
-	m_pResult->SetVariantValue(KEY_HRESULT, &CComVariant(m_hr));
-
-	if (bstrDesc == CComBSTR(L""))
 	{
-		bstrDesc = errInfo.ErrorMessage();
-	}
+		lock_guard<mutex> lock(m_mutex);
+		
+		if (!m_pResult)
+			return;
 
-	m_pResult->SetVariantValue(KEY_HRESULT_DESCRIPTION, &CComVariant(bstrDesc));
+		m_pResult->SetVariantValue(KEY_HRESULT, &CComVariant(m_hr));
+
+		if (bstrDesc == CComBSTR(L""))
+		{
+			bstrDesc = errInfo.ErrorMessage();
+		}
+
+		m_pResult->SetVariantValue(KEY_HRESULT_DESCRIPTION, &CComVariant(bstrDesc));
+	}
 }
 
 void CThreadService::OnStop()

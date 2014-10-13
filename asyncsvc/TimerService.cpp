@@ -10,6 +10,7 @@ STDMETHODIMP CTimerService::OnInitialized(IServiceProvider *pServiceProvider)
 STDMETHODIMP CTimerService::OnShutdown()
 {
 	StopTimer();
+	RETURN_IF_FAILED(IInitializeWithControlImpl::OnShutdown());
 	return S_OK;
 }
 
