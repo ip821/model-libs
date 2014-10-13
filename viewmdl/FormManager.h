@@ -41,6 +41,7 @@ public:
 	STDMETHOD(FindForm)(GUID guidId, IControl** ppControl);
 	STDMETHOD(ActivateForm)(GUID guidId);
 	STDMETHOD(OnClose)(IControl* pControl);
+	STDMETHOD(OnActivate)(IControl* pControl);
 	STDMETHOD(OnDeactivate)(IControl* pControl);
 	STDMETHOD(CloseAll)();
 };

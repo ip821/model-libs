@@ -39,6 +39,12 @@ STDMETHODIMP CFormManager::CloseAll()
 	return S_OK;
 }
 
+STDMETHODIMP CFormManager::OnActivate(IControl* pControl)
+{
+	UNREFERENCED_PARAMETER(pControl);
+	return S_OK;
+}
+
 STDMETHODIMP CFormManager::OnDeactivate(IControl* pControl)
 {
 	UNREFERENCED_PARAMETER(pControl);
