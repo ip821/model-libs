@@ -14,7 +14,7 @@ STDMETHODIMP CTimerService::OnShutdown()
 	return S_OK;
 }
 
-STDMETHODIMP CTimerService::ProcessWindowMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT *plResult, BOOL *bResult)
+STDMETHODIMP CTimerService::ProcessWindowMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM /*lParam*/, LRESULT* /*plResult*/, BOOL* /*bResult*/)
 {
 	if (hWnd == m_hControlWnd && uMsg == WM_TIMER && wParam == (WPARAM)this)
 	{

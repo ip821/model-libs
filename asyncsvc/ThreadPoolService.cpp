@@ -6,7 +6,7 @@
 
 // CThreadPoolService
 
-STDMETHODIMP CThreadPoolService::OnInitialized(IServiceProvider *pServiceProvider)
+STDMETHODIMP CThreadPoolService::OnInitialized(IServiceProvider* /*pServiceProvider*/)
 {
 	return S_OK;
 }

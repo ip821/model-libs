@@ -23,7 +23,7 @@ interface IObjCollection : IObjArray
 	HRESULT AddObject([in]  IUnknown *punk);
 	HRESULT InsertObject(IUnknown *punk, UINT uiIndex);
 	HRESULT Clear();
-	HRESULT RemoveObjectAt([in]  UINT *uiIndex);
+	HRESULT RemoveObjectAt([in]  UINT uiIndex);
 };
 
 [

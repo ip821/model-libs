@@ -55,7 +55,7 @@ STDMETHODIMP CThreadService::OnShutdown()
 	return S_OK;
 }
 
-STDMETHODIMP CThreadService::OnTimer(ITimerService* pTimerService)
+STDMETHODIMP CThreadService::OnTimer(ITimerService* /*pTimerService*/)
 {
 	RETURN_IF_FAILED(m_pTimerService->StopTimer());
 	RETURN_IF_FAILED(Fire_OnStart());
@@ -87,7 +87,7 @@ HRESULT CThreadService::Fire_OnFinishInternal()
 	return S_OK;
 }
 
-STDMETHODIMP CThreadService::ProcessWindowMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT *plResult, BOOL *bResult)
+STDMETHODIMP CThreadService::ProcessWindowMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT* /*plResult*/, BOOL* /*bResult*/)
 {
 	if (hWnd == m_hControlWnd && uMsg == WM_FINISHED && wParam == (WPARAM)this)
 	{
@@ -102,7 +102,7 @@ void CThreadService::OnRun()
 	m_hr = Fire_OnRun();
 
 	CComPtr<IErrorInfo> pErrorInfo;
-	GetErrorInfo(0, &pErrorInfo);
+	ASSERT_IF_FAILED(GetErrorInfo(0, &pErrorInfo));
 	auto errInfo = _com_error(m_hr, pErrorInfo, true);
 	CComBSTR bstrDesc(errInfo.Description().Detach());
 

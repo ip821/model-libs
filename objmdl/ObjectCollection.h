@@ -33,7 +33,7 @@ public:
 	STDMETHOD(AddObject)(IUnknown *punk);
 	STDMETHOD(InsertObject)(IUnknown *punk, UINT uiIndex);
 	STDMETHOD(Clear)();
-	STDMETHOD(RemoveObjectAt)(UINT *uiIndex);
+	STDMETHOD(RemoveObjectAt)(UINT uiIndex);
 
 	STDMETHOD(GetCount)(UINT *pcObjects);
 	STDMETHOD(GetAt)(UINT uiIndex, REFIID riid, void **ppv);

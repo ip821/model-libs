@@ -25,10 +25,10 @@ STDMETHODIMP CObjectCollection::Clear()
 	return S_OK;
 }
 
-STDMETHODIMP CObjectCollection::RemoveObjectAt(UINT *uiIndex)
+STDMETHODIMP CObjectCollection::RemoveObjectAt(UINT uiIndex)
 {
 	CHECK_E_POINTER(uiIndex);
-	m_objects.erase(m_objects.begin() + (*uiIndex));
+	m_objects.erase(m_objects.begin() + uiIndex);
 	return S_OK;
 }
 
