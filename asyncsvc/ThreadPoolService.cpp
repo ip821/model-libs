@@ -13,7 +13,15 @@ STDMETHODIMP CThreadPoolService::OnInitialized(IServiceProvider* /*pServiceProvi
 
 STDMETHODIMP CThreadPoolService::OnShutdown()
 {
-	//SetThreadCount(0);
+	RETURN_IF_FAILED(Stop());
+	boost::lock_guard<boost::mutex> lock(m_mutex);
+	for (size_t i = 0; i < m_threads.size(); i++)
+	{
+		CComQIPtr<IPluginSupportNotifications> p = m_threads[i].m_T;
+		RETURN_IF_FAILED(p->OnShutdown());
+		RETURN_IF_FAILED(AtlUnadvise(m_threads[i].m_T, __uuidof(IThreadServiceEventSink), m_advices[i]));
+	}
+
 	RETURN_IF_FAILED(IInitializeWithControlImpl::OnShutdown());
 	return S_OK;
 }
@@ -71,7 +79,7 @@ STDMETHODIMP CThreadPoolService::Stop()
 	}
 
 	if (m_queueThread.joinable())
-		m_queueThread.join();
+		m_queueThread.detach();
 
 	return S_OK;
 }
