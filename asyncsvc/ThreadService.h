@@ -44,6 +44,7 @@ public:
 	END_CONNECTION_POINT_MAP()
 
 private:
+	CComPtr<IThreadService> g_guard;
 	CComPtr<ITimerService> m_pTimerService;
 	CComPtr<IServiceProvider> m_pServiceProvider;
 	DWORD m_dwAdvice = 0;
@@ -71,6 +72,9 @@ public:
 	STDMETHOD(SetTimerService)(GUID gServiceId);
 
 	STDMETHOD(Join)();
+	STDMETHOD(AdviseTo)(IUnknown* pUnk, DWORD* pdwAdvice);
+	STDMETHOD(UnadviseFrom)(DWORD dwAdvice);
+
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(ThreadService), CThreadService)

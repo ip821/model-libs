@@ -39,10 +39,8 @@ STDMETHODIMP CThreadService::OnShutdown()
 		RETURN_IF_FAILED(AtlUnadvise(m_pTimerService, __uuidof(ITimerServiceEventSink), m_dwAdvice));
 	}
 
-	m_pTimerService.Release();
-
-	//if (m_thread.joinable())
-	//	m_thread.join();
+	if (m_thread.joinable())
+		m_thread.detach();
 
 	{
 		lock_guard<mutex> lock(m_mutex);
@@ -51,7 +49,27 @@ STDMETHODIMP CThreadService::OnShutdown()
 	}
 
 	RETURN_IF_FAILED(IInitializeWithControlImpl::OnShutdown());
+	m_pTimerService.Release();
+	m_pServiceProvider.Release();
 
+	return S_OK;
+}
+
+STDMETHODIMP CThreadService::AdviseTo(IUnknown* pUnk, DWORD* pdwAdvice)
+{
+	CHECK_E_POINTER(pUnk);
+	CHECK_E_POINTER(pdwAdvice);
+	CComPtr<IUnknown> pThis;
+	RETURN_IF_FAILED(QueryInterface(__uuidof(IUnknown), (LPVOID*)&pThis));
+	RETURN_IF_FAILED(AtlAdvise(pThis, pUnk, __uuidof(IThreadServiceEventSink), pdwAdvice));
+	return S_OK;
+}
+
+STDMETHODIMP CThreadService::UnadviseFrom(DWORD dwAdvice)
+{
+	CComPtr<IUnknown> pThis;
+	RETURN_IF_FAILED(QueryInterface(__uuidof(IUnknown), (LPVOID*)&pThis));
+	RETURN_IF_FAILED(AtlUnadvise(pThis, __uuidof(IThreadServiceEventSink), dwAdvice));
 	return S_OK;
 }
 
@@ -67,6 +85,7 @@ STDMETHODIMP CThreadService::Run()
 {
 	RETURN_IF_FAILED(Fire_OnStart());
 	Start();
+	g_guard = this;
 	return S_OK;
 }
 
@@ -98,6 +117,8 @@ STDMETHODIMP CThreadService::ProcessWindowMessage(HWND hWnd, UINT uMsg, WPARAM w
 
 void CThreadService::OnRun()
 {
+	CComPtr<IVariantObject> pResult = m_pResult;
+
 	m_hr = S_OK;
 	m_hr = Fire_OnRun();
 
@@ -108,18 +129,18 @@ void CThreadService::OnRun()
 
 	{
 		lock_guard<mutex> lock(m_mutex);
-		
-		if (!m_pResult)
+
+		if (!pResult)
 			return;
 
-		m_pResult->SetVariantValue(KEY_HRESULT, &CComVariant(m_hr));
+		pResult->SetVariantValue(KEY_HRESULT, &CComVariant(m_hr));
 
 		if (bstrDesc == CComBSTR(L""))
 		{
 			bstrDesc = errInfo.ErrorMessage();
 		}
 
-		m_pResult->SetVariantValue(KEY_HRESULT_DESCRIPTION, &CComVariant(bstrDesc));
+		pResult->SetVariantValue(KEY_HRESULT_DESCRIPTION, &CComVariant(bstrDesc));
 	}
 }
 
@@ -129,6 +150,7 @@ void CThreadService::OnStop()
 		::PostMessage(m_hControlWnd, WM_FINISHED, (WPARAM)this, 0);
 	else
 		Fire_OnFinishInternal();
+	g_guard.Release();
 }
 
 HRESULT CThreadService::Fire_OnStart()
@@ -136,6 +158,9 @@ HRESULT CThreadService::Fire_OnStart()
 	if (!m_pResult)
 	{
 		RETURN_IF_FAILED(HrCoCreateInstance(CLSID_VariantObject, &m_pResult));
+		CComPtr<IUnknown> pUnk;
+		RETURN_IF_FAILED(QueryInterface(__uuidof(IUnknown), (LPVOID*)&pUnk));
+		RETURN_IF_FAILED(m_pResult->SetVariantValue(KEY_THREAD_OBJECT, &CComVariant(pUnk)));
 	}
 
 	CComPtr<IVariantObject> pResult = m_pResult;
@@ -189,14 +214,20 @@ HRESULT CThreadService::Fire_OnRun()
 {
 	HRESULT hr = S_OK;
 	CThreadService* pThis = static_cast<CThreadService*>(this);
+	vector<CAdapt<CComPtr<IUnknown>>> vec;
+	pThis->Lock();
 	int cConnections = m_vec.GetSize();
+	for (int iConnection = 0; iConnection < cConnections; iConnection++)
+	{
+		CComPtr<IUnknown> punkConnection = m_vec.GetAt(iConnection);
+		vec.push_back(punkConnection);
+	}
+	pThis->Unlock();
 
 	CComPtr<IVariantObject> pResult = m_pResult;
 	for (int iConnection = 0; iConnection < cConnections; iConnection++)
 	{
-		pThis->Lock();
-		CComPtr<IUnknown> punkConnection = m_vec.GetAt(iConnection);
-		pThis->Unlock();
+		CComPtr<IUnknown> punkConnection = vec.at(iConnection);
 
 		IThreadServiceEventSink * pConnection = static_cast<IThreadServiceEventSink*>(punkConnection.p);
 

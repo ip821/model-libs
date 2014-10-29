@@ -35,6 +35,8 @@ interface IThreadService : IUnknown
 	HRESULT SetThreadContext(IVariantObject* pVariantObject);
 	HRESULT Run();
 	HRESULT Join();
+	HRESULT AdviseTo(IUnknown* pUnk, DWORD* pdwAdvice);
+	HRESULT UnadviseFrom(DWORD dwAdvice);
 };
 
 [
