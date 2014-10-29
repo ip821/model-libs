@@ -55,24 +55,6 @@ STDMETHODIMP CThreadService::OnShutdown()
 	return S_OK;
 }
 
-STDMETHODIMP CThreadService::AdviseTo(IUnknown* pUnk, DWORD* pdwAdvice)
-{
-	CHECK_E_POINTER(pUnk);
-	CHECK_E_POINTER(pdwAdvice);
-	CComPtr<IUnknown> pThis;
-	RETURN_IF_FAILED(QueryInterface(__uuidof(IUnknown), (LPVOID*)&pThis));
-	RETURN_IF_FAILED(AtlAdvise(pThis, pUnk, __uuidof(IThreadServiceEventSink), pdwAdvice));
-	return S_OK;
-}
-
-STDMETHODIMP CThreadService::UnadviseFrom(DWORD dwAdvice)
-{
-	CComPtr<IUnknown> pThis;
-	RETURN_IF_FAILED(QueryInterface(__uuidof(IUnknown), (LPVOID*)&pThis));
-	RETURN_IF_FAILED(AtlUnadvise(pThis, __uuidof(IThreadServiceEventSink), dwAdvice));
-	return S_OK;
-}
-
 STDMETHODIMP CThreadService::OnTimer(ITimerService* /*pTimerService*/)
 {
 	RETURN_IF_FAILED(m_pTimerService->StopTimer());

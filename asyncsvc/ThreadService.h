@@ -72,9 +72,6 @@ public:
 	STDMETHOD(SetTimerService)(GUID gServiceId);
 
 	STDMETHOD(Join)();
-	STDMETHOD(AdviseTo)(IUnknown* pUnk, DWORD* pdwAdvice);
-	STDMETHOD(UnadviseFrom)(DWORD dwAdvice);
-
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(ThreadService), CThreadService)
