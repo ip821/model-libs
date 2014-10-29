@@ -78,11 +78,11 @@ HRESULT CThreadService::Fire_OnFinishInternal()
 
 		CComVariant vRestart;
 		m_pResult->GetVariantValue(KEY_RESTART_TIMER, &vRestart);
+		m_pResult.Release();
 		if (m_pTimerService && (vRestart.vt == VT_EMPTY || (vRestart.vt == VT_BOOL && vRestart.boolVal)))
 		{
 			RETURN_IF_FAILED(m_pTimerService->ResumeTimer());
 		}
-		m_pResult.Release();
 	}
 	return S_OK;
 }
@@ -138,9 +138,10 @@ HRESULT CThreadService::Fire_OnStart()
 		RETURN_IF_FAILED(HrCoCreateInstance(CLSID_VariantObject, &m_pResult));
 	}
 
+	CComPtr<IVariantObject> pResult = m_pResult;
 	CComPtr<IUnknown> pUnk;
 	RETURN_IF_FAILED(this->QueryInterface(__uuidof(IUnknown), (LPVOID*)&pUnk));
-	RETURN_IF_FAILED(m_pResult->SetVariantValue(KEY_THREAD_ID, &CComVariant(pUnk)));
+	RETURN_IF_FAILED(pResult->SetVariantValue(KEY_THREAD_ID, &CComVariant(pUnk)));
 	HRESULT hr = S_OK;
 	CThreadService* pThis = static_cast<CThreadService*>(this);
 	int cConnections = m_vec.GetSize();
@@ -155,7 +156,7 @@ HRESULT CThreadService::Fire_OnStart()
 
 		if (pConnection)
 		{
-			hr = pConnection->OnStart(m_pResult);
+			hr = pConnection->OnStart(pResult);
 		}
 	}
 	return hr;
@@ -167,6 +168,7 @@ HRESULT CThreadService::Fire_OnFinish()
 	CThreadService* pThis = static_cast<CThreadService*>(this);
 	int cConnections = m_vec.GetSize();
 
+	CComPtr<IVariantObject> pResult = m_pResult;
 	for (int iConnection = 0; iConnection < cConnections; iConnection++)
 	{
 		pThis->Lock();
@@ -177,7 +179,7 @@ HRESULT CThreadService::Fire_OnFinish()
 
 		if (pConnection)
 		{
-			hr = pConnection->OnFinish(m_pResult);
+			hr = pConnection->OnFinish(pResult);
 		}
 	}
 	return hr;
@@ -189,6 +191,7 @@ HRESULT CThreadService::Fire_OnRun()
 	CThreadService* pThis = static_cast<CThreadService*>(this);
 	int cConnections = m_vec.GetSize();
 
+	CComPtr<IVariantObject> pResult = m_pResult;
 	for (int iConnection = 0; iConnection < cConnections; iConnection++)
 	{
 		pThis->Lock();
@@ -199,7 +202,7 @@ HRESULT CThreadService::Fire_OnRun()
 
 		if (pConnection)
 		{
-			hr = pConnection->OnRun(m_pResult);
+			hr = pConnection->OnRun(pResult);
 			if (FAILED(hr))
 			{
 				break;
