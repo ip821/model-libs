@@ -140,9 +140,6 @@ HRESULT CThreadService::Fire_OnStart()
 	if (!m_pResult)
 	{
 		RETURN_IF_FAILED(HrCoCreateInstance(CLSID_VariantObject, &m_pResult));
-		CComPtr<IUnknown> pUnk;
-		RETURN_IF_FAILED(QueryInterface(__uuidof(IUnknown), (LPVOID*)&pUnk));
-		RETURN_IF_FAILED(m_pResult->SetVariantValue(KEY_THREAD_OBJECT, &CComVariant(pUnk)));
 	}
 
 	CComPtr<IVariantObject> pResult = m_pResult;
