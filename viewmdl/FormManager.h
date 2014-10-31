@@ -8,6 +8,9 @@
 
 using namespace ATL;
 
+class CFormManager;
+typedef IConnectionPointImpl <CFormManager, &__uuidof(IFormManagerEventSink)> IConnectionPointImpl_IFormManagerEventSink;
+
 // CFormManager
 
 class ATL_NO_VTABLE CFormManager :
@@ -15,10 +18,13 @@ class ATL_NO_VTABLE CFormManager :
 	public CComCoClass<CFormManager, &CLSID_FormManager>,
 	public IFormManager,
 	public IInitializeWithControlImpl,
-	public ITabbedControlEventSink
+	public IConnectionPointContainerImpl<CFormManager>,
+	public IConnectionPointImpl_IFormManagerEventSink,
+	public ITabbedControlEventSink,
+	public IPluginSupportNotifications
 {
 public:
-	CFormManager() : m_dwAdvice(0)
+	CFormManager()
 	{
 	}
 
@@ -28,14 +34,28 @@ public:
 		COM_INTERFACE_ENTRY(IFormManager)
 		COM_INTERFACE_ENTRY(IInitializeWithControl)
 		COM_INTERFACE_ENTRY(ITabbedControlEventSink)
+		COM_INTERFACE_ENTRY(IConnectionPointContainer)
+		COM_INTERFACE_ENTRY(IPluginSupportNotifications)
 	END_COM_MAP()
 
+	BEGIN_CONNECTION_POINT_MAP(CFormManager)
+		CONNECTION_POINT_ENTRY(__uuidof(IFormManagerEventSink))
+	END_CONNECTION_POINT_MAP()
+
 private:
+	CComPtr<ITabbedControl> m_pTabbedControl;
+
 	std::map< GUID, CAdapt< CComPtr<IControl> >, GUIDComparer > m_pControls;
-	DWORD m_dwAdvice;
+	DWORD m_dwAdvice = 0;
 
 	STDMETHOD(GetContainerControl)(IContainerControl** ppContainerControl);
+	HRESULT Fire_OnActivate(IControl* pControl);
+	HRESULT Fire_OnDeactivate(IControl* pControl);
+
 public:
+
+	STDMETHOD(OnInitialized)(IServiceProvider* pServiceProvider);
+	STDMETHOD(OnShutdown)();
 
 	STDMETHOD(OpenForm)(GUID guidId, IControl** ppControl);
 	STDMETHOD(FindForm)(GUID guidId, IControl** ppControl);

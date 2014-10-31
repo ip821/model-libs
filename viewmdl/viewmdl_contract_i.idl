@@ -130,6 +130,17 @@ interface IFormManager : IUnknown
 
 [
 	object,
+	uuid(0AF9C1E1-B158-4AF6-B105-49706E4C52BB),
+	pointer_default(unique)
+]
+interface IFormManagerEventSink : IUnknown
+{
+	HRESULT OnActivate(IControl* pControl);
+	HRESULT OnDeactivate(IControl* pControl);
+};
+
+[
+	object,
 	uuid(5EC0DA53-9E8F-4F2F-A03E-5ED66951F291),
 	nonextensible,
 	pointer_default(unique)

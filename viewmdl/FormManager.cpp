@@ -6,6 +6,26 @@
 
 // CFormManager
 
+STDMETHODIMP CFormManager::OnInitialized(IServiceProvider* pServiceProvider)
+{
+	CHECK_E_POINTER(pServiceProvider);
+	CComPtr<IContainerControl> pContainerControl;
+	RETURN_IF_FAILED(GetContainerControl(&pContainerControl));
+
+	m_pTabbedControl = pContainerControl;
+	CComPtr<IUnknown> pThis;
+	RETURN_IF_FAILED(QueryInterface(IID_PPV_ARGS(&pThis)));
+	RETURN_IF_FAILED(AtlAdvise(m_pTabbedControl, pThis, IID_ITabbedControlEventSink, &m_dwAdvice));
+	return S_OK;
+}
+
+STDMETHODIMP CFormManager::OnShutdown()
+{
+	AtlUnadvise(m_pTabbedControl, IID_ITabbedControlEventSink, m_dwAdvice);
+	m_pTabbedControl.Release();
+	return S_OK;
+}
+
 STDMETHODIMP CFormManager::GetContainerControl(IContainerControl** ppContainerControl)
 {
 	CComQIPtr<IContainerControl> pContainerControl = m_pControl;
@@ -22,19 +42,13 @@ STDMETHODIMP CFormManager::GetContainerControl(IContainerControl** ppContainerCo
 
 STDMETHODIMP CFormManager::CloseAll()
 {
-	CComPtr<IContainerControl> pContainerControl;
-	RETURN_IF_FAILED(GetContainerControl(&pContainerControl));
-
-	CComQIPtr<ITabbedControl> pTabbedControl = pContainerControl;
-	ATLASSERT(pTabbedControl);
-
 	DWORD dwCount = 0;
-	RETURN_IF_FAILED(pTabbedControl->GetPageCount(&dwCount));
+	RETURN_IF_FAILED(m_pTabbedControl->GetPageCount(&dwCount));
 	while (dwCount != 0)
 	{
 		CComPtr<IControl> pControl;
-		RETURN_IF_FAILED(pTabbedControl->GetPage(0, &pControl));
-		RETURN_IF_FAILED(pTabbedControl->RemovePage(pControl));
+		RETURN_IF_FAILED(m_pTabbedControl->GetPage(0, &pControl));
+		RETURN_IF_FAILED(m_pTabbedControl->RemovePage(pControl));
 		dwCount--;
 	}
 	return S_OK;
@@ -43,24 +57,21 @@ STDMETHODIMP CFormManager::CloseAll()
 STDMETHODIMP CFormManager::CloseForm(IControl* pControl)
 {
 	CHECK_E_POINTER(pControl);
-	CComPtr<IContainerControl> pContainerControl;
-	RETURN_IF_FAILED(GetContainerControl(&pContainerControl));
-
-	CComQIPtr<ITabbedControl> pTabbedControl = pContainerControl;
-	ATLASSERT(pTabbedControl);
-	RETURN_IF_FAILED(pTabbedControl->RemovePage(pControl));
+	RETURN_IF_FAILED(m_pTabbedControl->RemovePage(pControl));
 	return S_OK;
 }
 
 STDMETHODIMP CFormManager::OnActivate(IControl* pControl)
 {
 	UNREFERENCED_PARAMETER(pControl);
+	RETURN_IF_FAILED(Fire_OnActivate(pControl));
 	return S_OK;
 }
 
 STDMETHODIMP CFormManager::OnDeactivate(IControl* pControl)
 {
 	UNREFERENCED_PARAMETER(pControl);
+	RETURN_IF_FAILED(Fire_OnDeactivate(pControl));
 	return S_OK;
 }
 
@@ -76,17 +87,6 @@ STDMETHODIMP CFormManager::OnClose(IControl* pControl)
 		}
 	}
 
-	if(!m_pControls.size() && m_dwAdvice)
-	{
-		CComPtr<IPluginManager> pPluginManager;
-		RETURN_IF_FAILED(HrGetPluginManager(&pPluginManager));
-
-		CComPtr<IContainerControl> pContainerControl;
-		RETURN_IF_FAILED(GetContainerControl(&pContainerControl));
-
-		AtlUnadvise(pContainerControl, IID_ITabbedControlEventSink, m_dwAdvice);
-		m_dwAdvice = 0;
-	}
 	return S_OK;
 }
 
@@ -94,13 +94,7 @@ STDMETHODIMP CFormManager::OnClose(IControl* pControl)
 STDMETHODIMP CFormManager::ActivateForm2(IControl* pControl)
 {
 	CHECK_E_POINTER(pControl);
-	CComPtr<IContainerControl> pContainerControl;
-	RETURN_IF_FAILED(GetContainerControl(&pContainerControl));
-	CComQIPtr<ITabbedControl> pTabbedControl = pContainerControl;
-	if (!pTabbedControl)
-		return E_NOINTERFACE;
-
-	RETURN_IF_FAILED(pTabbedControl->ActivatePage(pControl));
+	RETURN_IF_FAILED(m_pTabbedControl->ActivatePage(pControl));
 	return S_OK;
 }
 
@@ -110,13 +104,7 @@ STDMETHODIMP CFormManager::ActivateForm(GUID guidId)
 	if (it == m_pControls.end())
 		return HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND);
 
-	CComPtr<IContainerControl> pContainerControl;
-	RETURN_IF_FAILED(GetContainerControl(&pContainerControl));
-	CComQIPtr<ITabbedControl> pTabbedControl = pContainerControl;
-	if (!pTabbedControl)
-		return E_NOINTERFACE;
-
-	RETURN_IF_FAILED(pTabbedControl->ActivatePage(it->second.m_T));
+	RETURN_IF_FAILED(m_pTabbedControl->ActivatePage(it->second.m_T));
 	return S_OK;
 }
 
@@ -140,15 +128,8 @@ STDMETHODIMP CFormManager::OpenForm(GUID guidId, IControl** ppControl)
 		RETURN_IF_FAILED(pInitializeWithControl->SetControl(pParentControl));
 	}
 
-	RETURN_IF_FAILED(pTabbedControl->AddPage(pControl));
-
 	m_pControls[guidId] = pControl;
-	if(!m_dwAdvice)
-	{
-		CComPtr<IUnknown> pThis;
-		RETURN_IF_FAILED(QueryInterface(IID_PPV_ARGS(&pThis)));
-		RETURN_IF_FAILED(pContainerControl.Advise(pThis, IID_ITabbedControlEventSink, &m_dwAdvice));
-	}
+	RETURN_IF_FAILED(pTabbedControl->AddPage(pControl));
 
 	return pControl->QueryInterface(IID_IControl, (LPVOID*)ppControl);
 }
@@ -161,4 +142,52 @@ STDMETHODIMP CFormManager::FindForm(GUID guidId, IControl** ppControl)
 		return HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND);
 
 	return it->second.m_T->QueryInterface(IID_IControl, (LPVOID*)ppControl);
+}
+
+HRESULT CFormManager::Fire_OnActivate(IControl* pControl)
+{
+	CComPtr<IUnknown> pUnk;
+	RETURN_IF_FAILED(this->QueryInterface(__uuidof(IUnknown), (LPVOID*)&pUnk));
+	HRESULT hr = S_OK;
+	CFormManager* pThis = static_cast<CFormManager*>(this);
+	int cConnections = IConnectionPointImpl_IFormManagerEventSink::m_vec.GetSize();
+
+	for (int iConnection = 0; iConnection < cConnections; iConnection++)
+	{
+		pThis->Lock();
+		CComPtr<IUnknown> punkConnection = IConnectionPointImpl_IFormManagerEventSink::m_vec.GetAt(iConnection);
+		pThis->Unlock();
+
+		IFormManagerEventSink* pConnection = static_cast<IFormManagerEventSink*>(punkConnection.p);
+
+		if (pConnection)
+		{
+			hr = pConnection->OnActivate(pControl);
+		}
+	}
+	return hr;
+}
+
+HRESULT CFormManager::Fire_OnDeactivate(IControl* pControl)
+{
+	CComPtr<IUnknown> pUnk;
+	RETURN_IF_FAILED(this->QueryInterface(__uuidof(IUnknown), (LPVOID*)&pUnk));
+	HRESULT hr = S_OK;
+	CFormManager* pThis = static_cast<CFormManager*>(this);
+	int cConnections = IConnectionPointImpl_IFormManagerEventSink::m_vec.GetSize();
+
+	for (int iConnection = 0; iConnection < cConnections; iConnection++)
+	{
+		pThis->Lock();
+		CComPtr<IUnknown> punkConnection = IConnectionPointImpl_IFormManagerEventSink::m_vec.GetAt(iConnection);
+		pThis->Unlock();
+
+		IFormManagerEventSink* pConnection = static_cast<IFormManagerEventSink*>(punkConnection.p);
+
+		if (pConnection)
+		{
+			hr = pConnection->OnDeactivate(pControl);
+		}
+	}
+	return hr;
 }
