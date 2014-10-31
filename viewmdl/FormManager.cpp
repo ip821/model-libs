@@ -26,7 +26,8 @@ STDMETHODIMP CFormManager::CloseAll()
 	RETURN_IF_FAILED(GetContainerControl(&pContainerControl));
 
 	CComQIPtr<ITabbedControl> pTabbedControl = pContainerControl;
-	ATLENSURE(pTabbedControl);
+	ATLASSERT(pTabbedControl);
+
 	DWORD dwCount = 0;
 	RETURN_IF_FAILED(pTabbedControl->GetPageCount(&dwCount));
 	while (dwCount != 0)
@@ -36,6 +37,18 @@ STDMETHODIMP CFormManager::CloseAll()
 		RETURN_IF_FAILED(pTabbedControl->RemovePage(pControl));
 		dwCount--;
 	}
+	return S_OK;
+}
+
+STDMETHODIMP CFormManager::CloseForm(IControl* pControl)
+{
+	CHECK_E_POINTER(pControl);
+	CComPtr<IContainerControl> pContainerControl;
+	RETURN_IF_FAILED(GetContainerControl(&pContainerControl));
+
+	CComQIPtr<ITabbedControl> pTabbedControl = pContainerControl;
+	ATLASSERT(pTabbedControl);
+	RETURN_IF_FAILED(pTabbedControl->RemovePage(pControl));
 	return S_OK;
 }
 
@@ -77,6 +90,20 @@ STDMETHODIMP CFormManager::OnClose(IControl* pControl)
 	return S_OK;
 }
 
+
+STDMETHODIMP CFormManager::ActivateForm2(IControl* pControl)
+{
+	CHECK_E_POINTER(pControl);
+	CComPtr<IContainerControl> pContainerControl;
+	RETURN_IF_FAILED(GetContainerControl(&pContainerControl));
+	CComQIPtr<ITabbedControl> pTabbedControl = pContainerControl;
+	if (!pTabbedControl)
+		return E_NOINTERFACE;
+
+	RETURN_IF_FAILED(pTabbedControl->ActivatePage(pControl));
+	return S_OK;
+}
+
 STDMETHODIMP CFormManager::ActivateForm(GUID guidId)
 {
 	auto it = m_pControls.find(guidId);
@@ -96,20 +123,15 @@ STDMETHODIMP CFormManager::ActivateForm(GUID guidId)
 STDMETHODIMP CFormManager::OpenForm(GUID guidId, IControl** ppControl)
 {
 	CHECK_E_POINTER(ppControl);
-	CComPtr<IPluginManager> pPluginManager;
-	RETURN_IF_FAILED(HrGetPluginManager(&pPluginManager));
+
+	CComPtr<IControl> pControl;
+	RETURN_IF_FAILED(HrCoCreateInstance(guidId, &pControl));
 
 	CComPtr<IContainerControl> pContainerControl;
 	RETURN_IF_FAILED(GetContainerControl(&pContainerControl));
 
 	CComQIPtr<ITabbedControl> pTabbedControl = pContainerControl;
 	ATLENSURE(pTabbedControl);
-
-	CComPtr<IUnknown> pUnk;
-	RETURN_IF_FAILED(pPluginManager->CreatePluginInstance(PNAMESP_HOSTFORM, PVIEWTYPE_INPLACE_CONTROL, guidId, &pUnk));
-
-	CComQIPtr<IControl> pControl = pUnk;
-	ATLENSURE(pControl);
 
 	CComQIPtr<IControl> pParentControl = pContainerControl;
 	CComQIPtr<IInitializeWithControl> pInitializeWithControl = pControl;
