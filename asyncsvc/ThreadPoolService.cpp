@@ -113,6 +113,8 @@ STDMETHODIMP CThreadPoolService::Resume()
 
 STDMETHODIMP CThreadPoolService::Run()
 {
+	CComPtr<IThreadPoolService> pGuard = this;
+
 	{
 		boost::lock_guard<boost::mutex> lock(m_mutex);
 		m_bRunning = TRUE;
