@@ -4,7 +4,7 @@
 
 #define RETURN_IF_FAILED(_ex) { HRESULT _hr = _ex; if(FAILED(_hr)) {ATLASSERT(FALSE); return _hr;} }
 #define ASSERT_IF_FAILED(_ex) { HRESULT _hr = _ex; if(FAILED(_hr)) {ATLASSERT(FALSE); } }
-#define CHECK_E_POINTER(p) { if(!p) return E_POINTER; }
+#define CHECK_E_POINTER(p) { if(!p) {ATLASSERT(FALSE);return E_POINTER;} }
 #define MSGBOX_IF_FAILED(_ex) \
 	{ \
 		HRESULT _hr = _ex;\
