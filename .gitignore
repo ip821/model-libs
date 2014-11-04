@@ -33,3 +33,6 @@
 /viewmdl/viewmdl_contract_i.h
 /viewmdl/viewmdl_contract_p.c
 /viewmdl/*.aps
+/asyncsvc/Debug_XP
+/objmdl/Debug_XP
+/viewmdl/Debug_XP
