@@ -44,7 +44,7 @@ public:
 	END_CONNECTION_POINT_MAP()
 
 private:
-	CComPtr<IThreadService> g_guard;
+	CComQIPtr<IThreadService> g_guard;
 	CComPtr<ITimerService> m_pTimerService;
 	CComPtr<IServiceProvider> m_pServiceProvider;
 	DWORD m_dwAdvice = 0;

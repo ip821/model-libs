@@ -65,9 +65,12 @@ STDMETHODIMP CThreadService::OnTimer(ITimerService* /*pTimerService*/)
 
 STDMETHODIMP CThreadService::Run()
 {
-	RETURN_IF_FAILED(Fire_OnStart());
-	Start();
-	g_guard = this;
+	{
+		CComQIPtr<IThreadService> pGuard = this;
+		RETURN_IF_FAILED(Fire_OnStart());
+		Start();
+		g_guard = pGuard;
+	}
 	return S_OK;
 }
 
