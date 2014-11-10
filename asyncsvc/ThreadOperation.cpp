@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "ThreadOperation.h"
+#include <concrt.h>
 
 CThreadOperation::CThreadOperation()
 {
-
 }
 
 CThreadOperation::~CThreadOperation()
@@ -12,23 +12,28 @@ CThreadOperation::~CThreadOperation()
 
 void CThreadOperation::Stop()
 {
-	if (m_thread.joinable())
-		m_thread.join();
+	if (m_pThread && m_pThread->joinable())
+	{
+		m_pThread->detach();
+	}
 	m_stop = true;
 }
 
 void CThreadOperation::Start()
 {
-	if (m_thread.joinable())
-		m_thread.join();
-
-	m_thread = std::thread(&CThreadOperation::Run, this);
+	if (m_pThread && m_pThread->joinable())
+	{
+		m_pThread->join();
+		m_pThread.reset();
+	}
+	m_pThread = make_shared<thread>(&CThreadOperation::Run, this);
 }
 
 void CThreadOperation::Run()
 {
+	shared_ptr<thread> pThread = m_pThread;
 	OnRun();
 	OnStop();
-	if (m_thread.joinable())
-		m_thread.detach();
+	if (pThread && pThread->joinable())
+		pThread->detach();
 }

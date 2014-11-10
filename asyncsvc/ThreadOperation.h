@@ -2,17 +2,22 @@
 
 #include <thread>
 #include <atomic>
+#include <memory>
+
+using namespace std;
 
 class CThreadOperation
 {
 protected:
 	virtual void OnRun() = 0;
 	virtual void OnStop() = 0;
-	std::atomic<bool> m_stop;
-	std::thread m_thread;
+	atomic<bool> m_stop;
+	shared_ptr<thread> m_pThread;
 
 	void Run();
+
 public:
+
 	CThreadOperation();
 	virtual ~CThreadOperation();
 

@@ -39,8 +39,7 @@ STDMETHODIMP CThreadService::OnShutdown()
 		RETURN_IF_FAILED(AtlUnadvise(m_pTimerService, __uuidof(ITimerServiceEventSink), m_dwAdvice));
 	}
 
-	if (m_thread.joinable())
-		m_thread.detach();
+	Stop();
 
 	{
 		lock_guard<mutex> lock(m_mutex);
@@ -76,13 +75,13 @@ STDMETHODIMP CThreadService::Run()
 
 HRESULT CThreadService::Fire_OnFinishInternal()
 {
-	if (m_pResult)
+	CComPtr<IVariantObject> pResult = m_pResult;
+	if (pResult)
 	{
 		RETURN_IF_FAILED(Fire_OnFinish());
 
 		CComVariant vRestart;
-		m_pResult->GetVariantValue(KEY_RESTART_TIMER, &vRestart);
-		m_pResult.Release();
+		pResult->GetVariantValue(KEY_RESTART_TIMER, &vRestart);
 		if (m_pTimerService && (vRestart.vt == VT_EMPTY || (vRestart.vt == VT_BOOL && vRestart.boolVal)))
 		{
 			RETURN_IF_FAILED(m_pTimerService->ResumeTimer());
@@ -228,7 +227,7 @@ HRESULT CThreadService::Fire_OnRun()
 
 STDMETHODIMP CThreadService::Join()
 {
-	if (m_thread.joinable())
-		m_thread.join();
+	if (m_pThread && m_pThread->joinable())
+		m_pThread->join();
 	return S_OK;
 }
