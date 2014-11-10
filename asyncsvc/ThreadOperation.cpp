@@ -29,4 +29,6 @@ void CThreadOperation::Run()
 {
 	OnRun();
 	OnStop();
+	if (m_thread.joinable())
+		m_thread.detach();
 }

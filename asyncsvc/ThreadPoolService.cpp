@@ -124,7 +124,7 @@ STDMETHODIMP CThreadPoolService::Run()
 	while (true)
 	{
 		boost::unique_lock<boost::mutex> lockWaitThread(m_waitMutex);
-		m_condition.wait(lockWaitThread);
+		m_condition.wait_for(lockWaitThread, boost::chrono::milliseconds(100));
 
 		if (m_cSuspendRefs > 0)
 			continue;
@@ -179,8 +179,7 @@ STDMETHODIMP CThreadPoolService::Run()
 
 			if (bRetry)
 			{
-				Sleep(1000);
-				continue;
+				break;
 			}
 		}
 	}
