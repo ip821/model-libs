@@ -27,6 +27,10 @@ public:
 	{
 	}
 
+	virtual ~CThreadPoolService()
+	{
+	}
+
 	DECLARE_REGISTRY_RESOURCEID(IDR_THREADPOOLSERVICE)
 
 	BEGIN_COM_MAP(CThreadPoolService)
@@ -51,9 +55,7 @@ private:
 	BOOL m_bWaitingForStop = FALSE;
 	BOOL m_bRunning = FALSE;
 	boost::mutex m_mutex;
-	boost::mutex m_waitMutex;
-	thread m_queueThread;
-	boost::condition_variable m_condition;
+	shared_ptr<thread> m_pQueueThread;
 	volatile int m_cSuspendRefs = 0;
 
 	STDMETHOD(Run)();

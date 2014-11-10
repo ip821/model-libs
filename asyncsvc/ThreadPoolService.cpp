@@ -65,7 +65,8 @@ STDMETHODIMP CThreadPoolService::Start()
 		if (m_bRunning)
 			return S_OK;
 
-		m_queueThread = thread(&CThreadPoolService::Run, this);
+		m_bRunning = true;
+		m_bWaitingForStop = FALSE;
 	}
 	return S_OK;
 }
@@ -75,11 +76,13 @@ STDMETHODIMP CThreadPoolService::Stop()
 	{
 		boost::lock_guard<boost::mutex> lock(m_mutex);
 		m_bWaitingForStop = TRUE;
-		m_condition.notify_one();
-	}
 
-	if (m_queueThread.joinable())
-		m_queueThread.detach();
+		if (m_pQueueThread && m_pQueueThread->joinable())
+		{
+			m_pQueueThread->detach();
+			m_pQueueThread.reset();
+		}
+	}
 
 	return S_OK;
 }
@@ -91,7 +94,8 @@ STDMETHODIMP CThreadPoolService::AddTask(IVariantObject* pVariantObject)
 		if (!m_bRunning)
 			return E_PENDING;
 		m_taskQueue.push(CAdapt<CComPtr<IVariantObject> >(pVariantObject));
-		m_condition.notify_one();
+		if (!m_pQueueThread)
+			m_pQueueThread = make_shared<thread>(&CThreadPoolService::Run, this);
 	}
 
 	return S_OK;
@@ -99,32 +103,31 @@ STDMETHODIMP CThreadPoolService::AddTask(IVariantObject* pVariantObject)
 
 STDMETHODIMP CThreadPoolService::Suspend()
 {
+	boost::lock_guard<boost::mutex> lock(m_mutex);
 	m_cSuspendRefs++;
 	return S_OK;
 }
 
 STDMETHODIMP CThreadPoolService::Resume()
 {
+	boost::lock_guard<boost::mutex> lock(m_mutex);
 	m_cSuspendRefs--;
 	if (!m_cSuspendRefs)
-		m_condition.notify_one();
+	{
+		if (!m_pQueueThread)
+			m_pQueueThread = make_shared<thread>(&CThreadPoolService::Run, this);
+	}
 	return S_OK;
 }
 
 STDMETHODIMP CThreadPoolService::Run()
 {
 	CComPtr<IThreadPoolService> pGuard = this;
-
-	{
-		boost::lock_guard<boost::mutex> lock(m_mutex);
-		m_bRunning = TRUE;
-		m_bWaitingForStop = FALSE;
-	}
+	shared_ptr<thread> pThisThread = m_pQueueThread;
 
 	while (true)
 	{
-		boost::unique_lock<boost::mutex> lockWaitThread(m_waitMutex);
-		m_condition.wait_for(lockWaitThread, boost::chrono::milliseconds(100));
+		Sleep(100);
 
 		if (m_cSuspendRefs > 0)
 			continue;
@@ -140,11 +143,11 @@ STDMETHODIMP CThreadPoolService::Run()
 				{
 					m_bWaitingForStop = FALSE;
 					m_bRunning = FALSE;
-					return S_OK;
+					goto Exit;
 				}
 
 				if (m_taskQueue.empty())
-					break;
+					goto Exit;
 
 				while (m_taskQueue.size())
 				{
@@ -170,8 +173,6 @@ STDMETHODIMP CThreadPoolService::Run()
 						m_taskQueue.pop();
 						m_threadsInWork.push_back(pThread);
 						m_threadsTaskContex[pThread] = pTaskObject;
-
-						pThread->Join();
 						pThread->Run();
 					}
 				}
@@ -183,6 +184,12 @@ STDMETHODIMP CThreadPoolService::Run()
 			}
 		}
 	}
+
+Exit:
+	boost::lock_guard<boost::mutex> lock(m_mutex);
+	if (m_pQueueThread->joinable())
+		m_pQueueThread->detach();
+	m_pQueueThread.reset();
 	return S_OK;
 }
 
