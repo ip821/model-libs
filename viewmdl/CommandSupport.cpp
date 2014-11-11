@@ -400,7 +400,7 @@ STDMETHODIMP CCommandSupport::InstallCommands(IPluginSupport* pPluginSupport)
 
 STDMETHODIMP CCommandSupport::OnIdle(BOOL* bResult)
 {
-	CHECK_E_POINTER(bResult);
+	UNREFERENCED_PARAMETER(bResult);
 	for (auto it = m_InstalledCommandsGuidToIdMap.begin(); it != m_InstalledCommandsGuidToIdMap.end(); it++)
 	{
 		auto itCommandId = it->second.begin();
