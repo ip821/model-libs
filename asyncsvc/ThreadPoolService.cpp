@@ -187,7 +187,7 @@ STDMETHODIMP CThreadPoolService::Run()
 
 Exit:
 	boost::lock_guard<boost::mutex> lock(m_mutex);
-	if (m_pQueueThread->joinable())
+	if (m_pQueueThread && m_pQueueThread->joinable())
 		m_pQueueThread->detach();
 	m_pQueueThread.reset();
 	return S_OK;
