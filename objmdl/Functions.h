@@ -27,7 +27,7 @@ static HRESULT HrGetPluginManager(IPluginManager** ppPluginManager)
 
 static IPluginManager* GetPluginManager()
 {
-	CComPtr<IPluginManager> pPluginManager;
+	IPluginManager* pPluginManager;
 	HrGetPluginManager(&pPluginManager);
 	return pPluginManager;
 }

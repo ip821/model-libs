@@ -26,6 +26,8 @@
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
 #define ATL_NO_ASSERT_ON_DESTROY_NONEXISTENT_WINDOW
 
+#define BOOST_LIB_DIAGNOSTIC 1
+
 #include "resource.h"
 #include <atlbase.h>
 #include <atlcom.h>

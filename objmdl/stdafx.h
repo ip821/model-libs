@@ -8,12 +8,6 @@
 #define STRICT
 #endif
 
-#ifdef _DEBUG
-#define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
-#endif
-
 #ifdef __WINXP__
 #define WINVER		0x0501
 #define _WIN32_WINNT	0x0501
@@ -32,6 +26,8 @@
 #define ATL_NO_ASSERT_ON_DESTROY_NONEXISTENT_WINDOW
 #define _HAS_ITERATOR_DEBUGGING 0
 #define __OBJMDL__
+
+#define BOOST_LIB_DIAGNOSTIC 1
 
 #include "resource.h"
 #include <atlbase.h>
