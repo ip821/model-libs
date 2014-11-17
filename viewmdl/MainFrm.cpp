@@ -24,24 +24,36 @@ STDMETHODIMP CMainFrame::SetFlags(MainWindowFlags flags)
 LRESULT CMainFrame::OnMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
 	bHandled = FALSE;
-	CComPtr<IObjArray> pObjectArray;
-	RETURN_IF_FAILED(m_pPluginSupport->GetPlugins(&pObjectArray));
-	UINT cb = 0;
-	RETURN_IF_FAILED(pObjectArray->GetCount(&cb));
-	for (UINT i = 0; i < cb; i++)
-	{
-		CComPtr<IMsgHandler> pMsgHandler;
-		HRESULT hr = pObjectArray->GetAt(i, IID_IMsgHandler, (LPVOID*)&pMsgHandler);
-		if (hr == E_NOINTERFACE)
-			continue;
 
-		if (pMsgHandler)
+	if (m_pCommandSupport)
+	{
+		LRESULT lResult = 0;
+		m_pCommandSupport->ProcessWindowMessage(m_hWnd, uMsg, wParam, lParam, &lResult, &bHandled);
+		if (bHandled)
+			return TRUE;
+	}
+
+	if (m_pPluginSupport)
+	{
+		CComPtr<IObjArray> pObjectArray;
+		RETURN_IF_FAILED(m_pPluginSupport->GetPlugins(&pObjectArray));
+		UINT cb = 0;
+		RETURN_IF_FAILED(pObjectArray->GetCount(&cb));
+		for (UINT i = 0; i < cb; i++)
 		{
-			LRESULT lResult = 0;
-			BOOL bResult = FALSE;
-			pMsgHandler->ProcessWindowMessage(m_hWnd, uMsg, wParam, lParam, &lResult, &bResult);
-			if (bResult)
-				return bResult;
+			CComPtr<IMsgHandler> pMsgHandler;
+			HRESULT hr = pObjectArray->GetAt(i, IID_IMsgHandler, (LPVOID*)&pMsgHandler);
+			if (hr == E_NOINTERFACE)
+				continue;
+
+			if (pMsgHandler)
+			{
+				LRESULT lResult = 0;
+				BOOL bResult = FALSE;
+				pMsgHandler->ProcessWindowMessage(m_hWnd, uMsg, wParam, lParam, &lResult, &bResult);
+				if (bResult)
+					return bResult;
+			}
 		}
 	}
 	return 0;
@@ -215,12 +227,21 @@ LRESULT CMainFrame::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*
 	{
 		pPluginSupportNotifications->OnShutdown();
 	}
+	m_pPluginSupport->OnShutdown();
 	m_pCommandSupport->UninstallAll();
 	m_pPluginSupport->UninstallAll();
 	// unregister message filtering and idle updates
 	ATLASSERT(m_pMessageLoop != NULL);
 	m_pMessageLoop->RemoveMessageFilter(this);
 	m_pMessageLoop->RemoveIdleHandler(this);
+
+	m_pSettings.Release();
+	m_pPluginManager.Release();
+	m_pStatusBarSupport.Release();
+	m_pPluginSupport.Release();
+	m_pCommandSupport.Release();
+	m_pMessageLoop.Release();
+	m_pContainerControl.Release();
 
 	bHandled = FALSE;
 	return 1;

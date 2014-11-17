@@ -64,6 +64,7 @@ public:
 	STDMETHOD(InitializePluginLibraryByName)(BSTR bstrDllName);
 	STDMETHOD(CoCreateInstance)(REFCLSID rclsid, REFIID riid, LPVOID* lpvoid);
 	STDMETHOD(SetDirectory)(BSTR bstrPath);
+	STDMETHOD(Shutdown)();
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(PluginManager), CPluginManager)

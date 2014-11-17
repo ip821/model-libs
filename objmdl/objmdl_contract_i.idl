@@ -166,6 +166,7 @@ interface IPluginManager : IUnknown
 	HRESULT InitializePluginLibraryByName([in] BSTR bstrDllName);
 	HRESULT CoCreateInstance([in] REFCLSID rclsid, [in] REFIID riid, [in] LPVOID* lpvoid);
 	HRESULT SetDirectory([in]BSTR bstrPath);
+	HRESULT Shutdown();
 };
 
 [

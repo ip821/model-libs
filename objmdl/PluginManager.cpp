@@ -231,3 +231,10 @@ STDMETHODIMP CPluginManager::GetPluginInfoCollection(REFGUID guidNamespace, REFG
 
 	return pObjectCollection->QueryInterface(IID_IObjArray, (LPVOID*)ppPluginInfos);
 }
+
+STDMETHODIMP CPluginManager::Shutdown()
+{
+	m_pPlugins.clear();
+	m_pPluginsList.clear();
+	return S_OK;
+}
