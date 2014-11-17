@@ -93,3 +93,17 @@ static HRESULT HrInitializeWithVariantObject(IUnknown* pObject, IVariantObject* 
 	}
 	return S_OK;
 }
+
+class CCoInitializeScope
+{
+public:
+	CCoInitializeScope()
+	{
+		CoInitializeEx(NULL, COINIT_MULTITHREADED);
+	}
+
+	virtual ~CCoInitializeScope()
+	{
+		CoUninitialize();
+	}
+};
