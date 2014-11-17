@@ -101,7 +101,7 @@ STDMETHODIMP CThreadService::ProcessWindowMessage(HWND hWnd, UINT uMsg, WPARAM w
 
 void CThreadService::OnRun()
 {
-	CoInitialize(NULL);
+	CoInitializeEx(NULL, COINIT_MULTITHREADED);
 	CComPtr<IVariantObject> pResult = m_pResult;
 
 	m_hr = S_OK;
