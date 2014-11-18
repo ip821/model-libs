@@ -76,7 +76,8 @@ void CThreadPoolService::JoinAndStop(bool bJoin)
 	auto handle = m_handle.load();
 	if (handle)
 	{
-		WaitForSingleObject(handle, bJoin ? 2000 : INFINITE);
+		if (bJoin)
+			WaitForSingleObject(handle, INFINITE);
 		CloseHandle(handle);
 	}
 }
@@ -203,7 +204,8 @@ STDMETHODIMP CThreadPoolService::Run()
 Exit:
 	auto handle = m_handle.load();
 	m_handle = 0;
-	CloseHandle(handle);
+	if (handle)
+		CloseHandle(handle);
 	return S_OK;
 }
 

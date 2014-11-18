@@ -61,9 +61,6 @@
     <ClCompile Include="ThreadService.cpp">
       <Filter>ThreadService</Filter>
     </ClCompile>
-    <ClCompile Include="ThreadOperation.cpp">
-      <Filter>ThreadService</Filter>
-    </ClCompile>
     <ClCompile Include="asyncsvc_contract_i.c">
       <Filter>ZZZMisc\Generated Files</Filter>
     </ClCompile>
@@ -106,9 +103,6 @@
       <Filter>ZZZMisc\Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="ThreadService.h">
-      <Filter>ThreadService</Filter>
-    </ClInclude>
-    <ClInclude Include="ThreadOperation.h">
       <Filter>ThreadService</Filter>
     </ClInclude>
     <ClInclude Include="asyncsvc_contract_i.h">

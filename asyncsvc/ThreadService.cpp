@@ -39,7 +39,7 @@ STDMETHODIMP CThreadService::OnShutdown()
 		RETURN_IF_FAILED(AtlUnadvise(m_pTimerService, __uuidof(ITimerServiceEventSink), m_dwAdvice));
 	}
 
-	Stop();
+	StopInternal();
 
 	{
 		boost::lock_guard<boost::mutex> lock(m_mutex);
@@ -54,22 +54,63 @@ STDMETHODIMP CThreadService::OnShutdown()
 	return S_OK;
 }
 
+void CThreadService::JoinAndStop(bool bJoin)
+{
+	auto handle = m_handle;
+	if (handle)
+	{
+		if (bJoin)
+			WaitForSingleObject(handle, INFINITE);
+
+		m_handle = 0;
+		CloseHandle(handle);
+	}
+}
+
+void CThreadService::StopInternal()
+{
+	JoinAndStop(false);
+}
+
+unsigned __stdcall CThreadServiceThreadProc(void* pThis)
+{
+	CThreadService* pThreadOperation = static_cast<CThreadService*>(pThis);
+	pThreadOperation->RunInternal();
+	return 0;
+}
+
+void CThreadService::StartInternal()
+{
+	JoinAndStop();
+	m_handle = (HANDLE)_beginthreadex(nullptr, 0, &CThreadServiceThreadProc, this, 0, nullptr);
+}
+
+void CThreadService::RunInternal()
+{
+	CComQIPtr<IThreadService> pGuard = this;
+	g_guard = pGuard;
+
+	OnRun();
+	OnStop();
+
+	auto handle = m_handle;
+	m_handle = 0;
+	if (handle)
+		CloseHandle(handle);
+}
+
 STDMETHODIMP CThreadService::OnTimer(ITimerService* /*pTimerService*/)
 {
 	RETURN_IF_FAILED(m_pTimerService->StopTimer());
 	RETURN_IF_FAILED(Fire_OnStart());
-	Start();
+	StartInternal();
 	return S_OK;
 }
 
 STDMETHODIMP CThreadService::Run()
 {
-	{
-		CComQIPtr<IThreadService> pGuard = this;
-		RETURN_IF_FAILED(Fire_OnStart());
-		Start();
-		g_guard = pGuard;
-	}
+	RETURN_IF_FAILED(Fire_OnStart());
+	StartInternal();
 	return S_OK;
 }
 

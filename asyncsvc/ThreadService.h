@@ -4,7 +4,6 @@
 #include "resource.h"       // main symbols
 #include "..\ViewMdl\IInitializeWithControlImpl.h"
 #include "NotificationServices_i.h"
-#include "ThreadOperation.h"
 #include <boost/thread/condition_variable.hpp>
 
 using namespace ATL;
@@ -20,7 +19,6 @@ class ATL_NO_VTABLE CThreadService :
 	public IPluginSupportNotifications,
 	public IInitializeWithControlImpl,
 	public ITimerServiceEventSink,
-	public CThreadOperation,
 	public IConnectionPointContainerImpl<CThreadService>,
 	public IConnectionPointImpl<CThreadService, &__uuidof(IThreadServiceEventSink)>
 {
@@ -56,19 +54,26 @@ private:
 	DWORD m_dwAdvice = 0;
 	HRESULT m_hr = S_OK;
 	CComPtr<IVariantObject> m_pResult;
+
+	void OnRun();
+	void OnStop();
 	boost::mutex m_mutex;
+	volatile HANDLE m_handle = 0;
+	void JoinAndStop(bool bJoin = true);
 
 	HRESULT Fire_OnStart();
 	HRESULT Fire_OnRun();
 	HRESULT Fire_OnFinish();
 	HRESULT Fire_OnFinishInternal();
+
 protected:
 
-	virtual void OnRun();
-	virtual void OnStop();
-
 public:
-	
+
+	void RunInternal();
+	void StopInternal();
+	void StartInternal();
+
 	STDMETHOD(OnInitialized)(IServiceProvider *pServiceProvider);
 	STDMETHOD(OnShutdown)();
 	STDMETHOD(OnTimer)(ITimerService* pTimerService);
