@@ -11,12 +11,12 @@ class CThreadOperation
 protected:
 	virtual void OnRun() = 0;
 	virtual void OnStop() = 0;
-	atomic<bool> m_stop;
-	shared_ptr<thread> m_pThread;
-
-	void Run();
+	atomic<bool> m_stop = false;
+	atomic<HANDLE> m_handle = 0;
+	void JoinAndStop(bool bJoin = true);
 
 public:
+void Run();
 
 	CThreadOperation();
 	virtual ~CThreadOperation();

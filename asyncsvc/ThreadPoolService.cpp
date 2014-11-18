@@ -71,20 +71,38 @@ STDMETHODIMP CThreadPoolService::Start()
 	return S_OK;
 }
 
+void CThreadPoolService::JoinAndStop(bool bJoin)
+{
+	auto handle = m_handle.load();
+	if (handle)
+	{
+		WaitForSingleObject(handle, bJoin ? 2000 : INFINITE);
+		CloseHandle(handle);
+	}
+}
+
 STDMETHODIMP CThreadPoolService::Stop()
 {
 	{
 		boost::lock_guard<boost::mutex> lock(m_mutex);
 		m_bWaitingForStop = TRUE;
-
-		if (m_pQueueThread && m_pQueueThread->joinable())
-		{
-			m_pQueueThread->detach();
-			m_pQueueThread.reset();
-		}
+		JoinAndStop(false);
 	}
 
 	return S_OK;
+}
+
+unsigned __stdcall CThreadPoolServiceThreadProc(void* pThis)
+{
+	CThreadPoolService* pThreadOperation = static_cast<CThreadPoolService*>(pThis);
+	pThreadOperation->Run();
+	return 0;
+}
+
+void CThreadPoolService::StartQueueThreadIfNecessary()
+{
+	if (!m_handle)
+		m_handle = (HANDLE)_beginthreadex(nullptr, 0, &CThreadPoolServiceThreadProc, this, 0, nullptr);
 }
 
 STDMETHODIMP CThreadPoolService::AddTask(IVariantObject* pVariantObject)
@@ -94,8 +112,7 @@ STDMETHODIMP CThreadPoolService::AddTask(IVariantObject* pVariantObject)
 		if (!m_bRunning)
 			return E_PENDING;
 		m_taskQueue.push(CAdapt<CComPtr<IVariantObject> >(pVariantObject));
-		if (!m_pQueueThread)
-			m_pQueueThread = make_shared<thread>(&CThreadPoolService::Run, this);
+		StartQueueThreadIfNecessary();
 	}
 
 	return S_OK;
@@ -114,8 +131,7 @@ STDMETHODIMP CThreadPoolService::Resume()
 	m_cSuspendRefs--;
 	if (!m_cSuspendRefs)
 	{
-		if (!m_pQueueThread)
-			m_pQueueThread = make_shared<thread>(&CThreadPoolService::Run, this);
+		StartQueueThreadIfNecessary();
 	}
 	return S_OK;
 }
@@ -123,7 +139,6 @@ STDMETHODIMP CThreadPoolService::Resume()
 STDMETHODIMP CThreadPoolService::Run()
 {
 	CComPtr<IThreadPoolService> pGuard = this;
-	shared_ptr<thread> pThisThread = m_pQueueThread;
 
 	while (true)
 	{
@@ -186,10 +201,9 @@ STDMETHODIMP CThreadPoolService::Run()
 	}
 
 Exit:
-	boost::lock_guard<boost::mutex> lock(m_mutex);
-	if (m_pQueueThread && m_pQueueThread->joinable())
-		m_pQueueThread->detach();
-	m_pQueueThread.reset();
+	auto handle = m_handle.load();
+	m_handle = 0;
+	CloseHandle(handle);
 	return S_OK;
 }
 

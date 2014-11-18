@@ -6,6 +6,7 @@
 #include "NotificationServices_i.h"
 #include "..\ViewMdl\IInitializeWithControlImpl.h"
 #include <boost/thread/condition_variable.hpp>
+#include <atomic>
 
 using namespace ATL;
 using namespace std;
@@ -55,16 +56,18 @@ private:
 	BOOL m_bWaitingForStop = FALSE;
 	BOOL m_bRunning = FALSE;
 	boost::mutex m_mutex;
-	shared_ptr<thread> m_pQueueThread;
 	volatile int m_cSuspendRefs = 0;
-
-	STDMETHOD(Run)();
+	atomic<HANDLE> m_handle = 0;
 
 	HRESULT Fire_OnStart(IVariantObject *pResult);
 	HRESULT Fire_OnRun(IVariantObject *pResult);
 	HRESULT Fire_OnFinish(IVariantObject *pResult);
 
+	void JoinAndStop(bool bJoin = true);
+	void StartQueueThreadIfNecessary();
+
 public:
+	STDMETHOD(Run)();
 
 	STDMETHOD(SetThreadCount)(DWORD dwCount);
 	STDMETHOD(Start)();

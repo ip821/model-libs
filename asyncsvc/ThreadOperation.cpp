@@ -10,30 +10,40 @@ CThreadOperation::~CThreadOperation()
 {
 }
 
+void CThreadOperation::JoinAndStop(bool bJoin)
+{
+	auto handle = m_handle.load();
+	if (handle)
+	{
+		WaitForSingleObject(handle, bJoin ? 2000 : INFINITE);
+		CloseHandle(handle);
+	}
+}
+
 void CThreadOperation::Stop()
 {
-	if (m_pThread && m_pThread->joinable())
-	{
-		m_pThread->detach();
-	}
 	m_stop = true;
+	JoinAndStop(false);
+}
+
+unsigned __stdcall CThreadOperationThreadProc(void* pThis)
+{
+	CThreadOperation* pThreadOperation = static_cast<CThreadOperation*>(pThis);
+	pThreadOperation->Run();
+	return 0;
 }
 
 void CThreadOperation::Start()
 {
-	if (m_pThread && m_pThread->joinable())
-	{
-		m_pThread->join();
-		m_pThread.reset();
-	}
-	m_pThread = make_shared<thread>(&CThreadOperation::Run, this);
+	JoinAndStop();
+	m_handle = (HANDLE)_beginthreadex(nullptr, 0, &CThreadOperationThreadProc, this, 0, nullptr);
 }
 
 void CThreadOperation::Run()
 {
-	shared_ptr<thread> pThread = m_pThread;
 	OnRun();
 	OnStop();
-	if (pThread && pThread->joinable())
-		pThread->detach();
+	auto handle = m_handle.load();
+	m_handle = 0;
+	CloseHandle(handle);
 }

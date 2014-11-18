@@ -42,7 +42,7 @@ STDMETHODIMP CThreadService::OnShutdown()
 	Stop();
 
 	{
-		lock_guard<mutex> lock(m_mutex);
+		boost::lock_guard<boost::mutex> lock(m_mutex);
 		if (m_pResult)
 			m_pResult.Release();
 	}
@@ -113,7 +113,7 @@ void CThreadService::OnRun()
 	CComBSTR bstrDesc(errInfo.Description().Detach());
 
 	{
-		lock_guard<mutex> lock(m_mutex);
+		boost::lock_guard<boost::mutex> lock(m_mutex);
 
 		if (!pResult)
 			return;
@@ -227,7 +227,9 @@ HRESULT CThreadService::Fire_OnRun()
 
 STDMETHODIMP CThreadService::Join()
 {
-	if (m_pThread && m_pThread->joinable())
-		m_pThread->join();
+	if (m_handle)
+	{
+		WaitForSingleObject(m_handle, INFINITE);
+	}
 	return S_OK;
 }

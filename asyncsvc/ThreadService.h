@@ -5,6 +5,7 @@
 #include "..\ViewMdl\IInitializeWithControlImpl.h"
 #include "NotificationServices_i.h"
 #include "ThreadOperation.h"
+#include <boost/thread/condition_variable.hpp>
 
 using namespace ATL;
 using namespace std;
@@ -55,7 +56,7 @@ private:
 	DWORD m_dwAdvice = 0;
 	HRESULT m_hr = S_OK;
 	CComPtr<IVariantObject> m_pResult;
-	mutex m_mutex;
+	boost::mutex m_mutex;
 
 	HRESULT Fire_OnStart();
 	HRESULT Fire_OnRun();
