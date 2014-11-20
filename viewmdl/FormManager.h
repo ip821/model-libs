@@ -63,6 +63,7 @@ public:
 	STDMETHOD(OnClose)(IControl* pControl);
 	STDMETHOD(OnActivate)(IControl* pControl);
 	STDMETHOD(OnDeactivate)(IControl* pControl);
+	STDMETHOD(OnTabHeaderClick)(IControl* pControl);
 	STDMETHOD(CloseForm)(IControl* pControl);
 	STDMETHOD(ActivateForm2)(IControl* pControl);
 	STDMETHOD(CloseAll)();

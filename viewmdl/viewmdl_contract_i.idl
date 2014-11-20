@@ -167,6 +167,7 @@ interface ITabbedControlEventSink : IUnknown
 	HRESULT OnActivate(IControl* pControl);
 	HRESULT OnDeactivate(IControl* pControl);
 	HRESULT OnClose(IControl* pControl);
+	HRESULT OnTabHeaderClick(IControl* pControl);
 };
 
 [

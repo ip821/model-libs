@@ -61,6 +61,12 @@ STDMETHODIMP CFormManager::CloseForm(IControl* pControl)
 	return S_OK;
 }
 
+STDMETHODIMP CFormManager::OnTabHeaderClick(IControl* pControl)
+{
+	UNREFERENCED_PARAMETER(pControl);
+	return S_OK;
+}
+
 STDMETHODIMP CFormManager::OnActivate(IControl* pControl)
 {
 	UNREFERENCED_PARAMETER(pControl);
