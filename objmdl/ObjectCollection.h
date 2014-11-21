@@ -27,13 +27,14 @@ public:
 	END_COM_MAP()
 
 private:
-	std::vector<CAdapt<CComPtr<IUnknown> > > m_objects;
+	std::vector<CAdapt<CComPtr<IUnknown>>> m_objects;
 public:
 
 	STDMETHOD(AddObject)(IUnknown *punk);
 	STDMETHOD(InsertObject)(IUnknown *punk, UINT uiIndex);
 	STDMETHOD(Clear)();
 	STDMETHOD(RemoveObjectAt)(UINT uiIndex);
+	STDMETHOD(IndexOf)(void* pv, UINT* puiIndex);
 
 	STDMETHOD(GetCount)(UINT *pcObjects);
 	STDMETHOD(GetAt)(UINT uiIndex, REFIID riid, void **ppv);

@@ -11,6 +11,7 @@ interface IObjArray : IUnknown
 {
 	HRESULT GetCount([out]  UINT *pcObjects);
 	HRESULT GetAt([in]   UINT uiIndex, [in]   REFIID riid, [out]  void **ppv);
+	HRESULT IndexOf([in] void* pv, [out] UINT* puiIndex);
 };
 
 [

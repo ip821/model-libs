@@ -39,6 +39,7 @@
 #include <hash_set>
 #include <map>
 #include <list>
+#include <algorithm>
 
 #include "FindFileHandle.h"
 #include "ManualComObjectLoader.h"
