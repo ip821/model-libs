@@ -93,7 +93,7 @@ STDMETHODIMP CThreadPoolService::Stop()
 	return S_OK;
 }
 
-unsigned __stdcall CThreadPoolServiceThreadProc(void* pThis)
+unsigned CThreadPoolService::ThreadProc(void* pThis)
 {
 	CThreadPoolService* pThreadOperation = static_cast<CThreadPoolService*>(pThis);
 	pThreadOperation->Run();
@@ -103,7 +103,7 @@ unsigned __stdcall CThreadPoolServiceThreadProc(void* pThis)
 void CThreadPoolService::StartQueueThreadIfNecessary()
 {
 	if (!m_handle)
-		m_handle = (HANDLE)_beginthreadex(nullptr, 0, &CThreadPoolServiceThreadProc, this, 0, nullptr);
+		m_handle = (HANDLE)_beginthreadex(nullptr, 0, &CThreadPoolService::ThreadProc, this, 0, nullptr);
 }
 
 STDMETHODIMP CThreadPoolService::AddTask(IVariantObject* pVariantObject)

@@ -39,6 +39,9 @@
 #include <map>
 #include <mutex>
 #include <thread>
+#include <atomic>
+
+#include <boost/thread/condition_variable.hpp>
 
 #include <initguid.h>
 #include "..\ObjMdl\Plugins.h"

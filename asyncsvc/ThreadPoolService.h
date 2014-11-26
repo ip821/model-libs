@@ -5,8 +5,6 @@
 #include "objmdl_contract_i.h"
 #include "NotificationServices_i.h"
 #include "..\ViewMdl\IInitializeWithControlImpl.h"
-#include <boost/thread/condition_variable.hpp>
-#include <atomic>
 
 using namespace ATL;
 using namespace std;
@@ -65,6 +63,8 @@ private:
 
 	void JoinAndStop(bool bJoin = true);
 	void StartQueueThreadIfNecessary();
+
+	static unsigned __stdcall ThreadProc(void* pThis);
 
 public:
 	STDMETHOD(Run)();

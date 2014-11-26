@@ -72,7 +72,7 @@ void CThreadService::StopInternal()
 	JoinAndStop(false);
 }
 
-unsigned __stdcall CThreadServiceThreadProc(void* pThis)
+unsigned CThreadService::ThreadProc(void* pThis)
 {
 	CThreadService* pThreadOperation = static_cast<CThreadService*>(pThis);
 	pThreadOperation->RunInternal();
@@ -82,7 +82,7 @@ unsigned __stdcall CThreadServiceThreadProc(void* pThis)
 void CThreadService::StartInternal()
 {
 	JoinAndStop();
-	m_handle = (HANDLE)_beginthreadex(nullptr, 0, &CThreadServiceThreadProc, this, 0, nullptr);
+	m_handle = (HANDLE)_beginthreadex(nullptr, 0, &CThreadService::ThreadProc, this, 0, nullptr);
 }
 
 void CThreadService::RunInternal()

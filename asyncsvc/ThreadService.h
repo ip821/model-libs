@@ -4,7 +4,6 @@
 #include "resource.h"       // main symbols
 #include "..\ViewMdl\IInitializeWithControlImpl.h"
 #include "NotificationServices_i.h"
-#include <boost/thread/condition_variable.hpp>
 
 using namespace ATL;
 using namespace std;
@@ -65,6 +64,8 @@ private:
 	HRESULT Fire_OnRun();
 	HRESULT Fire_OnFinish();
 	HRESULT Fire_OnFinishInternal();
+
+	static unsigned __stdcall ThreadProc(void* pThis);
 
 protected:
 
