@@ -26,7 +26,6 @@ STDMETHODIMP CObjectCollection::Clear()
 
 STDMETHODIMP CObjectCollection::RemoveObjectAt(UINT uiIndex)
 {
-	CHECK_E_POINTER(uiIndex);
 	m_objects.erase(m_objects.begin() + uiIndex);
 	return S_OK;
 }
