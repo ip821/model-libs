@@ -96,7 +96,7 @@ static inline CString StrToBase64(CString& str)
 		result.ReleaseBuffer();
 	}
 	USES_CONVERSION;
-	return CString(A2W(result));
+	return CString(CA2W(result));
 }
 
 static inline CString StrFromBase64(CString& str)
@@ -107,7 +107,7 @@ static inline CString StrFromBase64(CString& str)
 		USES_CONVERSION;
 		int strLen = iLen * sizeof(TCHAR) + sizeof(TCHAR);
 		auto lpszBuffer = result.GetBuffer(strLen);
-		CStringA strData = W2A(str);
+		CStringA strData = CW2A(str);
 		Base64Decode((LPCSTR)strData, strData.GetLength(), (LPBYTE)lpszBuffer, &iLen);
 		result.ReleaseBuffer(strLen);
 	}
