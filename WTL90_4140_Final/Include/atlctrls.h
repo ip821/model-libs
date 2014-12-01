@@ -1815,7 +1815,7 @@ public:
 		::GetScrollRange(m_hWnd, SB_CTL, &nMin, &nMax);
 		SCROLLINFO info = { sizeof(SCROLLINFO), SIF_PAGE };
 		if(::GetScrollInfo(m_hWnd, SB_CTL, &info))
-			nMax -= ((info.nPage - 1) > 0) ? (info.nPage - 1) : 0;
+			nMax -= (((int)info.nPage - 1) > 0) ? (info.nPage - 1) : 0;
 
 		return nMax;
 	}

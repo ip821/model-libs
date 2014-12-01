@@ -99,13 +99,7 @@ STDMETHODIMP CAboutDialog::InitListView()
 	return S_OK;
 }
 
-LRESULT CAboutDialog::OnClickedOK(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-{
-	EndDialog(wID);
-	return 0;
-}
-
-LRESULT CAboutDialog::OnClickedCancel(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+LRESULT CAboutDialog::OnClickedButton(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
 	EndDialog(wID);
 	return 0;
