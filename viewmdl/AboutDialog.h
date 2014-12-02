@@ -32,8 +32,8 @@ public:
 
 	BEGIN_MSG_MAP(CAboutDialog)
 		MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-		COMMAND_HANDLER(IDOK, BN_CLICKED, OnClickedOK)
-		COMMAND_HANDLER(IDCANCEL, BN_CLICKED, OnClickedCancel)
+		COMMAND_HANDLER(IDOK, BN_CLICKED, OnClickedButton)
+		COMMAND_HANDLER(IDCANCEL, BN_CLICKED, OnClickedButton)
 		CHAIN_MSG_MAP(CAxDialogImpl<CAboutDialog>)
 	END_MSG_MAP()
 
@@ -49,8 +49,7 @@ private:
 	CFont m_font;
 
 	LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-	LRESULT OnClickedOK(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-	LRESULT OnClickedCancel(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnClickedButton(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
 	STDMETHOD(InitListView)();
 
