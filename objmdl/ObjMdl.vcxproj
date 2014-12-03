@@ -127,7 +127,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>true</LinkIncremental>
-    <CodeAnalysisRuleSet>C:\_dev\WinDbgTool\AnalyzeRuleSet.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>C:\_dev\minitwi\MiniTwi.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'">
     <IgnoreImportLibrary>true</IgnoreImportLibrary>

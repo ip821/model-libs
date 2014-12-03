@@ -95,14 +95,14 @@ STDMETHODIMP CTabbedControl::AddPage(IControl* pControl)
 	CHECK_E_POINTER(pControl);
 	HWND hwnd = NULL;
 	HRESULT hr = pControl->CreateEx(m_hWnd, &hwnd);
-	if(FAILED(hr))
+	if (FAILED(hr))
 		return hr;
 
 	m_pControls[hwnd] = pControl;
 
 	CComBSTR bstr = L"No caption";
 	CComQIPtr<IControl2> pControl2 = pControl;
-	if(pControl2)
+	if (pControl2)
 	{
 		RETURN_IF_FAILED(pControl2->GetText(&bstr));
 	}
@@ -128,17 +128,13 @@ STDMETHODIMP CTabbedControl::UpdateControl(IControl* pControl)
 	CHECK_E_POINTER(pControl);
 	HWND hwnd = 0;
 	RETURN_IF_FAILED(pControl->GetHWND(&hwnd));
-	auto it = m_pControls.find(hwnd);
-	if(it != m_pControls.end())
+	ATLASSERT(m_pControls.find(hwnd) != m_pControls.end());
+	CComBSTR bstr = L"No caption";
+	CComQIPtr<IControl2> pControl2 = pControl;
+	if (pControl2)
 	{
-		CComPtr<IControl> pControl = it->second;
-		CComBSTR bstr = L"No caption";
-		CComQIPtr<IControl2> pControl2 = pControl;
-		if(pControl2)
-		{
-			RETURN_IF_FAILED(pControl2->GetText(&bstr));
-			__super::SetPageTitle(PageIndexFromHwnd(hwnd), bstr);
-		}
+		RETURN_IF_FAILED(pControl2->GetText(&bstr));
+		__super::SetPageTitle(PageIndexFromHwnd(hwnd), bstr);
 	}
 	return S_OK;
 }
@@ -147,7 +143,7 @@ STDMETHODIMP CTabbedControl::GetCurrentPage(IControl** ppControl)
 {
 	CHECK_E_POINTER(ppControl);
 	auto iActivePage = GetActivePage();
-	if(iActivePage == -1)
+	if (iActivePage == -1)
 		return HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND);
 
 	return GetPage(iActivePage, ppControl);
@@ -159,20 +155,17 @@ STDMETHODIMP CTabbedControl::RemovePage(IControl* pControl)
 	HWND hwnd = 0;
 	RETURN_IF_FAILED(pControl->GetHWND(&hwnd));
 	auto it = m_pControls.find(hwnd);
-	if(it != m_pControls.end())
+	ATLASSERT(it != m_pControls.end());
+	CComQIPtr<IControl2> pControl2 = pControl;
+	if (pControl2)
 	{
-		CComPtr<IControl> pControl = it->second;
-		CComQIPtr<IControl2> pControl2 = pControl;
-		if(pControl2)
-		{
-			pControl2->OnDeactivate();
-			pControl2->OnClose();
-		}
-
-		__super::RemovePage(PageIndexFromHwnd(it->first));
-		Fire_OnClose(pControl);
-		m_pControls.erase(it);
+		pControl2->OnDeactivate();
+		pControl2->OnClose();
 	}
+
+	__super::RemovePage(PageIndexFromHwnd(hwnd));
+	Fire_OnClose(pControl);
+	m_pControls.erase(it);
 	return S_OK;
 }
 
@@ -188,10 +181,10 @@ STDMETHODIMP CTabbedControl::PreTranslateMessage(MSG* pMsg, BOOL* pbResult)
 	CHECK_E_POINTER(pMsg);
 	CHECK_E_POINTER(pbResult);
 	auto activePage = GetActivePage();
-	if(activePage == -1)
+	if (activePage == -1)
 		return S_OK;
 
-	if(CTabViewImpl::PreTranslateMessage(pMsg))
+	if (CTabViewImpl::PreTranslateMessage(pMsg))
 	{
 		*pbResult = TRUE;
 		return S_OK;
@@ -207,7 +200,7 @@ STDMETHODIMP CTabbedControl::PreTranslateMessage(MSG* pMsg, BOOL* pbResult)
 
 	auto hwnd = GetPageHWND(activePage);
 	auto it = m_pControls.find(hwnd);
-	if(it != m_pControls.end())
+	if (it != m_pControls.end())
 	{
 		it->second.m_T->PreTranslateMessage(pMsg, pbResult);
 	}
@@ -217,7 +210,7 @@ STDMETHODIMP CTabbedControl::PreTranslateMessage(MSG* pMsg, BOOL* pbResult)
 STDMETHODIMP CTabbedControl::CreateEx(HWND hWndParent, HWND* phWnd)
 {
 	m_hWnd = Create(hWndParent, rcDefault, NULL, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, WS_EX_CONTROLPARENT);
-	if(phWnd)
+	if (phWnd)
 		*phWnd = m_hWnd;
 
 	return S_OK;
@@ -225,16 +218,16 @@ STDMETHODIMP CTabbedControl::CreateEx(HWND hWndParent, HWND* phWnd)
 
 void CTabbedControl::OnPageActivated(int nPage)
 {
-	if(nPage == -1)
+	if (nPage == -1)
 		return;
 
 	HWND hWnd = GetPageHWND(nPage);
 	auto it = m_pControls.find(hWnd);
-	if(it != m_pControls.end())
+	if (it != m_pControls.end())
 	{
 		CComPtr<IControl> pControl = it->second;
 		CComQIPtr<IControl2> pControl2 = pControl;
-		if(pControl2)
+		if (pControl2)
 			pControl2->OnActivate();
 	}
 	__super::OnPageActivated(nPage);
@@ -245,7 +238,7 @@ void CTabbedControl::OnContextMenu(int nPage, POINT pt)
 	if (!m_bCommandsEnabled)
 		return;
 
-	if(GetActivePage() != nPage)
+	if (GetActivePage() != nPage)
 	{
 		SetActivePage(nPage);
 		OnPageActivated(nPage);
@@ -283,13 +276,13 @@ LRESULT CTabbedControl::OnTabMButtonUp(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
 	hti.pt.x = GET_X_LPARAM(lParam);
 	hti.pt.y = GET_Y_LPARAM(lParam);
 	int nItem = m_tab.HitTest(&hti);
-	if(nItem != -1 && nItem != GetActivePage())
+	if (nItem != -1 && nItem != GetActivePage())
 	{
 		SetActivePage(nItem);
 	}
 
 	CComPtr<IControl> pControl;
-	if(GetCurrentPage(&pControl) == S_OK)
+	if (GetCurrentPage(&pControl) == S_OK)
 	{
 		RemovePage(pControl);
 	}

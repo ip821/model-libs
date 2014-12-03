@@ -1797,6 +1797,7 @@ public:
 			if(!m_bActivity && m_nLockCnt == 0) // if no activity let's really bail
 			{
 #if ((_WIN32_WINNT >= 0x0400 ) || defined(_WIN32_DCOM)) && defined(_ATL_FREE_THREADED) && !defined(_WIN32_WCE)
+#pragma warning(suppress: 6031)
 				::CoSuspendClassObjects();
 				if(!m_bActivity && m_nLockCnt == 0)
 #endif
