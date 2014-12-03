@@ -161,6 +161,7 @@ LRESULT CMainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
 
 	if ((m_flags & MainWindowFlags::MainWindowMenuBar) == 0)
 	{
+#pragma warning(suppress: 6387)
 		SetMenu(NULL);
 	}
 	else

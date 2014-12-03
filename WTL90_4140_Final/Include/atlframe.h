@@ -1093,6 +1093,7 @@ public:
 		// convert chevron rect to screen coordinates
 		ATL::CWindow wndFrom = cmi.lpnm->hdr.hwndFrom;
 		POINT pt = { cmi.lpnm->rc.left, cmi.lpnm->rc.bottom };
+#pragma warning(suppress: 6387)
 		wndFrom.MapWindowPoints(NULL, &pt, 1);
 		RECT rc = cmi.lpnm->rc;
 		wndFrom.MapWindowPoints(NULL, &rc);
@@ -1129,6 +1130,7 @@ public:
 		// convert chevron rect to screen coordinates
 		ATL::CWindow wndFrom = cmi.lpnm->hdr.hwndFrom;
 		RECT rc = cmi.lpnm->rc;
+#pragma warning(suppress: 6387)
 		wndFrom.MapWindowPoints(NULL, &rc);
 		// eat next message if click is on the same button
 		MSG msg = { 0 };
