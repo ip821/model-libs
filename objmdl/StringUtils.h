@@ -117,7 +117,8 @@ static inline CString StrFromBase64(CString& str)
 static inline CString StrGetAppExeName()
 {
 	TCHAR lpszPath[MAX_PATH] = { 0 };
-	GetModuleFileName(NULL, lpszPath, MAX_PATH);
+	auto res = GetModuleFileName(NULL, lpszPath, MAX_PATH);
+	ATLASSERT(res);
 	PathRemoveExtension(lpszPath);
 	auto lpszName = PathFindFileName(lpszPath);
 	return CString(lpszName);

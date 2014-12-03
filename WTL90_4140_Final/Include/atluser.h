@@ -1019,6 +1019,7 @@ public:
 			lpstrCursorName == IDC_SIZEWE || lpstrCursorName == IDC_SIZENS || lpstrCursorName == IDC_SIZEALL ||
 			lpstrCursorName == IDC_NO || lpstrCursorName == IDC_APPSTARTING || lpstrCursorName == IDC_HELP);
 #endif // !(WINVER >= 0x0500)
+#pragma warning(suppress: 6387)
 		m_hCursor = ::LoadCursor(NULL, lpstrCursorName);
 		return m_hCursor;
 	}
@@ -1030,6 +1031,7 @@ public:
 	}
 
 	HCURSOR LoadCursor(ATL::_U_STRINGorID cursor, int cxDesired, int cyDesired, UINT fuLoad = 0)
+#pragma warning(suppress: 6387)
 	{
 		ATLASSERT(m_hCursor == NULL);
 		m_hCursor = (HCURSOR) ::LoadImage(ModuleHelper::GetResourceInstance(), cursor.m_lpstr, IMAGE_CURSOR, cxDesired, cyDesired, fuLoad);
@@ -1265,6 +1267,7 @@ inline HCURSOR AtlLoadSysCursor(LPCTSTR lpCursorName)
 		lpCursorName == IDC_SIZEWE || lpCursorName == IDC_SIZENS || lpCursorName == IDC_SIZEALL ||
 		lpCursorName == IDC_NO || lpCursorName == IDC_APPSTARTING || lpCursorName == IDC_HELP);
 #endif // !(WINVER >= 0x0500)
+#pragma warning(suppress: 6387)
 	return ::LoadCursor(NULL, lpCursorName);
 }
 
@@ -1276,6 +1279,7 @@ inline HICON AtlLoadIcon(ATL::_U_STRINGorID icon)
 #ifndef _WIN32_WCE
 inline HICON AtlLoadSysIcon(LPCTSTR lpIconName)
 {
+#pragma warning(suppress: 6387)
 #if (WINVER >= 0x0600)
 	ATLASSERT(lpIconName == IDI_APPLICATION || lpIconName == IDI_ASTERISK || lpIconName == IDI_EXCLAMATION ||
 	          lpIconName == IDI_HAND || lpIconName == IDI_QUESTION || lpIconName == IDI_WINLOGO ||
@@ -1284,6 +1288,7 @@ inline HICON AtlLoadSysIcon(LPCTSTR lpIconName)
 	ATLASSERT(lpIconName == IDI_APPLICATION || lpIconName == IDI_ASTERISK || lpIconName == IDI_EXCLAMATION ||
 	          lpIconName == IDI_HAND || lpIconName == IDI_QUESTION || lpIconName == IDI_WINLOGO);
 #endif // !(WINVER >= 0x0600)
+#pragma warning(suppress: 6387)
 	return ::LoadIcon(NULL, lpIconName);
 }
 #endif // !_WIN32_WCE
@@ -1295,6 +1300,7 @@ inline HBITMAP AtlLoadBitmapImage(ATL::_U_STRINGorID bitmap, UINT fuLoad = LR_DE
 
 inline HCURSOR AtlLoadCursorImage(ATL::_U_STRINGorID cursor, UINT fuLoad = LR_DEFAULTCOLOR | LR_DEFAULTSIZE, int cxDesired = 0, int cyDesired = 0)
 {
+#pragma warning(suppress: 6387)
 	return (HCURSOR)::LoadImage(ModuleHelper::GetResourceInstance(), cursor.m_lpstr, IMAGE_CURSOR, cxDesired, cyDesired, fuLoad);
 }
 

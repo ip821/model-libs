@@ -229,10 +229,12 @@ namespace boost{
     typedef typename traits::char_type char_type;
     static bool isspace(char_type c)
     {
+#pragma warning(suppress: 6330)
        return std::isspace(c) != 0;
     }
     static bool ispunct(char_type c)
     {
+#pragma warning(suppress: 6330)
        return std::ispunct(c) != 0;
     }
   };

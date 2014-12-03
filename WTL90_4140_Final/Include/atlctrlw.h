@@ -1309,6 +1309,7 @@ public:
 					ATLASSERT(pMI != NULL);
 					if(pMI != NULL)
 					{
+#pragma warning(suppress: 6001)
 						pMI->fType = mii.fType;
 						pMI->fState = mii.fState;
 						mii.fType |= MFT_OWNERDRAW;
@@ -1491,6 +1492,7 @@ public:
 
 					if(p != NULL)
 					{
+#pragma warning(suppress: 6011)
 						while(*p && *p != _T('&'))
 							p = ::CharNext(p);
 						if(p != NULL && *p)
@@ -2749,6 +2751,7 @@ public:
 		RECT rect = { 0 };
 		GetItemRect(nIndex, &rect);
 		POINT pt = { rect.left, rect.bottom };
+#pragma warning(suppress: 6387)
 		MapWindowPoints(NULL, &pt, 1);
 		MapWindowPoints(NULL, &rect);
 		TPMPARAMS TPMParams = { 0 };

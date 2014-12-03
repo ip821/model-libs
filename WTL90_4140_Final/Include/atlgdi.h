@@ -1392,6 +1392,7 @@ public:
 #else // CE specific
 		ATLASSERT(hPen == NULL || ::GetObjectType(hPen) == OBJ_PEN);
 #endif // _WIN32_WCE
+#pragma warning(suppress: 6387)
 		return (HPEN)::SelectObject(m_hDC, hPen);
 	}
 
@@ -1399,6 +1400,7 @@ public:
 	{
 		ATLASSERT(m_hDC != NULL);
 		ATLASSERT(hBrush == NULL || ::GetObjectType(hBrush) == OBJ_BRUSH);
+#pragma warning(suppress: 6387)
 		return (HBRUSH)::SelectObject(m_hDC, hBrush);
 	}
 
@@ -1406,6 +1408,7 @@ public:
 	{
 		ATLASSERT(m_hDC != NULL);
 		ATLASSERT(hFont == NULL || ::GetObjectType(hFont) == OBJ_FONT);
+#pragma warning(suppress: 6387)
 		return (HFONT)::SelectObject(m_hDC, hFont);
 	}
 
@@ -1413,6 +1416,7 @@ public:
 	{
 		ATLASSERT(m_hDC != NULL);
 		ATLASSERT(hBitmap == NULL || ::GetObjectType(hBitmap) == OBJ_BITMAP);
+#pragma warning(suppress: 6387)
 		return (HBITMAP)::SelectObject(m_hDC, hBitmap);
 	}
 

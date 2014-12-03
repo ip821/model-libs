@@ -1470,6 +1470,7 @@ public:
 		TCHAR szBuffer[cchBuff] = { 0 };
 		if(::GetClassName(m_hWnd, szBuffer, cchBuff))
 		{
+#pragma warning(suppress: 6400)
 			if(lstrcmpi(szBuffer, _T("static")) == 0)
 			{
 				ModifyStyle(0, SS_NOTIFY);   // we need this
@@ -1698,6 +1699,7 @@ public:
 
 			if(bOutsideLink)
 			{
+#pragma warning(suppress: 6401)
 				if(::CompareString(LOCALE_USER_DEFAULT, NORM_IGNORECASE, &lpstrText[i], 3, _T("<A>"), 3) == CSTR_EQUAL)
 				{
 					if(i > 0)
@@ -1711,6 +1713,7 @@ public:
 			}
 			else
 			{
+#pragma warning(suppress: 6401)
 				if(::CompareString(LOCALE_USER_DEFAULT, NORM_IGNORECASE, &lpstrText[i], 4, _T("</A>"), 4) == CSTR_EQUAL)
 				{
 					cchLink = i - 3 - cchLeft;
@@ -4524,6 +4527,7 @@ public:
 		if(m_bInternalFont)
 		{
 			HFONT hFont = m_tab.GetFont();
+#pragma warning(suppress: 6387)
 			m_tab.SetFont(NULL, FALSE);
 			::DeleteObject(hFont);
 			m_bInternalFont = false;
@@ -4556,6 +4560,7 @@ public:
 		if(m_bInternalFont)
 		{
 			HFONT hFont = m_tab.GetFont();
+#pragma warning(suppress: 6387)
 			m_tab.SetFont(NULL, FALSE);
 			::DeleteObject(hFont);
 			m_bInternalFont = false;
