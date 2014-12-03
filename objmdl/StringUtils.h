@@ -118,6 +118,7 @@ static inline CString StrGetAppExeName()
 {
 	TCHAR lpszPath[MAX_PATH] = { 0 };
 	auto res = GetModuleFileName(NULL, lpszPath, MAX_PATH);
+	UNREFERENCED_PARAMETER(res);
 	ATLASSERT(res);
 	PathRemoveExtension(lpszPath);
 	auto lpszName = PathFindFileName(lpszPath);
