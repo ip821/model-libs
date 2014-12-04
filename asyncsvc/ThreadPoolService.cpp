@@ -73,7 +73,7 @@ STDMETHODIMP CThreadPoolService::Start()
 
 void CThreadPoolService::JoinAndStop(bool bJoin)
 {
-	auto handle = m_handle.load();
+	HANDLE handle = m_handle.exchange(0);
 	if (handle)
 	{
 		if (bJoin)
@@ -202,8 +202,7 @@ STDMETHODIMP CThreadPoolService::Run()
 	}
 
 Exit:
-	auto handle = m_handle.load();
-	m_handle = 0;
+	HANDLE handle = m_handle.exchange(0);
 	if (handle)
 		CloseHandle(handle);
 	return S_OK;
