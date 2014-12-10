@@ -244,7 +244,9 @@ STDMETHODIMP CThreadPoolService::OnFinish(IVariantObject *pResult)
 
 	{
 		boost::lock_guard<boost::mutex> lock(m_mutex);
-		m_threadsInWork.erase(remove(m_threadsInWork.begin(), m_threadsInWork.end(), pThreadService), m_threadsInWork.end());
+		auto it = find_if(m_threadsInWork.begin(), m_threadsInWork.end(), [&](CAdapt<CComPtr<IThreadService>> item){ return item.m_T.p == pThreadService.p; });
+		ATLASSERT(it != m_threadsInWork.end());
+		m_threadsInWork.erase(it);
 	}
 
 	return S_OK;
