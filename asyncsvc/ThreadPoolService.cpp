@@ -229,8 +229,7 @@ STDMETHODIMP CThreadPoolService::OnStart(IVariantObject *pResult)
 
 STDMETHODIMP CThreadPoolService::OnRun(IVariantObject *pResult)
 {
-	Fire_OnRun(pResult);
-	return S_OK;
+	return 	Fire_OnRun(pResult);
 }
 
 STDMETHODIMP CThreadPoolService::OnFinish(IVariantObject *pResult)
