@@ -159,6 +159,16 @@ STDMETHODIMP CPluginSupport::InitWithSettings(IUnknown* pUnk)
 	return S_OK;
 }
 
+STDMETHODIMP CPluginSupport::SetVariantObject(IVariantObject *pVariantObject)
+{
+	for (auto it = m_Plugins.begin(); it != m_Plugins.end(); it++)
+	{
+		CComPtr<IUnknown> pUnk = it->m_T;
+		RETURN_IF_FAILED(HrInitializeWithVariantObject(pUnk, pVariantObject));
+	}
+	return S_OK;
+}
+
 STDMETHODIMP CPluginSupport::Load(ISettings* pSettings)
 {
 	m_pSettings = pSettings;
