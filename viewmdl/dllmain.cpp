@@ -18,12 +18,5 @@ extern "C" BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpRes
 #endif
 	g_hInstance = hInstance;
 
-#ifdef _DEBUG
-	if (dwReason == DLL_PROCESS_DETACH)
-	{
-		_CrtDumpMemoryLeaks();
-	}
-#endif
-
 	return _AtlModule.DllMain(dwReason, lpReserved); 
 }

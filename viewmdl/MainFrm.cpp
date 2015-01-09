@@ -87,33 +87,36 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
 			return bResult;
 	}
 
-	CComPtr<IObjArray> pObjectArray;
-	if (FAILED(m_pPluginSupport->GetPlugins(&pObjectArray)))
+	if (m_pPluginSupport)
 	{
-		ATLASSERT(FALSE);
-		return FALSE;
-	}
-	
-	UINT cb = 0;
-	if (FAILED(pObjectArray->GetCount(&cb)))
-	{
-		ATLASSERT(FALSE);
-		return FALSE;
-	}
-
-	for(UINT i = 0; i < cb; i++)
-	{
-		CComPtr<IMsgFilter> pMsgFilter;
-		HRESULT hr = pObjectArray->GetAt(i, IID_IMsgFilter, (LPVOID*)&pMsgFilter);
-		if(hr == E_NOINTERFACE)
-			continue;
-
-		if(pMsgFilter)
+		CComPtr<IObjArray> pObjectArray;
+		if (FAILED(m_pPluginSupport->GetPlugins(&pObjectArray)))
 		{
-			BOOL bResult = FALSE;
-			pMsgFilter->PreTranslateMessage(pMsg, &bResult);
-			if(bResult)
-				return bResult;
+			ATLASSERT(FALSE);
+			return FALSE;
+		}
+
+		UINT cb = 0;
+		if (FAILED(pObjectArray->GetCount(&cb)))
+		{
+			ATLASSERT(FALSE);
+			return FALSE;
+		}
+
+		for (UINT i = 0; i < cb; i++)
+		{
+			CComPtr<IMsgFilter> pMsgFilter;
+			HRESULT hr = pObjectArray->GetAt(i, IID_IMsgFilter, (LPVOID*)&pMsgFilter);
+			if (hr == E_NOINTERFACE)
+				continue;
+
+			if (pMsgFilter)
+			{
+				BOOL bResult = FALSE;
+				pMsgFilter->PreTranslateMessage(pMsg, &bResult);
+				if (bResult)
+					return bResult;
+			}
 		}
 	}
 
