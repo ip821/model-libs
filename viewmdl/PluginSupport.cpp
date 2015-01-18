@@ -2,7 +2,7 @@
 
 #include "stdafx.h"
 #include "PluginSupport.h"
-
+#include "Functions.h"
 
 // CPluginSupport
 
@@ -124,47 +124,23 @@ STDMETHODIMP CPluginSupport::InitializePlugins(REFGUID guidNamespace, REFGUID gu
 		if(FAILED(hr))
 			continue;
 
-		RETURN_IF_FAILED(InitWithControl(pUnk));
-		RETURN_IF_FAILED(InitWithSettings(pUnk));
+		if (m_pControl)
+		{
+			RETURN_IF_FAILED(HrInitializeWithControl(pUnk, m_pControl));
+		}
+
+		if (m_pSettings)
+		{
+			RETURN_IF_FAILED(HrInitializeWithSettings(pUnk, m_pSettings));
+		}
+
+		if (m_pVariantObject)
+		{
+			RETURN_IF_FAILED(HrInitializeWithVariantObject(pUnk, m_pVariantObject));
+		}
 
 		m_PluginsMap[guidId] = pUnk;
 		m_Plugins.push_back(pUnk);
-	}
-	return S_OK;
-}
-
-STDMETHODIMP CPluginSupport::InitWithControl(IUnknown* pUnk)
-{
-	CHECK_E_POINTER(pUnk);
-	if(!m_pControl)
-		return S_OK;
-
-	CComQIPtr<IInitializeWithControl> pInit = pUnk;
-	if(pInit)
-		RETURN_IF_FAILED(pInit->SetControl(m_pControl));
-
-	return S_OK;
-}
-
-STDMETHODIMP CPluginSupport::InitWithSettings(IUnknown* pUnk)
-{
-	CHECK_E_POINTER(pUnk);
-	if (!m_pSettings)
-		return S_OK;
-
-	CComQIPtr<IInitializeWithSettings> pInit = pUnk;
-	if (pInit)
-		RETURN_IF_FAILED(pInit->Load(m_pSettings));
-
-	return S_OK;
-}
-
-STDMETHODIMP CPluginSupport::SetVariantObject(IVariantObject *pVariantObject)
-{
-	for (auto it = m_Plugins.begin(); it != m_Plugins.end(); it++)
-	{
-		CComPtr<IUnknown> pUnk = it->m_T;
-		RETURN_IF_FAILED(HrInitializeWithVariantObject(pUnk, pVariantObject));
 	}
 	return S_OK;
 }
@@ -174,8 +150,7 @@ STDMETHODIMP CPluginSupport::Load(ISettings* pSettings)
 	m_pSettings = pSettings;
 	for (auto it = m_Plugins.begin(); it != m_Plugins.end(); it++)
 	{
-		CComPtr<IUnknown> pUnk = it->m_T;
-		RETURN_IF_FAILED(InitWithSettings(pUnk));
+		RETURN_IF_FAILED(HrInitializeWithSettings(it->m_T, m_pSettings));
 	}
 	return S_OK;
 }
@@ -185,8 +160,17 @@ STDMETHODIMP CPluginSupport::SetControl(IControl* pControl)
 	m_pControl = pControl;
 	for(auto it = m_Plugins.begin(); it != m_Plugins.end(); it++)
 	{
-		CComPtr<IUnknown> pUnk = it->m_T;
-		RETURN_IF_FAILED(InitWithControl(pUnk));
+		RETURN_IF_FAILED(HrInitializeWithControl(it->m_T, m_pControl));
+	}
+	return S_OK;
+}
+
+STDMETHODIMP CPluginSupport::SetVariantObject(IVariantObject* pVariantObject)
+{
+	m_pVariantObject = pVariantObject;
+	for (auto it = m_Plugins.begin(); it != m_Plugins.end(); it++)
+	{
+		RETURN_IF_FAILED(HrInitializeWithVariantObject(it->m_T, m_pVariantObject));
 	}
 	return S_OK;
 }
