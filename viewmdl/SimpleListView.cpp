@@ -241,7 +241,7 @@ STDMETHODIMP CSimpleListView::AddColumns(IVariantObject* pVariantObject)
 {
 	CHECK_E_POINTER(pVariantObject);
 	CComVariant vColumns;
-	RETURN_IF_FAILED(pVariantObject->GetVariantValue(VAR_COLUMNS, &vColumns));
+	RETURN_IF_FAILED(pVariantObject->GetVariantValue(Metadata::TableObject::ColumnsObject, &vColumns));
 	if (vColumns.vt != (VT_UNKNOWN))
 		return HRESULT_FROM_WIN32(ERROR_INVALID_VARIANT);
 
@@ -262,13 +262,13 @@ STDMETHODIMP CSimpleListView::AddColumns(IVariantObject* pVariantObject)
 		CComPtr<IVariantObject> pVariantObjectValue;
 		RETURN_IF_FAILED(pObjectArray->GetAt(i, IID_IVariantObject, (LPVOID*)&pVariantObjectValue));
 		CComVariant vColumnKey;
-		pVariantObjectValue->GetVariantValue(VAR_COLUMN_KEY, &vColumnKey);
+		pVariantObjectValue->GetVariantValue(Metadata::Table::Column::Key, &vColumnKey);
 		CComVariant vColumnName;
-		pVariantObjectValue->GetVariantValue(VAR_COLUMN_NAME, &vColumnName);
+		pVariantObjectValue->GetVariantValue(Metadata::Table::Column::Name, &vColumnName);
 		CComVariant vColumnType;
-		pVariantObjectValue->GetVariantValue(VAR_COLUMN_TYPE, &vColumnType);
+		pVariantObjectValue->GetVariantValue(Metadata::Table::Column::Type, &vColumnType);
 		CComVariant vColumnWidth;
-		pVariantObjectValue->GetVariantValue(VAR_COLUMN_WIDTH, &vColumnWidth);
+		pVariantObjectValue->GetVariantValue(Metadata::Table::Column::Width, &vColumnWidth);
 
 		m_listView.AddColumn(vColumnName.bstrVal, i);
 		_column_data cd = { vColumnKey.bstrVal, vColumnName.bstrVal, i, vColumnType.uiVal, vColumnWidth.intVal };
@@ -350,7 +350,7 @@ STDMETHODIMP CSimpleListView::AddItems(IVariantObject* pVariantObject)
 {
 	CHECK_E_POINTER(pVariantObject);
 	CComVariant vObjects;
-	RETURN_IF_FAILED(pVariantObject->GetVariantValue(VAR_OBJECTS, &vObjects));
+	RETURN_IF_FAILED(pVariantObject->GetVariantValue(Metadata::TableObject::ColumnsObject, &vObjects));
 	if (vObjects.vt != (VT_UNKNOWN))
 		return HRESULT_FROM_WIN32(ERROR_INVALID_VARIANT);
 
@@ -363,7 +363,7 @@ STDMETHODIMP CSimpleListView::UpdateCaption(IVariantObject* pVariantObject)
 {
 	CHECK_E_POINTER(pVariantObject);
 	CComVariant vCaption;
-	RETURN_IF_FAILED(pVariantObject->GetVariantValue(VAR_NAME, &vCaption));
+	RETURN_IF_FAILED(pVariantObject->GetVariantValue(Metadata::Object::Name, &vCaption));
 	m_strCaption = vCaption.bstrVal;
 
 	CComQIPtr<IContainerControl> pContainerControl = m_pControl;
@@ -393,7 +393,7 @@ STDMETHODIMP CSimpleListView::SetVariantObject(IVariantObject* pVariantObject)
 	RETURN_IF_FAILED(AutoResizeColumns());
 
 	CComVariant vId;
-	RETURN_IF_FAILED(pVariantObject->GetVariantValue(VAR_ID, &vId));
+	RETURN_IF_FAILED(pVariantObject->GetVariantValue(Metadata::Object::Id, &vId));
 	if (vId.vt != VT_EMPTY)
 	{
 		GUID gId = { 0 };

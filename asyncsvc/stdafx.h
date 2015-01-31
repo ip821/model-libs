@@ -47,5 +47,7 @@
 #include "..\ObjMdl\Plugins.h"
 #include "..\ObjMdl\Macros.h"
 #include "..\ObjMdl\Functions.h"
+#include "..\ObjMdl\Metadata.h"
 #include "..\ViewMdl\Plugins.h"
 #include "..\ViewMdl\Functions.h"
+#include "Metadata.h"

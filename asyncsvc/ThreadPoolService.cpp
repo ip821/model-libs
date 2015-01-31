@@ -211,7 +211,7 @@ Exit:
 STDMETHODIMP CThreadPoolService::OnStart(IVariantObject *pResult)
 {
 	CComVariant v;
-	RETURN_IF_FAILED(pResult->GetVariantValue(KEY_THREAD_ID, &v));
+	RETURN_IF_FAILED(pResult->GetVariantValue(Metadata::Thread::Id, &v));
 	ATLASSERT(v.vt == VT_UNKNOWN);
 	CComPtr<IUnknown> pUnk = v.punkVal;
 	CComQIPtr<IThreadService> pThreadService = pUnk;
@@ -236,7 +236,7 @@ STDMETHODIMP CThreadPoolService::OnFinish(IVariantObject *pResult)
 {
 	Fire_OnFinish(pResult);
 	CComVariant v;
-	RETURN_IF_FAILED(pResult->GetVariantValue(KEY_THREAD_ID, &v));
+	RETURN_IF_FAILED(pResult->GetVariantValue(Metadata::Thread::Id, &v));
 	ATLASSERT(v.vt == VT_UNKNOWN);
 	CComPtr<IUnknown> pUnk = v.punkVal;
 	CComQIPtr<IThreadService> pThreadService = pUnk;

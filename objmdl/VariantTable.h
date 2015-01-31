@@ -10,7 +10,7 @@
 #include "ObjMdl_i.h"
 
 using namespace ATL;
-
+using namespace IP::ObjectModel;
 
 // CVariantTable
 

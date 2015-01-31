@@ -3,6 +3,7 @@
 #include "ObjMdl_i.h"
 
 using namespace ATL;
+using namespace IP::ObjectModel;
 
 class ATL_NO_VTABLE CPluginInfo : 
 	public CComObjectRootEx<CComSingleThreadModel>,

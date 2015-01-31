@@ -32,6 +32,9 @@
     <Filter Include="ThreadPoolService">
       <UniqueIdentifier>{d6c16776-b96b-4b3b-9ad8-c4cbdc67283a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Include">
+      <UniqueIdentifier>{ae4e7434-dcaa-43d6-b3cc-f66c059e1137}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -90,9 +93,6 @@
     <ClInclude Include="TimerService.h">
       <Filter>TimerService</Filter>
     </ClInclude>
-    <ClInclude Include="Plugins.h">
-      <Filter>PluginTable</Filter>
-    </ClInclude>
     <ClInclude Include="PluginTable.h">
       <Filter>PluginTable</Filter>
     </ClInclude>
@@ -110,6 +110,12 @@
     </ClInclude>
     <ClInclude Include="ThreadPoolService.h">
       <Filter>ThreadPoolService</Filter>
+    </ClInclude>
+    <ClInclude Include="Plugins.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Metadata.h">
+      <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

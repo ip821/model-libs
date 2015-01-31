@@ -9,7 +9,7 @@
 #include "viewmdl_contract_i.h"
 
 using namespace ATL;
-
+using namespace IP::ObjectModel;
 
 // CSimpleListView
 

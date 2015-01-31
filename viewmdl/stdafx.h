@@ -61,6 +61,7 @@ using namespace ATL;
 
 #include <initguid.h>
 #include "..\ObjMdl\Macros.h"
+#include "..\ObjMdl\Metadata.h"
 #include "..\ObjMdl\ManualComObjectLoader.h"
 #include "..\ObjMdl\Plugins.h"
 #include "..\ObjMdl\Functions.h"

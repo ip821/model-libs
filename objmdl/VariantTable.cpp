@@ -35,21 +35,21 @@ STDMETHODIMP CVariantTable::SetColumns(IObjArray* pObjectArray)
 		CComPtr<IVariantObject> pVariantObject;
 		RETURN_IF_FAILED(pObjectArray->GetAt(i, IID_IVariantObject, (LPVOID*)&pVariantObject));
 		CComVariant vKey;
-		pVariantObject->GetVariantValue(VAR_COLUMN_KEY, &vKey);
+		pVariantObject->GetVariantValue(Metadata::Table::Column::Key, &vKey);
 		if(vKey.vt == VT_BSTR)
 		{
 			column_data.strColumnKey = vKey.bstrVal;
 		}
 
 		CComVariant vName;
-		pVariantObject->GetVariantValue(VAR_COLUMN_NAME, &vName);
+		pVariantObject->GetVariantValue(Metadata::Table::Column::Name, &vName);
 		if(vName.vt == VT_BSTR)
 		{
 			column_data.strColumnName = vName.bstrVal;
 		}
 
 		CComVariant vType;
-		pVariantObject->GetVariantValue(VAR_COLUMN_TYPE, &vType);
+		pVariantObject->GetVariantValue(Metadata::Table::Column::Type, &vType);
 		if(vType.vt == VT_UI2)
 		{
 			column_data.vt = (VARENUM)vType.uiVal;

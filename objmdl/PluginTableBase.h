@@ -18,6 +18,8 @@
 extern HINSTANCE g_hInstance;
 extern HMODULE g_hObjMdl;
 
+using namespace IP::ObjectModel;
+
 class CPluginTableBase : public IPluginTable
 {
 protected:
@@ -40,13 +42,13 @@ private:
 
 		m_infos.push_back(pVariantObject);
 
-		RETURN_IF_FAILED(pVariantObject->SetVariantValue(VAR_GUID_NAMESPACE, &CComVariant(gNamespace)));
-		RETURN_IF_FAILED(pVariantObject->SetVariantValue(VAR_GUID_TYPE, &CComVariant(gType)));
-		RETURN_IF_FAILED(pVariantObject->SetVariantValue(VAR_GUID_ID, &CComVariant(gId)));
-		RETURN_IF_FAILED(pVariantObject->SetVariantValue(VAR_GUID_CLSID, &CComVariant(clsid)));
-		RETURN_IF_FAILED(pVariantObject->SetVariantValue(VAR_NAME, &CComVariant(lpszName)));
-		RETURN_IF_FAILED(pVariantObject->SetVariantValue(VAR_DESCRIPTION, &CComVariant(lpszDescription)));
-		RETURN_IF_FAILED(pVariantObject->SetVariantValue(VAR_OBJECT_CLASSFACTORY, &CComVariant(pClassFactory)));
+		RETURN_IF_FAILED(pVariantObject->SetVariantValue(Metadata::Plugins::Object::Namespace, &CComVariant(gNamespace)));
+		RETURN_IF_FAILED(pVariantObject->SetVariantValue(Metadata::Plugins::Object::Type, &CComVariant(gType)));
+		RETURN_IF_FAILED(pVariantObject->SetVariantValue(Metadata::Plugins::Object::Id, &CComVariant(gId)));
+		RETURN_IF_FAILED(pVariantObject->SetVariantValue(Metadata::Plugins::Object::Clsid, &CComVariant(clsid)));
+		RETURN_IF_FAILED(pVariantObject->SetVariantValue(Metadata::Object::Name, &CComVariant(lpszName)));
+		RETURN_IF_FAILED(pVariantObject->SetVariantValue(Metadata::Object::Description, &CComVariant(lpszDescription)));
+		RETURN_IF_FAILED(pVariantObject->SetVariantValue(Metadata::Plugins::Object::ClassFactoryObject, &CComVariant(pClassFactory)));
 
 		return S_OK;
 	}

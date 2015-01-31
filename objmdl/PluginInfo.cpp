@@ -21,20 +21,20 @@ STDMETHODIMP CPluginInfo::GetStringValue(BSTR bstrKey, BSTR* bstr)
 STDMETHODIMP CPluginInfo::GetName(BSTR* bstrName)
 {
 	CHECK_E_POINTER(bstrName);
-	return GetStringValue(VAR_NAME, bstrName);
+	return GetStringValue(Metadata::Object::Name, bstrName);
 }
 
 STDMETHODIMP CPluginInfo::GetDescription(BSTR* bstrName)
 {
 	CHECK_E_POINTER(bstrName);
-	return GetStringValue(VAR_DESCRIPTION, bstrName);
+	return GetStringValue(Metadata::Object::Description, bstrName);
 }
 
 STDMETHODIMP CPluginInfo::GetNamespace(GUID* guidNamespace)
 {
 	CHECK_E_POINTER(guidNamespace);
 	CComVariant v;
-	m_pVariantObject->GetVariantValue(VAR_GUID_NAMESPACE, &v);
+	m_pVariantObject->GetVariantValue(IP::ObjectModel::Metadata::Plugins::Object::Namespace, &v);
 	return CLSIDFromString(v.bstrVal, guidNamespace);
 }
 
@@ -42,7 +42,7 @@ STDMETHODIMP CPluginInfo::GetType(GUID* guidType)
 {
 	CHECK_E_POINTER(guidType);
 	CComVariant v;
-	m_pVariantObject->GetVariantValue(VAR_GUID_TYPE, &v);
+	m_pVariantObject->GetVariantValue(Metadata::Plugins::Object::Type, &v);
 	return CLSIDFromString(v.bstrVal, guidType);
 }
 
@@ -50,7 +50,7 @@ STDMETHODIMP CPluginInfo::GetId(GUID* guidId)
 {
 	CHECK_E_POINTER(guidId);
 	CComVariant v;
-	m_pVariantObject->GetVariantValue(VAR_GUID_ID, &v);
+	m_pVariantObject->GetVariantValue(Metadata::Plugins::Object::Id, &v);
 	return CLSIDFromString(v.bstrVal, guidId);
 }
 
@@ -58,7 +58,7 @@ STDMETHODIMP CPluginInfo::GetCLSID(GUID* guidCLSID)
 {
 	CHECK_E_POINTER(guidCLSID);
 	CComVariant v;
-	m_pVariantObject->GetVariantValue(VAR_GUID_CLSID, &v);
+	m_pVariantObject->GetVariantValue(Metadata::Plugins::Object::Clsid, &v);
 	return CLSIDFromString(v.bstrVal, guidCLSID);
 }
 
@@ -69,7 +69,7 @@ STDMETHODIMP CPluginInfo::CreateInstance(IUnknown** ppUnknown)
 	RETURN_IF_FAILED(GetCLSID(&clsid));
 
 	CComVariant v;
-	RETURN_IF_FAILED(m_pVariantObject->GetVariantValue(VAR_OBJECT_CLASSFACTORY, &v));
+	RETURN_IF_FAILED(m_pVariantObject->GetVariantValue(Metadata::Plugins::Object::ClassFactoryObject, &v));
 	if(v.vt == VT_UNKNOWN && v.punkVal)
 	{
 		CComQIPtr<IClassFactory> pClassFactory;

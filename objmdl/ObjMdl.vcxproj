@@ -573,6 +573,7 @@
     <ClInclude Include="LONGSortComparer.h" />
     <ClInclude Include="Macros.h" />
     <ClInclude Include="ManualComObjectLoader.h" />
+    <ClInclude Include="Metadata.h" />
     <ClInclude Include="ObjectCollection.h" />
     <ClInclude Include="objmdl_contract_i.h" />
     <ClInclude Include="ObjMdl_i.h" />
