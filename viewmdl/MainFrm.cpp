@@ -327,13 +327,15 @@ STDMETHODIMP CMainFrame::InitContainerControl()
 	if (!pControl)
 		return E_NOINTERFACE;
 
+	RETURN_IF_FAILED(pControl->GetHWND(&hwndContainer));
+	if (hwndContainer)
+		return S_OK;
+
 	CComQIPtr<IInitializeWithControl> pInitializeWithControl = m_pContainerControl;
 	if (pInitializeWithControl)
 		RETURN_IF_FAILED(pInitializeWithControl->SetControl(this));
 
-	HRESULT hr = pControl->CreateEx(m_hWnd, &hwndContainer);
-	if (FAILED(hr))
-		return hr;
+	RETURN_IF_FAILED(pControl->CreateEx(m_hWnd, &hwndContainer));
 
 	m_hWndClient = hwndContainer;
 
