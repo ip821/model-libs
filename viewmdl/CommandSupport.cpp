@@ -172,7 +172,7 @@ STDMETHODIMP CCommandSupport::RegisterCommand(ICommand* pCommand, REFGUID gComma
 	{
 		if (m_hAccel)
 			::DestroyAcceleratorTable(m_hAccel);
-		m_hAccel = CreateAcceleratorTable((LPACCEL)&m_accels[0], m_accels.size());
+		m_hAccel = CreateAcceleratorTable((LPACCEL)&m_accels[0], static_cast<int>(m_accels.size()));
 	}
 
 	return S_OK;

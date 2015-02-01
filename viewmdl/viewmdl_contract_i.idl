@@ -121,6 +121,7 @@ interface IControl2 : IControl
 interface IFormManager : IUnknown
 {
 	HRESULT OpenForm(GUID guidId, IControl** ppControl);
+	HRESULT OpenForm2(GUID guidNamespace, GUID guidType, GUID guidId, IControl** ppControl);
 	HRESULT ActivateForm(GUID guidId);
 	HRESULT ActivateForm2(IControl* pControl);
 	HRESULT FindForm(GUID guidId, IControl** ppControl);

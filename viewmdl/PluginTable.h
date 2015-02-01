@@ -37,7 +37,7 @@ public:
 		RETURN_IF_FAILED(AddObject(CLSID_InfoControl, _T("Info control")));
 		RETURN_IF_FAILED(AddObject(CLSID_TabbedControl, _T("Tab control")));
 
-		RETURN_IF_FAILED(AddPluginInfo(PNAMESP_HOSTFORM, PVIEWTYPE_CONTAINERWINDOW, CONTROL_TABCONTAINER, CLSID_TabbedControl, _T("Tab control")));
+		RETURN_IF_FAILED(AddPluginInfo(PNAMESP_HOSTFORM, PVIEWTYPE_CONTAINERWINDOW, CONTROL_TABCONTAINER, CLSID_TabbedControl, _T("Tab control for main frame")));
 
 		RETURN_IF_FAILED(AddPluginInfo(PNAMESP_HOSTFORM, PVIEWTYPE_COMMAND, COMMAND_FILE, CLSID_FileCommand, _T("File menu item")));
 		RETURN_IF_FAILED(AddPluginInfo(PNAMESP_HOSTFORM, PVIEWTYPE_COMMAND, COMMAND_EXIT, CLSID_ExitCommand, _T("Exit menu item")));

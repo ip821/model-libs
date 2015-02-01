@@ -51,6 +51,7 @@ private:
 	STDMETHOD(GetContainerControl)(IContainerControl** ppContainerControl);
 	HRESULT Fire_OnActivate(IControl* pControl);
 	HRESULT Fire_OnDeactivate(IControl* pControl);
+	STDMETHOD(OpenFormInternal)(IControl* pControl);
 
 public:
 
@@ -58,6 +59,7 @@ public:
 	STDMETHOD(OnShutdown)();
 
 	STDMETHOD(OpenForm)(GUID guidId, IControl** ppControl);
+	STDMETHOD(OpenForm2)(GUID guidNamespace, GUID guidType, GUID guidId, IControl** ppControl);
 	STDMETHOD(FindForm)(GUID guidId, IControl** ppControl);
 	STDMETHOD(ActivateForm)(GUID guidId);
 	STDMETHOD(OnClose)(IControl* pControl);

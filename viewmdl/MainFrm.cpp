@@ -494,10 +494,14 @@ void CMainFrame::UpdateLayout(BOOL bResizeBars = TRUE)
 	{
 		CRect clientWindowRect;
 		::GetWindowRect(m_hWndClient, &clientWindowRect);
-		CPoint pt(clientWindowRect.left, clientWindowRect.top);
-		::ScreenToClient(m_hWnd, &pt);
-		::SetWindowPos(m_hWndClient, NULL, rect.left, pt.y,
-			rect.right - rect.left, rect.bottom - rect.top - pt.y,
-			SWP_NOZORDER | SWP_NOACTIVATE);
+		::SetWindowPos(
+			m_hWndClient, 
+			NULL, 
+			rect.left, 
+			rect.top, 
+			rect.right - rect.left, 
+			rect.bottom - rect.top,
+			SWP_NOZORDER | SWP_NOACTIVATE
+			);
 	}
 }

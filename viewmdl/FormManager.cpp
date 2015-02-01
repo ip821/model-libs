@@ -114,13 +114,19 @@ STDMETHODIMP CFormManager::ActivateForm(GUID guidId)
 	return S_OK;
 }
 
-STDMETHODIMP CFormManager::OpenForm(GUID guidId, IControl** ppControl)
+STDMETHODIMP CFormManager::OpenForm2(GUID guidNamespace, GUID guidType, GUID guidId, IControl** ppControl)
 {
 	CHECK_E_POINTER(ppControl);
+	CComPtr<IUnknown> pUnk;
+	RETURN_IF_FAILED(GetPluginManager()->CreatePluginInstance(guidNamespace, guidType, guidId, &pUnk));
+	CComQIPtr<IControl> pControl = pUnk;
+	m_pControls[guidId] = pControl;
+	RETURN_IF_FAILED(OpenFormInternal(pControl));
+	return pControl->QueryInterface(IID_IControl, (LPVOID*)ppControl);
+}
 
-	CComPtr<IControl> pControl;
-	RETURN_IF_FAILED(HrCoCreateInstance(guidId, &pControl));
-
+STDMETHODIMP CFormManager::OpenFormInternal(IControl* pControl)
+{
 	CComPtr<IContainerControl> pContainerControl;
 	RETURN_IF_FAILED(GetContainerControl(&pContainerControl));
 
@@ -129,14 +135,22 @@ STDMETHODIMP CFormManager::OpenForm(GUID guidId, IControl** ppControl)
 
 	CComQIPtr<IControl> pParentControl = pContainerControl;
 	CComQIPtr<IInitializeWithControl> pInitializeWithControl = pControl;
-	if(pParentControl && pInitializeWithControl)
+	if (pParentControl && pInitializeWithControl)
 	{
 		RETURN_IF_FAILED(pInitializeWithControl->SetControl(pParentControl));
 	}
 
-	m_pControls[guidId] = pControl;
 	RETURN_IF_FAILED(pTabbedControl->AddPage(pControl));
+	return S_OK;
+}
 
+STDMETHODIMP CFormManager::OpenForm(GUID guidId, IControl** ppControl)
+{
+	CHECK_E_POINTER(ppControl);
+	CComPtr<IControl> pControl;
+	RETURN_IF_FAILED(HrCoCreateInstance(guidId, &pControl));
+	m_pControls[guidId] = pControl;
+	RETURN_IF_FAILED(OpenFormInternal(pControl));
 	return pControl->QueryInterface(IID_IControl, (LPVOID*)ppControl);
 }
 

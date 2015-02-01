@@ -16,7 +16,7 @@ STDMETHODIMP CVariantCollection::AddItem(VARIANT* pv)
 STDMETHODIMP CVariantCollection::GetCount(ULONG* pulCount)
 {
 	CHECK_E_POINTER(pulCount);
-	*pulCount = m_vector.size();
+	*pulCount = static_cast<ULONG>(m_vector.size());
 	return S_OK;
 }
 

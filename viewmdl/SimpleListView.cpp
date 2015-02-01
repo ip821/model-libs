@@ -350,7 +350,7 @@ STDMETHODIMP CSimpleListView::AddItems(IVariantObject* pVariantObject)
 {
 	CHECK_E_POINTER(pVariantObject);
 	CComVariant vObjects;
-	RETURN_IF_FAILED(pVariantObject->GetVariantValue(Metadata::TableObject::ColumnsObject, &vObjects));
+	RETURN_IF_FAILED(pVariantObject->GetVariantValue(Metadata::TableObject::ObjectsObject, &vObjects));
 	if (vObjects.vt != (VT_UNKNOWN))
 		return HRESULT_FROM_WIN32(ERROR_INVALID_VARIANT);
 

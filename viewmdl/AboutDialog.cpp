@@ -84,16 +84,13 @@ STDMETHODIMP CAboutDialog::InitListView()
 	CComPtr<IVariantObject> pVariantObject;
 	RETURN_IF_FAILED(m_pPluginManager->CoCreateInstance(CLSID_VariantObject, IID_IVariantObject, (LPVOID*)&pVariantObject));
 
-	CComPtr<IVariantTable> pVariantTableColumns;
-	RETURN_IF_FAILED(m_pPluginManager->CoCreateInstance(CLSID_VariantTable, IID_IVariantTable, (LPVOID*)&pVariantTableColumns));
 	RETURN_IF_FAILED(HrAddColumn(m_pPluginManager, pVariantObject, IP::ObjectModel::Metadata::Object::Name, L"Name", VT_BSTR, 500));
 
 	CComPtr<IVariantTable> pVariantTableObjects;
 	RETURN_IF_FAILED(m_pPluginManager->CoCreateInstance(CLSID_VariantTable, IID_IVariantTable, (LPVOID*)&pVariantTableObjects));
 	RETURN_IF_FAILED(pVariantTableObjects->SetObjects(pObjectArray));
 	RETURN_IF_FAILED(pVariantTableObjects->SetSort(IP::ObjectModel::Metadata::Object::Name, FALSE));
-
-	RETURN_IF_FAILED(pVariantObject->SetVariantValue(IP::ObjectModel::Metadata::TableObject::ColumnsObject, &CComVariant(pVariantTableColumns)));
+	RETURN_IF_FAILED(pVariantObject->SetVariantValue(IP::ObjectModel::Metadata::TableObject::ObjectsObject, &CComVariant(pVariantTableObjects)));
 
 	pInitializeWithVariantObject->SetVariantObject(pVariantObject);
 	return S_OK;
