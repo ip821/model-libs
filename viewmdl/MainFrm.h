@@ -104,6 +104,8 @@ private:
 	UINT m_CmdShow = 0;
 	MainWindowFlags m_flags = MainWindowFlags::MainWindowAll;
 
+	STDMETHOD(InitContainerControl)();
+
 public:
 	STDMETHOD(SetFlags)(MainWindowFlags flags);
 	STDMETHOD(GetMessageLoop)(IMessageLoop** ppMessageLoop);

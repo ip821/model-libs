@@ -13,6 +13,8 @@ namespace IP
 				const static CComBSTR Count(L"VAR_COUNT");
 				const static CComBSTR Size(L"VAR_SIZE");
 				const static CComBSTR Id(L"VAR_ID");
+				const static CComBSTR Key(L"VAR_KEY");
+				const static CComBSTR Value(L"VAR_VALUE");
 				const static CComBSTR Type(L"VAR_OBJECT_TYPE");
 			}
 

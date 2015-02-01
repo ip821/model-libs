@@ -162,6 +162,11 @@ LRESULT CMainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
 	m_pPluginSupport->SetControl(this);
 	m_pPluginSupport->OnInitializing();
 
+	if (m_pContainerControl)
+	{
+		RETURN_IF_FAILED(InitContainerControl());
+	}
+
 	if ((m_flags & MainWindowFlags::MainWindowMenuBar) == 0)
 	{
 #pragma warning(suppress: 6387)
@@ -224,7 +229,10 @@ LRESULT CMainFrame::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*
 	GetWindowPlacement(&m_placement);
 	GetWindowRect(&m_rectForSettingsSave);
 
-	Save(m_pSettings);
+	if (m_pSettings)
+	{
+		RETURN_IF_FAILED(Save(m_pSettings));
+	}
 
 	CComQIPtr<IPluginSupportNotifications> pPluginSupportNotifications = m_pContainerControl;
 	if (pPluginSupportNotifications)
@@ -312,22 +320,19 @@ STDMETHODIMP CMainFrame::ShowWindow(int cmd, BOOL* bResult)
 	return S_OK;
 }
 
-STDMETHODIMP CMainFrame::SetContainerControl(IContainerControl* pContainerControl)
+STDMETHODIMP CMainFrame::InitContainerControl()
 {
-	CHECK_E_POINTER(pContainerControl);
-	m_pContainerControl = pContainerControl;
-
 	HWND hwndContainer = NULL;
-	CComQIPtr<IControl> pControl = pContainerControl;
-	if(!pControl)
+	CComQIPtr<IControl> pControl = m_pContainerControl;
+	if (!pControl)
 		return E_NOINTERFACE;
 
-	CComQIPtr<IInitializeWithControl> pInitializeWithControl = pContainerControl;
-	if(pInitializeWithControl)
+	CComQIPtr<IInitializeWithControl> pInitializeWithControl = m_pContainerControl;
+	if (pInitializeWithControl)
 		RETURN_IF_FAILED(pInitializeWithControl->SetControl(this));
 
 	HRESULT hr = pControl->CreateEx(m_hWnd, &hwndContainer);
-	if(FAILED(hr))
+	if (FAILED(hr))
 		return hr;
 
 	m_hWndClient = hwndContainer;
@@ -342,6 +347,18 @@ STDMETHODIMP CMainFrame::SetContainerControl(IContainerControl* pContainerContro
 	if (pPluginSupportNotifications)
 	{
 		RETURN_IF_FAILED(pPluginSupportNotifications->OnInitialized(m_pPluginSupport));
+	}
+	return S_OK;
+}
+
+STDMETHODIMP CMainFrame::SetContainerControl(IContainerControl* pContainerControl)
+{
+	CHECK_E_POINTER(pContainerControl);
+	m_pContainerControl = pContainerControl;
+
+	if (m_hWnd)
+	{
+		RETURN_IF_FAILED(InitContainerControl());
 	}
 
 	return S_OK;

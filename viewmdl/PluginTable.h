@@ -35,6 +35,7 @@ public:
 		RETURN_IF_FAILED(AddObject(CLSID_ActionQueueService, _T("Action queue service")));
 		RETURN_IF_FAILED(AddObject(CLSID_InfoControlService, _T("Info control service")));
 		RETURN_IF_FAILED(AddObject(CLSID_InfoControl, _T("Info control")));
+		RETURN_IF_FAILED(AddObject(CLSID_TabbedControl, _T("Tab control")));
 
 		RETURN_IF_FAILED(AddPluginInfo(PNAMESP_HOSTFORM, PVIEWTYPE_CONTAINERWINDOW, CONTROL_TABCONTAINER, CLSID_TabbedControl, _T("Tab control")));
 

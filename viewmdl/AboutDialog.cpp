@@ -93,7 +93,7 @@ STDMETHODIMP CAboutDialog::InitListView()
 	RETURN_IF_FAILED(pVariantTableObjects->SetObjects(pObjectArray));
 	RETURN_IF_FAILED(pVariantTableObjects->SetSort(IP::ObjectModel::Metadata::Object::Name, FALSE));
 
-	RETURN_IF_FAILED(pVariantObject->SetVariantValue(IP::ObjectModel::Metadata::TableObject::ColumnsObject, &CComVariant(pVariantTableObjects)));
+	RETURN_IF_FAILED(pVariantObject->SetVariantValue(IP::ObjectModel::Metadata::TableObject::ColumnsObject, &CComVariant(pVariantTableColumns)));
 
 	pInitializeWithVariantObject->SetVariantObject(pVariantObject);
 	return S_OK;
