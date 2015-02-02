@@ -26,14 +26,6 @@ STDMETHODIMP CPluginSupport::GetPlugins(IObjArray** ppObjectArray)
 	return pObjectCollection->QueryInterface(IID_IObjArray, (LPVOID*)ppObjectArray);
 }
 
-STDMETHODIMP CPluginSupport::UninstallAll()
-{
-	OnShutdown();
-	m_Plugins.clear();
-	m_PluginsMap.clear();
-	return S_OK;
-}
-
 STDMETHODIMP CPluginSupport::OnShutdown()
 {
 	for (auto it = m_Plugins.cbegin(); it != m_Plugins.cend(); it++)

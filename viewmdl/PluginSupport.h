@@ -54,7 +54,6 @@ public:
 	STDMETHOD(InitializePlugins)(REFGUID guidNamespace, REFGUID guidType);
 	STDMETHOD(GetPlugins)(IObjArray** ppObjectArray);
 	STDMETHOD(SetControl)(IControl* pControl);
-	STDMETHOD(UninstallAll)();
 	STDMETHOD(OnInitialized)();
 	STDMETHOD(OnShutdown)();
 	STDMETHOD(OnInitializing)();

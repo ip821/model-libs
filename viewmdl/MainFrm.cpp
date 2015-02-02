@@ -64,6 +64,7 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
 	if (!pMsg)
 		return FALSE;
 
+	if (m_pStatusBarSupport)
 	{
 		BOOL bResult = FALSE;
 		if (FAILED(m_pStatusBarSupport->PreTranslateMessage(pMsg, &bResult)))
@@ -135,6 +136,10 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
 BOOL CMainFrame::OnIdle()
 {
 	UIUpdateToolBar();
+	
+	if (!m_pCommandSupport)
+		return FALSE;
+
 	BOOL bResult = FALSE;
 	if (FAILED(m_pCommandSupport->OnIdle(&bResult)))
 	{
@@ -226,6 +231,11 @@ LRESULT CMainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
 
 LRESULT CMainFrame::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
 {
+	// unregister message filtering and idle updates
+	ATLASSERT(m_pMessageLoop != NULL);
+	m_pMessageLoop->RemoveMessageFilter(this);
+	m_pMessageLoop->RemoveIdleHandler(this);
+
 	GetWindowPlacement(&m_placement);
 	GetWindowRect(&m_rectForSettingsSave);
 
@@ -237,15 +247,10 @@ LRESULT CMainFrame::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*
 	CComQIPtr<IPluginSupportNotifications> pPluginSupportNotifications = m_pContainerControl;
 	if (pPluginSupportNotifications)
 	{
-		pPluginSupportNotifications->OnShutdown();
+		RETURN_IF_FAILED(pPluginSupportNotifications->OnShutdown());
 	}
 	m_pPluginSupport->OnShutdown();
 	m_pCommandSupport->UninstallAll();
-	m_pPluginSupport->UninstallAll();
-	// unregister message filtering and idle updates
-	ATLASSERT(m_pMessageLoop != NULL);
-	m_pMessageLoop->RemoveMessageFilter(this);
-	m_pMessageLoop->RemoveIdleHandler(this);
 
 	m_pSettings.Release();
 	m_pPluginManager.Release();

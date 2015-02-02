@@ -317,7 +317,6 @@ interface IPluginSupport : IUnknown
 	HRESULT SetParentServiceProvider(IServiceProvider* pServiceProvider);
 	HRESULT InitializePlugins(REFGUID guidNamespace, REFGUID guidType);
 	HRESULT GetPlugins(IObjArray** ppObjectArray);
-	HRESULT UninstallAll();
 	HRESULT OnInitialized();
 	HRESULT OnShutdown();
 };

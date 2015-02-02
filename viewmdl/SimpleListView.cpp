@@ -232,7 +232,7 @@ STDMETHODIMP CSimpleListView::OnClose()
 	}
 
 	RETURN_IF_FAILED(m_pCommandSupport->UninstallAll());
-	RETURN_IF_FAILED(m_PluginSupport->UninstallAll());
+	RETURN_IF_FAILED(m_PluginSupport->OnShutdown());
 
 	return S_OK;
 }
