@@ -36,3 +36,6 @@
 /asyncsvc/Debug_XP
 /objmdl/Debug_XP
 /viewmdl/Debug_XP
+/objmdl/x64/Debug
+/viewmdl/x64/Debug
+/viewmdl/ViewMdl_p.c
