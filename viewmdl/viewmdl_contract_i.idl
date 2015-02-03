@@ -405,6 +405,7 @@ interface ISystrayWindow : IUnknown
 	HRESULT OnTrayNotify(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT* lpResult, BOOL* pbHandled);
 	HRESULT ShowBaloon(BSTR bstrText, BSTR bstrCaption, SystrayBalloonStyle style, UINT uTimeout);
 	HRESULT Hide();
+	HRESULT SetTooltip(BSTR bstrToolTip);
 };
 
 [

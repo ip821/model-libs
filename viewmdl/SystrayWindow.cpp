@@ -25,6 +25,12 @@ STDMETHODIMP CSystrayWindow::Hide()
 	return S_OK;
 }
 
+STDMETHODIMP CSystrayWindow::SetTooltip(BSTR bstrToolTip)
+{
+	m_trayNotifyIcon.SetTooltipText(bstrToolTip);
+	return S_OK;
+}
+
 STDMETHODIMP CSystrayWindow::Create(HWND hWndParent)
 {
 	m_trayNotifyIcon.Create(hWndParent, WM_TRAYNOTIFY);

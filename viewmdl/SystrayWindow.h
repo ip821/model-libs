@@ -42,6 +42,7 @@ public:
 	STDMETHOD(OnTrayNotify)(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT* lpResult, BOOL* pbHandled);
 	STDMETHOD(ShowBaloon)(BSTR bstrText, BSTR bstrCaption, SystrayBalloonStyle style, UINT uTimeout);
 	STDMETHOD(Hide)();
+	STDMETHOD(SetTooltip)(BSTR bstrToolTip);
 
 	HRESULT Fire_OnSystrayNotification(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT lpResult, BOOL pbHandled);
 private:
