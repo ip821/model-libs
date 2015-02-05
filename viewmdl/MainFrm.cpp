@@ -244,11 +244,14 @@ LRESULT CMainFrame::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*
 		RETURN_IF_FAILED(Save(m_pSettings));
 	}
 
+	//TODO: unknown crash in minitwi, commented in release build...
+#ifdef DEBUG
 	CComQIPtr<IPluginSupportNotifications> pPluginSupportNotifications = m_pContainerControl;
 	if (pPluginSupportNotifications)
 	{
 		RETURN_IF_FAILED(pPluginSupportNotifications->OnShutdown());
 	}
+#endif
 	m_pPluginSupport->OnShutdown();
 	m_pCommandSupport->UninstallAll();
 
