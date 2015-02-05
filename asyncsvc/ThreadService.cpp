@@ -122,11 +122,12 @@ HRESULT CThreadService::Fire_OnFinishInternal()
 		RETURN_IF_FAILED(Fire_OnFinish());
 
 		CComVariant vRestart;
-		pResult->GetVariantValue(Metadata::Timer::RestartFlag, &vRestart);
+		RETURN_IF_FAILED(pResult->GetVariantValue(Metadata::Timer::RestartFlag, &vRestart));
 		if (m_pTimerService && (vRestart.vt == VT_EMPTY || (vRestart.vt == VT_BOOL && vRestart.boolVal)))
 		{
 			RETURN_IF_FAILED(m_pTimerService->ResumeTimer());
 		}
+		m_pResult.Release();
 	}
 	return S_OK;
 }
