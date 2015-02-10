@@ -1,10 +1,26 @@
 #pragma once
 
 #include <fstream>
+#include <Objidl.h>
 
 class CTextFile
 {
 public:
+
+	static void ReadAllTextFromStream(IStream* pStream, CString& strText)
+	{
+		USES_CONVERSION;
+		const auto bufSize = 1024;
+		while (true)
+		{
+			char buffer[bufSize] = { 0 };
+			ULONG cbRead = 0;
+			pStream->Read(&buffer, bufSize, &cbRead);
+			if (!cbRead)
+				break;
+			strText.Append(CA2W(buffer), cbRead);
+		}
+	}
 
 	static void ReadAllText(LPCTSTR lpszPath, CString& strText)
 	{
