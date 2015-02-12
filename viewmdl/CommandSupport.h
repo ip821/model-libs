@@ -54,7 +54,7 @@ public:
 	END_CONNECTION_POINT_MAP()
 
 private:
-	std::map<int, CAdapt<CComPtr<ICommand> > > m_InstalledCommandsMap;
+	std::map<int, CComPtr<ICommand>> m_InstalledCommandsMap;
 	std::map<GUID, std::list<int>, GUIDComparer> m_InstalledCommandsGuidToIdMap;
 	std::map<int, GUID> m_InstalledCommandsIdToGuidMap;
 	std::map<GUID, BOOL, GUIDComparer> m_commandState;

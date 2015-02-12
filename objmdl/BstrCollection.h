@@ -26,7 +26,7 @@ public:
 	END_COM_MAP()
 
 private:
-	std::vector< CAdapt<CComBSTR> > m_vector;
+	std::vector<CComBSTR> m_vector;
 
 public:
 

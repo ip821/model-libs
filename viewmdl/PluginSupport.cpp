@@ -20,7 +20,7 @@ STDMETHODIMP CPluginSupport::GetPlugins(IObjArray** ppObjectArray)
 
 	for(auto it = m_Plugins.begin(); it != m_Plugins.end(); it++)
 	{
-		RETURN_IF_FAILED(pObjectCollection->AddObject(it->m_T));
+		RETURN_IF_FAILED(pObjectCollection->AddObject((*it)));
 	}
 
 	return pObjectCollection->QueryInterface(IID_IObjArray, (LPVOID*)ppObjectArray);
@@ -28,17 +28,19 @@ STDMETHODIMP CPluginSupport::GetPlugins(IObjArray** ppObjectArray)
 
 STDMETHODIMP CPluginSupport::OnShutdown()
 {
-	for (auto it = m_Plugins.cbegin(); it != m_Plugins.cend(); it++)
+	auto plugins = m_Plugins;
+	m_Plugins.clear();
+	m_PluginsMap.clear();
+
+	for (auto it = plugins.cbegin(); it != plugins.cend(); it++)
 	{
-		CComQIPtr<IPluginSupportNotifications> pPluginSupportNotifications = it->m_T;
+		CComQIPtr<IPluginSupportNotifications> pPluginSupportNotifications = *it;
 		if (pPluginSupportNotifications)
 		{
 			RETURN_IF_FAILED(pPluginSupportNotifications->OnShutdown());
 		}
 	}
 
-	m_Plugins.clear();
-	m_PluginsMap.clear();
 	m_pControl.Release();
 	m_pSettings.Release();
 	m_pPluginManager.Release();
@@ -51,7 +53,7 @@ STDMETHODIMP CPluginSupport::OnInitCompleted()
 {
 	for (auto it = m_Plugins.cbegin(); it != m_Plugins.cend(); it++)
 	{
-		CComQIPtr<IPluginSupportNotifications2> pPluginSupportNotifications = it->m_T;
+		CComQIPtr<IPluginSupportNotifications2> pPluginSupportNotifications = *it;
 		if (pPluginSupportNotifications)
 		{
 			RETURN_IF_FAILED(pPluginSupportNotifications->OnInitCompleted());
@@ -65,7 +67,7 @@ STDMETHODIMP CPluginSupport::OnInitializing()
 {
 	for (auto it = m_Plugins.cbegin(); it != m_Plugins.cend(); it++)
 	{
-		CComQIPtr<IPluginSupportNotifications2> pPluginSupportNotifications = it->m_T;
+		CComQIPtr<IPluginSupportNotifications2> pPluginSupportNotifications = *it;
 		if (pPluginSupportNotifications)
 		{
 			RETURN_IF_FAILED(pPluginSupportNotifications->OnInitializing(this));
@@ -79,7 +81,7 @@ STDMETHODIMP CPluginSupport::OnInitialized()
 {
 	for(auto it = m_Plugins.cbegin(); it != m_Plugins.cend(); it++)
 	{
-		CComQIPtr<IPluginSupportNotifications> pPluginSupportNotifications = it->m_T;
+		CComQIPtr<IPluginSupportNotifications> pPluginSupportNotifications = *it;
 		if(pPluginSupportNotifications)
 		{
 			RETURN_IF_FAILED(pPluginSupportNotifications->OnInitialized(this));
@@ -143,7 +145,7 @@ STDMETHODIMP CPluginSupport::Load(ISettings* pSettings)
 	m_pSettings = pSettings;
 	for (auto it = m_Plugins.begin(); it != m_Plugins.end(); it++)
 	{
-		RETURN_IF_FAILED(HrInitializeWithSettings(it->m_T, m_pSettings));
+		RETURN_IF_FAILED(HrInitializeWithSettings(*it, m_pSettings));
 	}
 	return S_OK;
 }
@@ -153,7 +155,7 @@ STDMETHODIMP CPluginSupport::SetControl(IControl* pControl)
 	m_pControl = pControl;
 	for(auto it = m_Plugins.begin(); it != m_Plugins.end(); it++)
 	{
-		RETURN_IF_FAILED(HrInitializeWithControl(it->m_T, m_pControl));
+		RETURN_IF_FAILED(HrInitializeWithControl(*it, m_pControl));
 	}
 	return S_OK;
 }
@@ -163,7 +165,7 @@ STDMETHODIMP CPluginSupport::SetVariantObject(IVariantObject* pVariantObject)
 	m_pVariantObject = pVariantObject;
 	for (auto it = m_Plugins.begin(); it != m_Plugins.end(); it++)
 	{
-		RETURN_IF_FAILED(HrInitializeWithVariantObject(it->m_T, m_pVariantObject));
+		RETURN_IF_FAILED(HrInitializeWithVariantObject(*it, m_pVariantObject));
 	}
 	return S_OK;
 }
@@ -181,7 +183,7 @@ STDMETHODIMP CPluginSupport::QueryService(REFGUID guidService, REFIID iid, void*
 	auto it = m_PluginsMap.find(guidService);
 	if (it != m_PluginsMap.end())
 	{ //found
-		return it->second.m_T->QueryInterface(iid, ppServiceObject);
+		return it->second->QueryInterface(iid, ppServiceObject);
 	}
 
 	//search in parent

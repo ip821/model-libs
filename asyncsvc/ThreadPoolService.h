@@ -46,12 +46,12 @@ public:
 	END_CONNECTION_POINT_MAP()
 
 private:
-	vector<CAdapt<CComPtr<IThreadService> > > m_threads;
-	vector<CAdapt<CComPtr<IThreadService> > > m_threadsInWork;
-	map<CAdapt<CComPtr<IThreadService> >, CAdapt<CComPtr<IVariantObject> > > m_threadsTaskContex;
+	vector<CComPtr<IThreadService>> m_threads;
+	vector<CComPtr<IThreadService>> m_threadsInWork;
+	map<CComPtr<IThreadService>, CComPtr<IVariantObject>> m_threadsTaskContex;
 
 	vector<DWORD> m_advices;
-	queue<CAdapt<CComPtr<IVariantObject> > > m_taskQueue;
+	queue<CComPtr<IVariantObject>> m_taskQueue;
 	BOOL m_bWaitingForStop = FALSE;
 	BOOL m_bRunning = FALSE;
 	boost::mutex m_mutex;

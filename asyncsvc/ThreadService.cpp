@@ -238,7 +238,7 @@ HRESULT CThreadService::Fire_OnRun()
 {
 	HRESULT hr = S_OK;
 	CThreadService* pThis = static_cast<CThreadService*>(this);
-	vector<CAdapt<CComPtr<IUnknown>>> vec;
+	vector<CComPtr<IUnknown>> vec;
 	pThis->Lock();
 	int cConnections = m_vec.GetSize();
 	for (int iConnection = 0; iConnection < cConnections; iConnection++)

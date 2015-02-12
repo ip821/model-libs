@@ -25,7 +25,7 @@ STDMETHODIMP CBstrCollection::GetItem(UINT_PTR dwIndex, BSTR* pbstr)
 	CHECK_E_POINTER(pbstr);
 	if(dwIndex >= m_vector.size())
 		return E_INVALIDARG;
-	*pbstr = m_vector[dwIndex].m_T.Copy();
+	*pbstr = m_vector[dwIndex].Copy();
 	return S_OK;
 }
 

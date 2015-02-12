@@ -205,7 +205,7 @@ STDMETHODIMP CPluginManager::GetPluginInfo(REFGUID guidNamespace, REFGUID guidTy
 		return HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND);
 
 	
-	*ppPluginInfo = it3->second.m_T;
+	*ppPluginInfo = it3->second;
 	(*ppPluginInfo)->AddRef();
 	return S_OK;
 }
@@ -226,7 +226,7 @@ STDMETHODIMP CPluginManager::GetPluginInfoCollection(REFGUID guidNamespace, REFG
 
 	for(auto it = it2->second.begin(); it != it2->second.end(); it++)
 	{
-		RETURN_IF_FAILED(pObjectCollection->AddObject(it->m_T));
+		RETURN_IF_FAILED(pObjectCollection->AddObject(*it));
 	}
 
 	return pObjectCollection->QueryInterface(IID_IObjArray, (LPVOID*)ppPluginInfos);

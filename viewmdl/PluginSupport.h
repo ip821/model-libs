@@ -39,14 +39,16 @@ public:
 	void FinalRelease(){}
 
 private:
-	typedef std::map<GUID, CAdapt<CComPtr<IUnknown> >, GUIDComparer > TPluginMap;
+	typedef std::map<GUID, CComPtr<IUnknown>, GUIDComparer > TPluginMap;
 	TPluginMap m_PluginsMap;
-	std::vector< CAdapt<CComPtr<IUnknown> > > m_Plugins;
+	std::vector<CComPtr<IUnknown>> m_Plugins;
 	CComPtr<IControl> m_pControl;
 	CComPtr<IPluginManager> m_pPluginManager;
 	CComPtr<ISettings> m_pSettings;
 	CComPtr<IServiceProvider> m_pServiceProvider;
 	CComPtr<IVariantObject> m_pVariantObject;
+	BOOL bb = FALSE;
+
 
 public:
 

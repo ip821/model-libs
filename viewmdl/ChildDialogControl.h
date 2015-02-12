@@ -7,7 +7,7 @@ template<class T>
 class CChildDialogControlSupport
 {
 private:
-	std::map<CAdapt<IControl*>, HWND > m_childControlsMap;
+	std::map<IControl*, HWND > m_childControlsMap;
 public:
 	STDMETHOD(InsertToGroupboxPlaceholder)(IControl* pControl, UINT uiPlaceholderId, BOOL bResize = TRUE)
 	{

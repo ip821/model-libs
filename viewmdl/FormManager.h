@@ -45,7 +45,7 @@ public:
 private:
 	CComPtr<ITabbedControl> m_pTabbedControl;
 
-	std::map< GUID, CAdapt< CComPtr<IControl> >, GUIDComparer > m_pControls;
+	std::map< GUID, CComPtr<IControl>, GUIDComparer > m_pControls;
 	DWORD m_dwAdvice = 0;
 
 	STDMETHOD(GetContainerControl)(IContainerControl** ppContainerControl);

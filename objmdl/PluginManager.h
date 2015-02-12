@@ -40,10 +40,10 @@ private:
 		}
 	};
 
-	struct InnerMap : std::map<GUID, CAdapt<CComPtr<IPluginInfo> > , GUIDComparer> {};
+	struct InnerMap : std::map<GUID, CComPtr<IPluginInfo> , GUIDComparer> {};
 	typedef std::map<GUID, std::map<GUID, InnerMap, GUIDComparer>, GUIDComparer > GuidMap;
 
-	struct InnerList : std::list<CAdapt<CComPtr<IPluginInfo> > > {};
+	struct InnerList : std::list<CComPtr<IPluginInfo>> {};
 	typedef std::map<GUID, std::map<GUID, InnerList, GUIDComparer>, GUIDComparer > GuidList;
 	GuidMap m_pPlugins;
 	GuidList m_pPluginsList;

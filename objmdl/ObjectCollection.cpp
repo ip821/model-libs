@@ -8,13 +8,13 @@
 STDMETHODIMP CObjectCollection::AddObject(IUnknown *punk)
 {
 	CHECK_E_POINTER(punk);
-	m_objects.push_back(CAdapt<CComPtr<IUnknown> >(punk));
+	m_objects.push_back(CComPtr<IUnknown>(punk));
 	return S_OK;
 }
 
 STDMETHODIMP CObjectCollection::InsertObject(IUnknown *punk, UINT uiIndex)
 {
-	m_objects.insert(m_objects.begin() + uiIndex, CAdapt<CComPtr<IUnknown> >(punk));
+	m_objects.insert(m_objects.begin() + uiIndex, CComPtr<IUnknown>(punk));
 	return S_OK;
 }
 
@@ -40,7 +40,7 @@ STDMETHODIMP CObjectCollection::GetCount(UINT *pcObjects)
 STDMETHODIMP CObjectCollection::GetAt(UINT uiIndex, REFIID riid, void **ppv)
 {
 	CHECK_E_POINTER(ppv);
-	return m_objects[uiIndex].m_T->QueryInterface(riid, ppv);
+	return m_objects[uiIndex]->QueryInterface(riid, ppv);
 }
 
 STDMETHODIMP CObjectCollection::IndexOf(void* pv, UINT* puiIndex)
@@ -51,9 +51,9 @@ STDMETHODIMP CObjectCollection::IndexOf(void* pv, UINT* puiIndex)
 	auto it = std::find_if(
 		m_objects.begin(),
 		m_objects.end(),
-		[&](CAdapt<CComPtr<IUnknown>>& item)
+		[&](CComPtr<IUnknown>& item)
 	{
-		return item.m_T.p == pv;
+		return item.p == pv;
 	}
 		);
 

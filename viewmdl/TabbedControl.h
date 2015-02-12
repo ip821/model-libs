@@ -60,7 +60,7 @@ public:
 	END_CONNECTION_POINT_MAP()
 
 private:
-	std::map<HWND,  CAdapt<CComPtr<IControl> > > m_pControls;
+	std::map<HWND, CComPtr<IControl>> m_pControls;
 	CMenu m_popupMenu;
 	CComPtr<IPluginManager> m_pPluginManager;
 	CComPtr<CPluginSupport> m_PluginSupport;

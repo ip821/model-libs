@@ -24,7 +24,7 @@ class CPluginTableBase : public IPluginTable
 {
 protected:
 	CManualComObjectLoader m_loader;
-	std::list< CAdapt< CComPtr<IVariantObject> > > m_infos;
+	std::list<CComPtr<IVariantObject>> m_infos;
 
 private:
 	STDMETHOD(AddPluginInfoInternal)(GUID gNamespace, GUID gType, GUID gId, GUID clsid, BOOL bLocalObject, LPCTSTR lpszName, LPCTSTR lpszDescription = NULL)
@@ -94,7 +94,7 @@ public:
 
 		for(auto it = m_infos.begin(); it != m_infos.end(); it++)
 		{
-			RETURN_IF_FAILED(pObjectCollection->AddObject(it->m_T));
+			RETURN_IF_FAILED(pObjectCollection->AddObject(*it));
 		}
 
 		return pObjectCollection->QueryInterface(IID_IObjArray, (LPVOID*)ppObjectArray);

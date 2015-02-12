@@ -233,20 +233,20 @@ LRESULT CCommandSupport::OnCommandClick(WORD /*wNotifyCode*/, WORD wID, HWND /*h
 	if (it != m_InstalledCommandsMap.end())
 	{
 		auto guidCommand = m_InstalledCommandsIdToGuidMap[wID];
-		CComQIPtr<IInitializeWithVariantObject> pInitializeWithVariantObject = it->second.m_T;
+		CComQIPtr<IInitializeWithVariantObject> pInitializeWithVariantObject = it->second;
 		if (pInitializeWithVariantObject)
 		{
 			RETURN_IF_FAILED(pInitializeWithVariantObject->SetVariantObject(m_pVariantObject));
 		}
-		CComQIPtr<IInitializeWithColumnName> pInitializeWithColumnName = it->second.m_T;
+		CComQIPtr<IInitializeWithColumnName> pInitializeWithColumnName = it->second;
 		if (pInitializeWithColumnName)
 		{
 			RETURN_IF_FAILED(pInitializeWithColumnName->SetColumnName(m_strColumnName));
 		}
 
-		Fire_OnBeforeCommandInvoke(guidCommand, it->second.m_T);
+		Fire_OnBeforeCommandInvoke(guidCommand, it->second);
 
-		HRESULT hr = it->second.m_T->Invoke(guidCommand);
+		HRESULT hr = it->second->Invoke(guidCommand);
 		if (hr == S_OK)
 		{
 			Fire_OnCommandInvoke(guidCommand);

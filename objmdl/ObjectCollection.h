@@ -27,7 +27,7 @@ public:
 	END_COM_MAP()
 
 private:
-	std::vector<CAdapt<CComPtr<IUnknown>>> m_objects;
+	std::vector<CComPtr<IUnknown>> m_objects;
 public:
 
 	STDMETHOD(AddObject)(IUnknown *punk);

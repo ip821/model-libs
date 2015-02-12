@@ -86,7 +86,7 @@ STDMETHODIMP CFormManager::OnClose(IControl* pControl)
 	CHECK_E_POINTER(pControl);
 	for(auto it = m_pControls.begin(); it != m_pControls.end(); it++)
 	{
-		if(it->second.m_T == pControl)
+		if(it->second == pControl)
 		{
 			m_pControls.erase(it);
 			break;
@@ -110,7 +110,7 @@ STDMETHODIMP CFormManager::ActivateForm(GUID guidId)
 	if (it == m_pControls.end())
 		return HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND);
 
-	RETURN_IF_FAILED(m_pTabbedControl->ActivatePage(it->second.m_T));
+	RETURN_IF_FAILED(m_pTabbedControl->ActivatePage(it->second));
 	return S_OK;
 }
 
@@ -161,7 +161,7 @@ STDMETHODIMP CFormManager::FindForm(GUID guidId, IControl** ppControl)
 	if(it == m_pControls.end())
 		return HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND);
 
-	return it->second.m_T->QueryInterface(IID_IControl, (LPVOID*)ppControl);
+	return it->second->QueryInterface(IID_IControl, (LPVOID*)ppControl);
 }
 
 HRESULT CFormManager::Fire_OnActivate(IControl* pControl)

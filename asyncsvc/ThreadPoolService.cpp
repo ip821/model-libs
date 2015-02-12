@@ -17,9 +17,9 @@ STDMETHODIMP CThreadPoolService::OnShutdown()
 	boost::lock_guard<boost::mutex> lock(m_mutex);
 	for (size_t i = 0; i < m_threads.size(); i++)
 	{
-		CComQIPtr<IPluginSupportNotifications> p = m_threads[i].m_T;
+		CComQIPtr<IPluginSupportNotifications> p = m_threads[i];
 		RETURN_IF_FAILED(p->OnShutdown());
-		RETURN_IF_FAILED(AtlUnadvise(m_threads[i].m_T, __uuidof(IThreadServiceEventSink), m_advices[i]));
+		RETURN_IF_FAILED(AtlUnadvise(m_threads[i], __uuidof(IThreadServiceEventSink), m_advices[i]));
 	}
 
 	RETURN_IF_FAILED(IInitializeWithControlImpl::OnShutdown());
@@ -34,8 +34,8 @@ STDMETHODIMP CThreadPoolService::SetThreadCount(DWORD dwCount)
 		boost::lock_guard<boost::mutex> lock(m_mutex);
 		for (size_t i = 0; i < m_threads.size(); i++)
 		{
-			m_threads[i].m_T->Join();
-			RETURN_IF_FAILED(AtlUnadvise(m_threads[i].m_T, __uuidof(IThreadServiceEventSink), m_advices[i]));
+			m_threads[i]->Join();
+			RETURN_IF_FAILED(AtlUnadvise(m_threads[i], __uuidof(IThreadServiceEventSink), m_advices[i]));
 		}
 
 		m_threads.clear();
@@ -112,7 +112,7 @@ STDMETHODIMP CThreadPoolService::AddTask(IVariantObject* pVariantObject)
 		boost::lock_guard<boost::mutex> lock(m_mutex);
 		if (!m_bRunning)
 			return E_PENDING;
-		m_taskQueue.push(CAdapt<CComPtr<IVariantObject> >(pVariantObject));
+		m_taskQueue.push(CComPtr<IVariantObject>(pVariantObject));
 		StartQueueThreadIfNecessary();
 	}
 
@@ -167,7 +167,7 @@ STDMETHODIMP CThreadPoolService::Run()
 
 				while (m_taskQueue.size())
 				{
-					vector<CAdapt<CComPtr<IThreadService> > > freeThreads(m_threads.size());
+					vector<CComPtr<IThreadService>> freeThreads(m_threads.size());
 					{
 						std::sort(m_threads.begin(), m_threads.end());
 						std::sort(m_threadsInWork.begin(), m_threadsInWork.end());
@@ -243,7 +243,7 @@ STDMETHODIMP CThreadPoolService::OnFinish(IVariantObject *pResult)
 
 	{
 		boost::lock_guard<boost::mutex> lock(m_mutex);
-		auto it = find_if(m_threadsInWork.begin(), m_threadsInWork.end(), [&](CAdapt<CComPtr<IThreadService>> item){ return item.m_T.p == pThreadService.p; });
+		auto it = find_if(m_threadsInWork.begin(), m_threadsInWork.end(), [&](CComPtr<IThreadService> item){ return item.p == pThreadService.p; });
 		ATLASSERT(it != m_threadsInWork.end());
 		m_threadsInWork.erase(it);
 	}

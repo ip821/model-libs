@@ -87,7 +87,7 @@ STDMETHODIMP CTabbedControl::GetPage(DWORD dwIndex, IControl** ppControl)
 		return HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND);
 	}
 
-	return it->second.m_T->QueryInterface(IID_IControl, (LPVOID*)ppControl);
+	return it->second->QueryInterface(IID_IControl, (LPVOID*)ppControl);
 }
 
 STDMETHODIMP CTabbedControl::AddPage(IControl* pControl)
@@ -202,7 +202,7 @@ STDMETHODIMP CTabbedControl::PreTranslateMessage(MSG* pMsg, BOOL* pbResult)
 	auto it = m_pControls.find(hwnd);
 	if (it != m_pControls.end())
 	{
-		it->second.m_T->PreTranslateMessage(pMsg, pbResult);
+		it->second->PreTranslateMessage(pMsg, pbResult);
 	}
 	return S_OK;
 }

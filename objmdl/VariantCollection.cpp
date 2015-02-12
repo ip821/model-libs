@@ -23,7 +23,7 @@ STDMETHODIMP CVariantCollection::GetCount(ULONG* pulCount)
 STDMETHODIMP CVariantCollection::GetItem(ULONG ulIndex, VARIANT* pv)
 {
 	CHECK_E_POINTER(pv);
-	*pv = m_vector[ulIndex].m_T;
+	*pv = m_vector[ulIndex];
 	return S_OK;
 }
 
