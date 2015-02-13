@@ -127,6 +127,7 @@ interface IFormManager : IUnknown
 	HRESULT FindForm(GUID guidId, IControl** ppControl);
 	HRESULT CloseForm(IControl* pControl);
 	HRESULT CloseAll();
+	HRESULT GetForms(IObjArray** ppFormsArray);
 };
 
 [
@@ -318,6 +319,7 @@ interface IPluginSupport : IUnknown
 	HRESULT InitializePlugins(REFGUID guidNamespace, REFGUID guidType);
 	HRESULT GetPlugins(IObjArray** ppObjectArray);
 	HRESULT OnInitialized();
+	HRESULT OnInitCompleted();
 	HRESULT OnShutdown();
 };
 

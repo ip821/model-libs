@@ -154,6 +154,18 @@ STDMETHODIMP CFormManager::OpenForm(GUID guidId, IControl** ppControl)
 	return pControl->QueryInterface(IID_IControl, (LPVOID*)ppControl);
 }
 
+STDMETHODIMP CFormManager::GetForms(IObjArray** ppFormsArray)
+{
+	CComPtr<IObjCollection> pObjCollection;
+	RETURN_IF_FAILED(HrCoCreateInstance(CLSID_ObjectCollection, &pObjCollection));
+	for (auto  it = m_pControls.cbegin(); it != m_pControls.cend(); it++)
+	{
+		RETURN_IF_FAILED(pObjCollection->AddObject(it->second));
+	}
+	RETURN_IF_FAILED(pObjCollection->QueryInterface(ppFormsArray));
+	return S_OK;
+}
+
 STDMETHODIMP CFormManager::FindForm(GUID guidId, IControl** ppControl)
 {
 	CHECK_E_POINTER(ppControl);

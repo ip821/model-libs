@@ -69,6 +69,7 @@ public:
 	STDMETHOD(CloseForm)(IControl* pControl);
 	STDMETHOD(ActivateForm2)(IControl* pControl);
 	STDMETHOD(CloseAll)();
+	STDMETHOD(GetForms)(IObjArray** ppFormsArray);
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(FormManager), CFormManager)
