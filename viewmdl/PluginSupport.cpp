@@ -28,16 +28,18 @@ STDMETHODIMP CPluginSupport::GetPlugins(IObjArray** ppObjectArray)
 
 STDMETHODIMP CPluginSupport::OnShutdown()
 {
-	auto plugins = m_Plugins;
-	m_Plugins.clear();
-	m_PluginsMap.clear();
-
-	for (auto it = plugins.cbegin(); it != plugins.cend(); it++)
 	{
-		CComQIPtr<IPluginSupportNotifications> pPluginSupportNotifications = *it;
-		if (pPluginSupportNotifications)
+		auto plugins = m_Plugins;
+		m_Plugins.clear();
+		m_PluginsMap.clear();
+
+		for (auto it = plugins.cbegin(); it != plugins.cend(); it++)
 		{
-			RETURN_IF_FAILED(pPluginSupportNotifications->OnShutdown());
+			CComQIPtr<IPluginSupportNotifications> pPluginSupportNotifications = *it;
+			if (pPluginSupportNotifications)
+			{
+				RETURN_IF_FAILED(pPluginSupportNotifications->OnShutdown());
+			}
 		}
 	}
 
