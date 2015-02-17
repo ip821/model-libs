@@ -189,7 +189,7 @@ public:
 	}
 
 	// size operations
-	void SetScrollSize(int cx, int cy, BOOL bRedraw = TRUE, bool bResetOffset = true)
+	void SetScrollSize(int cx, int cy, BOOL bRedraw = TRUE, int yOffset = 0)
 	{
 		T* pT = static_cast<T*>(this);
 		ATLASSERT(::IsWindow(pT->m_hWnd));
@@ -199,11 +199,11 @@ public:
 
 		int x = 0;
 		int y = 0;
-		if(!bResetOffset)
+		if (yOffset)
 		{
 			x = m_ptOffset.x;
-			y = m_ptOffset.y;
-			pT->AdjustScrollOffset(x, y);
+			y = yOffset;
+			//pT->AdjustScrollOffset(x, y);
 		}
 
 		int dx = m_ptOffset.x - x;
