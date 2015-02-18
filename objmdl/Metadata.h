@@ -27,6 +27,7 @@ namespace IP
 					const static CComBSTR Name(L"VAR_COLUMN_NAME");
 					const static CComBSTR Type(L"VAR_COLUMN_TYPE");
 					const static CComBSTR Width(L"VAR_COLUMN_WIDTH");
+					const static CComBSTR Object(L"VAR_COLUMN_OBJECT");
 				}
 			}
 

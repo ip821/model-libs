@@ -6,6 +6,8 @@
 
 // CCommandSupport
 
+int CCommandSupport::m_CmdIdCounter = 1000;
+
 STDMETHODIMP CCommandSupport::AddToolbarCommand(REFGUID guidCommand, ICommand2* pCommand)
 {
 	CHECK_E_POINTER(pCommand);
@@ -182,8 +184,10 @@ STDMETHODIMP CCommandSupport::PreTranslateMessage(HWND hWnd, MSG *pMsg, BOOL *pb
 {
 	CHECK_E_POINTER(pMsg);
 	CHECK_E_POINTER(pbResult);
+#ifdef DEBUG
 	auto hwnd1 = GetAncestor(pMsg->hwnd, GA_ROOT); hwnd1;
 	auto hwnd2 = GetAncestor(hWnd, GA_ROOT); hwnd2;
+#endif
 	if (
 		hWnd &&
 		((pMsg->hwnd == hWnd) || (GetAncestor(pMsg->hwnd, GA_ROOT) == GetAncestor(hWnd, GA_ROOT))) &&

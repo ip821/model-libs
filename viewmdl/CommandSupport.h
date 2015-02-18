@@ -25,7 +25,7 @@ class ATL_NO_VTABLE CCommandSupport :
 	public IInitializeWithColumnName
 {
 public:
-	CCommandSupport() : m_CmdIdCounter(1000)
+	CCommandSupport()
 	{
 		m_imageList.Create(16, 16, ILC_COLOR32, 0, 0);
 		m_bInstallStdCommands = TRUE;
@@ -58,7 +58,7 @@ private:
 	std::map<GUID, std::list<int>, GUIDComparer> m_InstalledCommandsGuidToIdMap;
 	std::map<int, GUID> m_InstalledCommandsIdToGuidMap;
 	std::map<GUID, BOOL, GUIDComparer> m_commandState;
-	int m_CmdIdCounter;
+	static int m_CmdIdCounter;
 	vector<TACCEL> m_accels;
 	HACCEL m_hAccel = 0;
 
