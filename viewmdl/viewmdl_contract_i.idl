@@ -303,7 +303,7 @@ interface IBitmapService : IUnknown
 ]
 interface ICommandSupportEventSink : IUnknown
 {
-	HRESULT OnBeforeCommandInvoke(REFGUID guidCommand, ICommand* pCommand);
+	HRESULT OnBeforeCommandInvoke(REFGUID guidCommand, int iCommandSource, ICommand* pCommand);
 	HRESULT OnCommandInvoke(REFGUID guidCommand);
 };
 

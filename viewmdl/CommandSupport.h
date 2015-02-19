@@ -45,8 +45,8 @@ public:
 	END_COM_MAP()
 
 	BEGIN_MSG_MAP(CCommandSupport)
-		COMMAND_CODE_HANDLER(0, OnCommandClick)
-		COMMAND_CODE_HANDLER(1, OnCommandClick)
+		COMMAND_CODE_HANDLER(COMMAND_SOURCE_MENU, OnCommandClick)
+		COMMAND_CODE_HANDLER(COMMAND_SOURCE_ACCELERATOR, OnCommandClick)
 	END_MSG_MAP()
 
 	BEGIN_CONNECTION_POINT_MAP(CCommandSupport)
@@ -58,7 +58,7 @@ private:
 	std::map<GUID, std::list<int>, GUIDComparer> m_InstalledCommandsGuidToIdMap;
 	std::map<int, GUID> m_InstalledCommandsIdToGuidMap;
 	std::map<GUID, BOOL, GUIDComparer> m_commandState;
-	static int m_CmdIdCounter;
+	int m_CmdIdCounter = 1000;
 	vector<TACCEL> m_accels;
 	HACCEL m_hAccel = 0;
 

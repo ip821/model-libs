@@ -6,8 +6,6 @@
 
 // CCommandSupport
 
-int CCommandSupport::m_CmdIdCounter = 1000;
-
 STDMETHODIMP CCommandSupport::AddToolbarCommand(REFGUID guidCommand, ICommand2* pCommand)
 {
 	CHECK_E_POINTER(pCommand);
@@ -230,8 +228,11 @@ STDMETHODIMP CCommandSupport::QueueCommandExecution(GUID guidCommand, VARIANT* v
 	return S_OK;
 }
 
-LRESULT CCommandSupport::OnCommandClick(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& bHandled)
+LRESULT CCommandSupport::OnCommandClick(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
+	wNotifyCode;
+	hWndCtl;
+
 	bHandled = FALSE;
 	auto it = m_InstalledCommandsMap.find(wID);
 	if (it != m_InstalledCommandsMap.end())
@@ -248,7 +249,7 @@ LRESULT CCommandSupport::OnCommandClick(WORD /*wNotifyCode*/, WORD wID, HWND /*h
 			RETURN_IF_FAILED(pInitializeWithColumnName->SetColumnName(m_strColumnName));
 		}
 
-		Fire_OnBeforeCommandInvoke(guidCommand, it->second);
+		Fire_OnBeforeCommandInvoke(guidCommand, wNotifyCode, it->second);
 
 		HRESULT hr = it->second->Invoke(guidCommand);
 		if (hr == S_OK)

@@ -30,7 +30,7 @@ public:
 		return hr;
 	}
 
-	HRESULT Fire_OnBeforeCommandInvoke(REFGUID guidCommand, ICommand* pCommand)
+	HRESULT Fire_OnBeforeCommandInvoke(REFGUID guidCommand, WORD wNotifyCode, ICommand* pCommand)
 	{
 		HRESULT hr = S_OK;
 		T * pThis = static_cast<T *>(this);
@@ -46,7 +46,7 @@ public:
 
 			if (pConnection)
 			{
-				hr = pConnection->OnBeforeCommandInvoke(guidCommand, pCommand);
+				hr = pConnection->OnBeforeCommandInvoke(guidCommand, wNotifyCode, pCommand);
 			}
 		}
 		return hr;
