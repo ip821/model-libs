@@ -182,8 +182,10 @@ STDMETHODIMP CCommandSupport::PreTranslateMessage(HWND hWnd, MSG *pMsg, BOOL *pb
 {
 	CHECK_E_POINTER(pMsg);
 	CHECK_E_POINTER(pbResult);
+#ifdef DEBUG
 	auto hwnd1 = GetAncestor(pMsg->hwnd, GA_ROOT); hwnd1;
 	auto hwnd2 = GetAncestor(hWnd, GA_ROOT); hwnd2;
+#endif
 	if (
 		hWnd &&
 		((pMsg->hwnd == hWnd) || (GetAncestor(pMsg->hwnd, GA_ROOT) == GetAncestor(hWnd, GA_ROOT))) &&
@@ -226,8 +228,11 @@ STDMETHODIMP CCommandSupport::QueueCommandExecution(GUID guidCommand, VARIANT* v
 	return S_OK;
 }
 
-LRESULT CCommandSupport::OnCommandClick(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& bHandled)
+LRESULT CCommandSupport::OnCommandClick(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
+	wNotifyCode;
+	hWndCtl;
+
 	bHandled = FALSE;
 	auto it = m_InstalledCommandsMap.find(wID);
 	if (it != m_InstalledCommandsMap.end())
@@ -244,7 +249,7 @@ LRESULT CCommandSupport::OnCommandClick(WORD /*wNotifyCode*/, WORD wID, HWND /*h
 			RETURN_IF_FAILED(pInitializeWithColumnName->SetColumnName(m_strColumnName));
 		}
 
-		Fire_OnBeforeCommandInvoke(guidCommand, it->second);
+		Fire_OnBeforeCommandInvoke(guidCommand, wNotifyCode, it->second);
 
 		HRESULT hr = it->second->Invoke(guidCommand);
 		if (hr == S_OK)

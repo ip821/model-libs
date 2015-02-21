@@ -37,8 +37,6 @@
 #include <hash_set>
 #include <queue>
 #include <map>
-#include <mutex>
-#include <thread>
 #include <atomic>
 
 #include <boost/thread/condition_variable.hpp>
