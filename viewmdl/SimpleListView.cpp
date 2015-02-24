@@ -393,7 +393,7 @@ STDMETHODIMP CSimpleListView::SetVariantObject(IVariantObject* pVariantObject)
 	RETURN_IF_FAILED(AutoResizeColumns());
 
 	CComVariant vId;
-	RETURN_IF_FAILED(pVariantObject->GetVariantValue(Metadata::Object::Id, &vId));
+	RETURN_IF_FAILED(pVariantObject->GetVariantValue(Metadata::Plugins::Object::Id, &vId));
 	if (vId.vt != VT_EMPTY)
 	{
 		GUID gId = { 0 };
