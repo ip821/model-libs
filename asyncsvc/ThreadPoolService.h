@@ -27,10 +27,6 @@ public:
 	{
 	}
 
-	virtual ~CThreadPoolService()
-	{
-	}
-
 	DECLARE_REGISTRY_RESOURCEID(IDR_THREADPOOLSERVICE)
 
 	BEGIN_COM_MAP(CThreadPoolService)

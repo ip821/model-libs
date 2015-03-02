@@ -109,7 +109,10 @@ STDMETHODIMP CThreadService::OnTimer(ITimerService* /*pTimerService*/)
 
 STDMETHODIMP CThreadService::Run()
 {
-	RETURN_IF_FAILED(Fire_OnStart());
+	if (m_hControlWnd)
+		::SendMessage(m_hControlWnd, WM_STARTING, (WPARAM)this, 0);
+	else
+		RETURN_IF_FAILED(Fire_OnStart());
 	StartInternal();
 	return S_OK;
 }
@@ -137,6 +140,10 @@ STDMETHODIMP CThreadService::ProcessWindowMessage(HWND hWnd, UINT uMsg, WPARAM w
 	if (hWnd == m_hControlWnd && uMsg == WM_FINISHED && wParam == (WPARAM)this)
 	{
 		RETURN_IF_FAILED(Fire_OnFinishInternal());
+	}
+	if (hWnd == m_hControlWnd && uMsg == WM_STARTING && wParam == (WPARAM)this)
+	{
+		RETURN_IF_FAILED(Fire_OnStart());
 	}
 	return S_OK;
 }
@@ -174,7 +181,7 @@ void CThreadService::OnRun()
 void CThreadService::OnStop()
 {
 	if (m_hControlWnd)
-		::PostMessage(m_hControlWnd, WM_FINISHED, (WPARAM)this, 0);
+		::SendMessage(m_hControlWnd, WM_FINISHED, (WPARAM)this, 0);
 	else
 		Fire_OnFinishInternal();
 	g_guard.Release();

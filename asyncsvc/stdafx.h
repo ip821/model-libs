@@ -20,7 +20,7 @@
 #define _RICHEDIT_VER	0x0200
 #endif
 
-#define __NOTIFICATIONSERVICES__
+#define __ASYNCSERVICES__
 #define _ATL_APARTMENT_THREADED
 #define _ATL_NO_AUTOMATIC_NAMESPACE
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit

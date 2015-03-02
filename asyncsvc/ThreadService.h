@@ -27,11 +27,6 @@ public:
 	{
 	}
 
-	virtual ~CThreadService()
-	{
-
-	}
-
 	DECLARE_NO_REGISTRY()
 
 	BEGIN_COM_MAP(CThreadService)
