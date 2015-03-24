@@ -488,10 +488,11 @@ interface IAnimationEventSink : IUnknown
 [object, uuid(99E47F5E-18C7-4115-9928-5CAB994D455C), pointer_default(unique)]
 interface IAnimation : IUnknown
 {
-	HRESULT SetParams(DOUBLE dwFrom, DOUBLE dwTo, DOUBLE dwDuration);
+	HRESULT SetParams(DOUBLE dblFrom, DOUBLE dblTo, DOUBLE dblDuration);
 	HRESULT Run();
 	HRESULT GetCurrentIntValue(INT32* piVal);
 	HRESULT GetCurrentValue(DOUBLE* pdblVal);
+	HRESULT IsAnimationComplete(BOOL* pbComplete);
 };
 
 [object, uuid(1FDF52F6-3C6F-4630-BFAE-63891475D8B3), pointer_default(unique)]

@@ -9,6 +9,16 @@ import "ocidl.idl";
 import "..\ObjMdl\objmdl_contract_i.idl";
 import "viewmdl_contract_i.idl";
 
+[object, uuid(81AF2043-39CC-47AF-BEC1-E94F61547613), pointer_default(unique)]
+interface IAnimationManagerServiceInternal : IAnimationManagerService
+{
+};
+
+[object, uuid(2D047EBE-F3B8-43C7-B39D-F58B7957F1AB), pointer_default(unique)]
+interface IAnimationInternal : IAnimation
+{
+};
+
 [
 	uuid(552AFC63-C1CC-4D75-B517-BA0E70CD01F2),
 	version(1.0),

@@ -180,7 +180,7 @@
       <AdditionalIncludeDirectories>..\boost;..\WTL90_4140_Final\Include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <DisableSpecificWarnings>4206;4238</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4206;4238;4100</DisableSpecificWarnings>
     </ClCompile>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -218,7 +218,7 @@
       <AdditionalIncludeDirectories>..\boost;..\WTL90_4140_Final\Include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <DisableSpecificWarnings>4206;4238</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4206;4238;4100</DisableSpecificWarnings>
     </ClCompile>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -257,7 +257,7 @@
       <AdditionalIncludeDirectories>..\boost;..\WTL90_4140_Final\Include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <DisableSpecificWarnings>4206;4238</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4206;4238;4100</DisableSpecificWarnings>
     </ClCompile>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -293,7 +293,7 @@
       <AdditionalIncludeDirectories>..\boost;..\WTL90_4140_Final\Include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <DisableSpecificWarnings>4206;4238</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4206;4238;4100</DisableSpecificWarnings>
     </ClCompile>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -328,7 +328,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\boost;..\WTL90_4140_Final\Include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <DisableSpecificWarnings>4206;4238</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4206;4238;4100</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Midl>
@@ -367,7 +367,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\boost;..\WTL90_4140_Final\Include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <DisableSpecificWarnings>4206;4238</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4206;4238;4100</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Midl>
@@ -407,7 +407,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\boost;..\WTL90_4140_Final\Include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <DisableSpecificWarnings>4206;4238</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4206;4238;4100</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Midl>
@@ -445,7 +445,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\boost;..\WTL90_4140_Final\Include</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <DisableSpecificWarnings>4206;4238</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4206;4238;4100</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Midl>
