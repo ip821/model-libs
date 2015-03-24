@@ -476,7 +476,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AboutDialog.cpp" />
+    <ClCompile Include="AccelerateDecelerateAnimation.cpp" />
     <ClCompile Include="ActionQueueService.cpp" />
+    <ClCompile Include="AnimationManagerService.cpp" />
     <ClCompile Include="BitmapService.cpp" />
     <ClCompile Include="CommandSupport.cpp" />
     <ClCompile Include="HostDialog.cpp" />
@@ -598,9 +600,11 @@
   <ItemGroup>
     <ClInclude Include="AboutCommand.h" />
     <ClInclude Include="AboutDialog.h" />
+    <ClInclude Include="AccelerateDecelerateAnimation.h" />
     <ClInclude Include="ActionContext.h" />
     <ClInclude Include="ActionQueueService.h" />
     <ClInclude Include="ActionQueueServiceEventSink.h" />
+    <ClInclude Include="AnimationManagerService.h" />
     <ClInclude Include="BitmapService.h" />
     <ClInclude Include="ChildDialogControl.h" />
     <ClInclude Include="CommandSupport.h" />

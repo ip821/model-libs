@@ -478,3 +478,24 @@ interface IInfoControlService : IUnknown
 	HRESULT EnableHyperLink(HWND hwndParent);
 	HRESULT HideControl(HWND hwndParent);
 };
+
+[object, uuid(5E6F81B1-04DC-4E0A-A576-A3132AB38309), pointer_default(unique)]
+interface IAnimationEventSink : IUnknown
+{
+	HRESULT OnAnimation();
+};
+
+[object, uuid(99E47F5E-18C7-4115-9928-5CAB994D455C), pointer_default(unique)]
+interface IAnimation : IUnknown
+{
+	HRESULT SetParams(DOUBLE dwFrom, DOUBLE dwTo, DOUBLE dwDuration);
+	HRESULT Run();
+	HRESULT GetCurrentIntValue(INT32* piVal);
+	HRESULT GetCurrentValue(DOUBLE* pdblVal);
+};
+
+[object, uuid(1FDF52F6-3C6F-4630-BFAE-63891475D8B3), pointer_default(unique)]
+interface IAnimationManagerService : IUnknown
+{
+	HRESULT CreateAnimation(REFGUID clsidAnimationType, IAnimation** ppAnimation);
+};

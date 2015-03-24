@@ -190,6 +190,20 @@ library ViewMdlLib
 	{
 		[default] interface IInfoControlService;
 	};
+	[
+		uuid(CBBC55A9-51DB-4512-A9B7-5201BDB873B2)
+	]
+	coclass AnimationManagerService
+	{
+		[default] interface IAnimationManagerService;
 	};
+	[
+		uuid(E074A11C-DD73-4EC6-A57D-47A9B6CD8351)
+	]
+	coclass AccelerateDecelerateAnimation
+	{
+		[default] interface IAnimation;
+	};
+};
 
 import "shobjidl.idl";

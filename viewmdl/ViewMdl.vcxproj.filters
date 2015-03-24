@@ -77,6 +77,18 @@
     <Filter Include="InfoControl">
       <UniqueIdentifier>{70831e08-157f-480c-8415-242212e68880}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Animation">
+      <UniqueIdentifier>{6302841f-2d67-47c3-8d02-4084b9f5b2a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animation\AnimationManager">
+      <UniqueIdentifier>{6262de93-5187-4f2f-912a-2d1edd3df785}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animation\Animations">
+      <UniqueIdentifier>{668b021f-0c7a-4dad-a300-d46ef74ff866}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animation\Animations\AccelerateDecelerateAnimation">
+      <UniqueIdentifier>{45ccb319-da95-4ccd-808d-e813382f3981}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -153,6 +165,12 @@
     </ClCompile>
     <ClCompile Include="InfoControlService.cpp">
       <Filter>InfoControl</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationManagerService.cpp">
+      <Filter>Animation\AnimationManager</Filter>
+    </ClCompile>
+    <ClCompile Include="AccelerateDecelerateAnimation.cpp">
+      <Filter>Animation\Animations\AccelerateDecelerateAnimation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -287,6 +305,12 @@
     </ClInclude>
     <ClInclude Include="CProxyICommandSupportEventSink.h">
       <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationManagerService.h">
+      <Filter>Animation\AnimationManager</Filter>
+    </ClInclude>
+    <ClInclude Include="AccelerateDecelerateAnimation.h">
+      <Filter>Animation\Animations\AccelerateDecelerateAnimation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
