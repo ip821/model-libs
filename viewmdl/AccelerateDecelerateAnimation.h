@@ -10,10 +10,13 @@ using namespace ATL;
 class ATL_NO_VTABLE CAccelerateDecelerateAnimation :
 	public CComObjectRootEx<CComSingleThreadModel>,
 	public CComCoClass<CAccelerateDecelerateAnimation, &CLSID_AccelerateDecelerateAnimation>,
-	public IAnimationInternal,
+	public IAnimation,
+	public IInitializeWithControlImpl,
+	public IMsgHandler,
 	public IUIAnimationTimerEventHandler,
+	public IPluginSupportNotifications,
 	public IConnectionPointContainerImpl<CAccelerateDecelerateAnimation>,
-	public IConnectionPointImpl < CAccelerateDecelerateAnimation, &__uuidof(IAnimationEventSink) >
+	public IConnectionPointImpl<CAccelerateDecelerateAnimation, &__uuidof(IAnimationEventSink)>
 {
 public:
 	CAccelerateDecelerateAnimation()
@@ -24,21 +27,18 @@ public:
 
 	BEGIN_COM_MAP(CAccelerateDecelerateAnimation)
 		COM_INTERFACE_ENTRY(IAnimation)
-		COM_INTERFACE_ENTRY(IAnimationInternal)
 		COM_INTERFACE_ENTRY(IConnectionPointContainer)
 		COM_INTERFACE_ENTRY(IUIAnimationTimerEventHandler)
+		COM_INTERFACE_ENTRY(IMsgHandler)
+		COM_INTERFACE_ENTRY(IInitializeWithControl)
+		COM_INTERFACE_ENTRY(IPluginSupportNotifications)
 	END_COM_MAP()
 
 	BEGIN_CONNECTION_POINT_MAP(CAccelerateDecelerateAnimation)
 		CONNECTION_POINT_ENTRY(__uuidof(IAnimationEventSink))
 	END_CONNECTION_POINT_MAP()
 
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-	HRESULT FinalConstruct();
-	void FinalRelease();
-
 private:
-	CComPtr<IAnimationManagerServiceInternal> m_pAnimationManagerServiceInternal;
 	CComPtr<IUIAnimationManager> m_pAnimationManager;
 	CComPtr<IUIAnimationTimer> m_pAnimationTimer;
 	CComPtr<IUIAnimationTransitionLibrary> m_pAnimationTransitionLibrary;
@@ -49,6 +49,7 @@ private:
 	DOUBLE m_dblTo = 0;
 	DOUBLE m_dblDuration = 0;
 	HRESULT Fire_OnAnimation();
+	STDMETHOD(OnPostUpdateInternal)();
 
 public:
 	METHOD_EMPTY(STDMETHOD(OnPreUpdate)());
@@ -60,6 +61,10 @@ public:
 	STDMETHOD(GetCurrentIntValue)(INT32* piVal);
 	STDMETHOD(GetCurrentValue)(DOUBLE* pdblVal);
 	STDMETHOD(IsAnimationComplete)(BOOL* pbComplete);
+	STDMETHOD(ProcessWindowMessage)(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT *plResult, BOOL *bResult);
+
+	STDMETHOD(OnInitialized)(IServiceProvider* pServiceProvider);
+	STDMETHOD(OnShutdown)();
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(AccelerateDecelerateAnimation), CAccelerateDecelerateAnimation)

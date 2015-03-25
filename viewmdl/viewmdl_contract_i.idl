@@ -494,9 +494,3 @@ interface IAnimation : IUnknown
 	HRESULT GetCurrentValue(DOUBLE* pdblVal);
 	HRESULT IsAnimationComplete(BOOL* pbComplete);
 };
-
-[object, uuid(1FDF52F6-3C6F-4630-BFAE-63891475D8B3), pointer_default(unique)]
-interface IAnimationManagerService : IUnknown
-{
-	HRESULT CreateAnimation(REFGUID clsidAnimationType, IAnimation** ppAnimation);
-};

@@ -1,15 +1,33 @@
 #include "stdafx.h"
 #include "AccelerateDecelerateAnimation.h"
 
-HRESULT CAccelerateDecelerateAnimation::FinalConstruct()
+STDMETHODIMP CAccelerateDecelerateAnimation::OnInitialized(IServiceProvider* pServiceProvider)
 {
+	RETURN_IF_FAILED(CoCreateInstance(CLSID_UIAnimationManager, nullptr, CLSCTX_INPROC_SERVER, __uuidof(IUIAnimationManager), (LPVOID*)&m_pAnimationManager));
+	RETURN_IF_FAILED(CoCreateInstance(CLSID_UIAnimationTimer, nullptr, CLSCTX_INPROC_SERVER, __uuidof(IUIAnimationTimer), (LPVOID*)&m_pAnimationTimer));
+	RETURN_IF_FAILED(CoCreateInstance(CLSID_UIAnimationTransitionLibrary, nullptr, CLSCTX_INPROC_SERVER, __uuidof(IUIAnimationTransitionLibrary), (LPVOID*)&m_pAnimationTransitionLibrary));
+
+	RETURN_IF_FAILED(m_pAnimationTimer->SetTimerEventHandler(this));
+	CComQIPtr<IUIAnimationTimerUpdateHandler> pUIAnimationTimerUpdateHandler = m_pAnimationManager;
+	RETURN_IF_FAILED(m_pAnimationTimer->SetTimerUpdateHandler(pUIAnimationTimerUpdateHandler, UI_ANIMATION_IDLE_BEHAVIOR_DISABLE));
+
 	return S_OK;
 }
 
-void CAccelerateDecelerateAnimation::FinalRelease()
+STDMETHODIMP CAccelerateDecelerateAnimation::OnShutdown()
 {
-	m_pAnimationTimer->SetTimerEventHandler(nullptr);
-	m_pAnimationTimer->SetTimerUpdateHandler(nullptr, UI_ANIMATION_IDLE_BEHAVIOR_DISABLE);
+	RETURN_IF_FAILED(m_pAnimationTimer->SetTimerEventHandler(nullptr));
+	RETURN_IF_FAILED(m_pAnimationTimer->SetTimerUpdateHandler(nullptr, UI_ANIMATION_IDLE_BEHAVIOR_DISABLE));
+	return S_OK;
+}
+
+STDMETHODIMP CAccelerateDecelerateAnimation::ProcessWindowMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT *plResult, BOOL *bResult)
+{
+	if (hWnd == m_hControlWnd && uMsg == WM_ANIMATION_NOTIFY)
+	{
+		RETURN_IF_FAILED(OnPostUpdateInternal());
+	}
+	return S_OK;
 }
 
 STDMETHODIMP CAccelerateDecelerateAnimation::SetParams(DOUBLE dblFrom, DOUBLE dblTo, DOUBLE dblDuration)
@@ -22,17 +40,9 @@ STDMETHODIMP CAccelerateDecelerateAnimation::SetParams(DOUBLE dblFrom, DOUBLE db
 
 STDMETHODIMP CAccelerateDecelerateAnimation::Run()
 {
-	RETURN_IF_FAILED(CoCreateInstance(CLSID_UIAnimationManager, nullptr, CLSCTX_INPROC_SERVER, __uuidof(IUIAnimationManager), (LPVOID*)&m_pAnimationManager));
-	RETURN_IF_FAILED(CoCreateInstance(CLSID_UIAnimationTimer, nullptr, CLSCTX_INPROC_SERVER, __uuidof(IUIAnimationTimer), (LPVOID*)&m_pAnimationTimer));
-	RETURN_IF_FAILED(CoCreateInstance(CLSID_UIAnimationTransitionLibrary, nullptr, CLSCTX_INPROC_SERVER, __uuidof(IUIAnimationTransitionLibrary), (LPVOID*)&m_pAnimationTransitionLibrary));
-
 	RETURN_IF_FAILED(m_pAnimationManager->CreateAnimationVariable(m_dblFrom, &m_pUIAnimationVariable));
 	RETURN_IF_FAILED(m_pUIAnimationVariable->SetLowerBound(m_dblFrom < m_dblTo ? m_dblFrom : m_dblTo));
 	RETURN_IF_FAILED(m_pUIAnimationVariable->SetUpperBound(m_dblTo > m_dblFrom ? m_dblTo : m_dblFrom));
-
-	RETURN_IF_FAILED(m_pAnimationTimer->SetTimerEventHandler(this));
-	CComQIPtr<IUIAnimationTimerUpdateHandler> pUIAnimationTimerUpdateHandler = m_pAnimationManager;
-	RETURN_IF_FAILED(m_pAnimationTimer->SetTimerUpdateHandler(pUIAnimationTimerUpdateHandler, UI_ANIMATION_IDLE_BEHAVIOR_DISABLE));
 
 	RETURN_IF_FAILED(m_pAnimationTransitionLibrary->CreateAccelerateDecelerateTransition(m_dblDuration, m_dblTo, 0.5, 0.5, &m_pUIAnimationTransition));
 	RETURN_IF_FAILED(m_pAnimationManager->CreateStoryboard(&m_pUIAnimationStoryboard));
@@ -46,7 +56,28 @@ STDMETHODIMP CAccelerateDecelerateAnimation::Run()
 
 STDMETHODIMP CAccelerateDecelerateAnimation::OnPostUpdate()
 {
+	if (m_pControl)
+	{
+		PostMessage(m_hControlWnd, WM_ANIMATION_NOTIFY, 0, 0);
+	}
+	else
+	{
+		RETURN_IF_FAILED(OnPostUpdateInternal());
+	}
+	return S_OK;
+}
+
+STDMETHODIMP CAccelerateDecelerateAnimation::OnPostUpdateInternal()
+{
 	RETURN_IF_FAILED(Fire_OnAnimation());
+	BOOL bComplete = FALSE;
+	RETURN_IF_FAILED(IsAnimationComplete(&bComplete));
+	if (bComplete)
+	{
+		m_pUIAnimationVariable.Release();
+		m_pUIAnimationTransition.Release();
+		m_pUIAnimationStoryboard.Release();
+	}
 	return S_OK;
 }
 
