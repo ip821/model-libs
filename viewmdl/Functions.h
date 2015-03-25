@@ -59,6 +59,17 @@ static HRESULT HrInitializeWithControl(IUnknown* pObject, IUnknown* pControl)
 	return S_OK;
 }
 
+static HRESULT HrNotifyOnShutdown(IUnknown* pObject)
+{
+	CHECK_E_POINTER(pObject);
+	CComQIPtr<IPluginSupportNotifications> p = pObject;
+	if (p)
+	{
+		RETURN_IF_FAILED(p->OnShutdown());
+	}
+	return S_OK;
+}
+
 static HRESULT HrNotifyOnInitialized(IUnknown* pObject, IUnknown* pServiceProviderObj)
 {
 	CHECK_E_POINTER(pObject);
