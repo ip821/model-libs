@@ -53,7 +53,7 @@ STDMETHODIMP CAccelerateDecelerateAnimation::Run()
 	RETURN_IF_FAILED(m_pUIAnimationVariable->SetLowerBound(m_dblFrom < m_dblTo ? m_dblFrom : m_dblTo));
 	RETURN_IF_FAILED(m_pUIAnimationVariable->SetUpperBound(m_dblTo > m_dblFrom ? m_dblTo : m_dblFrom));
 
-	RETURN_IF_FAILED(m_pAnimationTransitionLibrary->CreateAccelerateDecelerateTransition(m_dblDuration, m_dblTo, 0.5, 0.5, &m_pUIAnimationTransition));
+	RETURN_IF_FAILED(m_pAnimationTransitionLibrary->CreateSmoothStopTransition(m_dblDuration, m_dblTo, &m_pUIAnimationTransition));
 	RETURN_IF_FAILED(m_pAnimationManager->CreateStoryboard(&m_pUIAnimationStoryboard));
 	RETURN_IF_FAILED(m_pUIAnimationStoryboard->AddTransition(m_pUIAnimationVariable, m_pUIAnimationTransition));
 
