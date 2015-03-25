@@ -18,6 +18,15 @@ STDMETHODIMP CAccelerateDecelerateAnimation::OnShutdown()
 {
 	RETURN_IF_FAILED(m_pAnimationTimer->SetTimerEventHandler(nullptr));
 	RETURN_IF_FAILED(m_pAnimationTimer->SetTimerUpdateHandler(nullptr, UI_ANIMATION_IDLE_BEHAVIOR_DISABLE));
+	RETURN_IF_FAILED(m_pAnimationManager->Shutdown());
+
+	m_pAnimationManager.Release();
+	m_pAnimationTimer.Release();
+	m_pAnimationTransitionLibrary.Release();
+	m_pUIAnimationVariable.Release();
+	m_pUIAnimationTransition.Release();
+	m_pUIAnimationStoryboard.Release();
+
 	return S_OK;
 }
 
