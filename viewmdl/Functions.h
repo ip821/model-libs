@@ -73,7 +73,6 @@ static HRESULT HrNotifyOnShutdown(IUnknown* pObject)
 static HRESULT HrNotifyOnInitialized(IUnknown* pObject, IUnknown* pServiceProviderObj)
 {
 	CHECK_E_POINTER(pObject);
-	CHECK_E_POINTER(pServiceProviderObj);
 	CComQIPtr<IPluginSupportNotifications> pObj = pObject;
 	CComQIPtr<IServiceProvider> pServiceProvider = pServiceProviderObj;
 	if (pObj)
