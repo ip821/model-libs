@@ -18,7 +18,7 @@ STDMETHODIMP CPluginSupport::GetPlugins(IObjArray** ppObjectArray)
 	CComPtr<IObjCollection> pObjectCollection;
 	RETURN_IF_FAILED(HrCoCreateInstance(CLSID_ObjectCollection, &pObjectCollection));
 
-	for(auto it = m_Plugins.begin(); it != m_Plugins.end(); it++)
+	for (auto it = m_Plugins.begin(); it != m_Plugins.end(); it++)
 	{
 		RETURN_IF_FAILED(pObjectCollection->AddObject((*it)));
 	}
@@ -81,10 +81,10 @@ STDMETHODIMP CPluginSupport::OnInitializing()
 
 STDMETHODIMP CPluginSupport::OnInitialized()
 {
-	for(auto it = m_Plugins.cbegin(); it != m_Plugins.cend(); it++)
+	for (auto it = m_Plugins.cbegin(); it != m_Plugins.cend(); it++)
 	{
 		CComQIPtr<IPluginSupportNotifications> pPluginSupportNotifications = *it;
-		if(pPluginSupportNotifications)
+		if (pPluginSupportNotifications)
 		{
 			RETURN_IF_FAILED(pPluginSupportNotifications->OnInitialized(this));
 		}
@@ -97,28 +97,28 @@ STDMETHODIMP CPluginSupport::InitializePlugins(REFGUID guidNamespace, REFGUID gu
 {
 	CComPtr<IObjArray> pObjectArray;
 	HRESULT hr = m_pPluginManager->GetPluginInfoCollection(guidNamespace, guidType, &pObjectArray);
-	if(hr == HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND))
+	if (hr == HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND))
 		return S_OK;
 
 	RETURN_IF_FAILED(hr);
 
 	UINT cObjects = 0;
 	RETURN_IF_FAILED(pObjectArray->GetCount(&cObjects));
-	for(UINT i = 0; i < cObjects; i++)
+	for (UINT i = 0; i < cObjects; i++)
 	{
 		CComPtr<IPluginInfo> pPluginInfo;
 		hr = pObjectArray->GetAt(i, IID_IPluginInfo, (LPVOID*)&pPluginInfo);
-		if(FAILED(hr))
+		if (FAILED(hr))
 			continue;
 
-		GUID guidId = {0};
+		GUID guidId = { 0 };
 		hr = pPluginInfo->GetId(&guidId);
-		if(FAILED(hr))
+		if (FAILED(hr))
 			continue;
 
 		CComPtr<IUnknown> pUnk;
 		hr = pPluginInfo->CreateInstance(&pUnk);
-		if(FAILED(hr))
+		if (FAILED(hr))
 			continue;
 
 		if (m_pControl)
@@ -155,7 +155,7 @@ STDMETHODIMP CPluginSupport::Load(ISettings* pSettings)
 STDMETHODIMP CPluginSupport::SetControl(IControl* pControl)
 {
 	m_pControl = pControl;
-	for(auto it = m_Plugins.begin(); it != m_Plugins.end(); it++)
+	for (auto it = m_Plugins.begin(); it != m_Plugins.end(); it++)
 	{
 		RETURN_IF_FAILED(HrInitializeWithControl(*it, m_pControl));
 	}
@@ -199,6 +199,29 @@ STDMETHODIMP CPluginSupport::QueryService(REFGUID guidService, REFIID iid, void*
 		{
 			RETURN_IF_FAILED(pServiceProvider->QueryService(guidService, iid, ppServiceObject));
 			return S_OK;
+		}
+	}
+	return S_OK;
+}
+
+STDMETHODIMP CPluginSupport::ProcessWindowMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT *plResult, BOOL *bResult)
+{
+	CComPtr<IObjArray> pObjectArray;
+	RETURN_IF_FAILED(GetPlugins(&pObjectArray));
+	UINT cb = 0;
+	RETURN_IF_FAILED(pObjectArray->GetCount(&cb));
+	for (UINT i = 0; i < cb; i++)
+	{
+		CComPtr<IMsgHandler> pMsgHandler;
+		HRESULT hr = pObjectArray->GetAt(i, IID_IMsgHandler, (LPVOID*)&pMsgHandler);
+		if (hr == E_NOINTERFACE)
+			continue;
+
+		if (pMsgHandler)
+		{
+			pMsgHandler->ProcessWindowMessage(hWnd, uMsg, wParam, lParam, plResult, bResult);
+			if (*bResult)
+				return S_OK;
 		}
 	}
 	return S_OK;

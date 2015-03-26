@@ -16,3 +16,10 @@
 	}
 
 #define METHOD_EMPTY(m) m{ return S_OK; };
+#define DEFAULT_MESSAGE_HANDLER(func) \
+		{ \
+		bHandled = FALSE; \
+		lResult = func(uMsg, wParam, lParam, bHandled); \
+		if(bHandled) \
+			return TRUE; \
+		}

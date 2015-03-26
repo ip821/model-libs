@@ -35,25 +35,14 @@ LRESULT CMainFrame::OnMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
 
 	if (m_pPluginSupport)
 	{
-		CComPtr<IObjArray> pObjectArray;
-		RETURN_IF_FAILED(m_pPluginSupport->GetPlugins(&pObjectArray));
-		UINT cb = 0;
-		RETURN_IF_FAILED(pObjectArray->GetCount(&cb));
-		for (UINT i = 0; i < cb; i++)
+		CComQIPtr<IMsgHandler> pMsgHandler = m_pPluginSupport;
+		if (pMsgHandler)
 		{
-			CComPtr<IMsgHandler> pMsgHandler;
-			HRESULT hr = pObjectArray->GetAt(i, IID_IMsgHandler, (LPVOID*)&pMsgHandler);
-			if (hr == E_NOINTERFACE)
-				continue;
-
-			if (pMsgHandler)
-			{
-				LRESULT lResult = 0;
-				BOOL bResult = FALSE;
-				pMsgHandler->ProcessWindowMessage(m_hWnd, uMsg, wParam, lParam, &lResult, &bResult);
-				if (bResult)
-					return bResult;
-			}
+			LRESULT lResult = 0;
+			BOOL bResult = FALSE;
+			ASSERT_IF_FAILED(pMsgHandler->ProcessWindowMessage(m_hWnd, uMsg, wParam, lParam, &lResult, &bResult));
+			if (bResult)
+				return bResult;
 		}
 	}
 	return 0;

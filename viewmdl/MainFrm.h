@@ -68,10 +68,7 @@ public:
 		COMMAND_RANGE_HANDLER(ID_WINDOW_TABFIRST, ID_WINDOW_TABLAST, OnWindowActivate)
 		CHAIN_MSG_MAP(CUpdateUI<CMainFrame>)
 		CHAIN_MSG_MAP(CFrameWindowImpl<CMainFrame>)
-		bHandled = TRUE;
-		lResult = OnMessage(uMsg, wParam, lParam, bHandled);
-		if (bHandled)
-			return TRUE;
+		DEFAULT_MESSAGE_HANDLER(OnMessage)
 	END_MSG_MAP()
 
 // Handler prototypes (uncomment arguments if needed):

@@ -14,6 +14,7 @@ class ATL_NO_VTABLE CPluginSupport :
 	public CComCoClass<CPluginSupport, &CLSID_PluginSupport>,
 	public IPluginSupport,
 	public IServiceProvider,
+	public IMsgHandler,
 	public IInitializeWithControl,
 	public IInitializeWithSettings,
 	public IInitializeWithVariantObject
@@ -31,6 +32,7 @@ public:
 		COM_INTERFACE_ENTRY(IInitializeWithControl)
 		COM_INTERFACE_ENTRY(IInitializeWithSettings)
 		COM_INTERFACE_ENTRY(IInitializeWithVariantObject)
+		COM_INTERFACE_ENTRY(IMsgHandler)
 	END_COM_MAP()
 
 	DECLARE_PROTECT_FINAL_CONSTRUCT()
@@ -64,6 +66,8 @@ public:
 	STDMETHOD(QueryService)(REFGUID guidService, REFIID iid, void** ppServiceObject);
 	STDMETHOD(Load)(ISettings* pSettings);
 	STDMETHOD(SetVariantObject)(IVariantObject* pVariantObject);
+
+	STDMETHOD(ProcessWindowMessage)(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT *plResult, BOOL *bResult);
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(PluginSupport), CPluginSupport)
