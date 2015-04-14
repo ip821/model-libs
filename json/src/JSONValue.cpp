@@ -467,6 +467,11 @@ bool JSONValue::IsArray() const
 	return type == JSONType_Array;
 }
 
+JSONType JSONValue::GetType() const
+{
+	return type;
+}
+
 /**
  * Checks if the value is an Object
  *

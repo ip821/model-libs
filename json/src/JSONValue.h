@@ -69,6 +69,8 @@ class JSONValue
 
 		std::wstring Stringify() const;
 
+		JSONType GetType() const;
+
 	protected:
 		static JSONValue *Parse(const wchar_t **data);
 
