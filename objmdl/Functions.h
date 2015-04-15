@@ -94,6 +94,27 @@ static HRESULT HrInitializeWithVariantObject(IUnknown* pObject, IVariantObject* 
 	return S_OK;
 }
 
+static HRESULT HrGetResourceStream(HMODULE hModule, DWORD dwResourceId, LPCWSTR lpszResourceType, IStream** ppStream)
+{
+	CHECK_E_POINTER(ppStream);
+	if (!hModule)
+		return E_UNEXPECTED;
+
+	HRSRC hRsrc = FindResource(hModule, MAKEINTRESOURCE(dwResourceId), lpszResourceType);
+	if (!hRsrc)
+		return HRESULT_FROM_WIN32(GetLastError());
+
+	HGLOBAL hGlobal = LoadResource(hModule, hRsrc);
+
+	if (!hGlobal)
+		return HRESULT_FROM_WIN32(GetLastError());
+
+	auto dwSizeInBytes = SizeofResource(hModule, hRsrc);
+	LPVOID pvResourceData = LockResource(hGlobal);
+	*ppStream = SHCreateMemStream((LPBYTE)pvResourceData, dwSizeInBytes);
+	return S_OK;
+}
+
 class CCoInitializeScope
 {
 public:
