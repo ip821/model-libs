@@ -171,6 +171,9 @@
     <ClInclude Include="Metadata.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="stringutils.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ObjMdl.rc">

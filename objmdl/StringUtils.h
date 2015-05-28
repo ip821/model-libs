@@ -124,3 +124,28 @@ static inline CString StrGetAppExeName()
 	auto lpszName = PathFindFileName(lpszPath);
 	return CString(lpszName);
 }
+
+static inline void StrCopyToClipboard(LPCTSTR lpszStr)
+{
+	if (::OpenClipboard(NULL))
+	{
+		if (EmptyClipboard())
+		{
+			size_t nLength = _tcslen(lpszStr);
+			size_t nByteOfBuffer = (nLength + 1) * sizeof(TCHAR);
+			HGLOBAL hGlobal = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, nByteOfBuffer);
+
+			if (hGlobal)
+			{
+				LPTSTR pBuf = (LPTSTR)GlobalLock(hGlobal);
+				if (pBuf)
+				{
+					_tcscpy_s(pBuf, nLength + 1, lpszStr);
+					SetClipboardData(CF_UNICODETEXT, hGlobal);
+					GlobalUnlock(hGlobal);
+					CloseClipboard();
+				}
+			}
+		}
+	}
+}

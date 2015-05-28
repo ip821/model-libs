@@ -586,6 +586,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RegistrySettings.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="stringutils.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="VariantCollection.h" />
     <ClInclude Include="VariantObject.h" />

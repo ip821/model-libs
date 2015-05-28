@@ -121,7 +121,7 @@ public:
 	CCoInitializeScope()
 	{
 #pragma warning(suppress: 6031)
-		CoInitializeEx(NULL, COINIT_MULTITHREADED);
+		CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 	}
 
 	virtual ~CCoInitializeScope()
