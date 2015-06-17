@@ -29,6 +29,7 @@ private:
 	std::map<CString, CComVariant> m_values;
 public:
 
+	STDMETHOD(Clear)();
 	STDMETHOD(GetVariantValue)(BSTR key, VARIANT* v);
 	STDMETHOD(SetVariantValue)(BSTR key, VARIANT* v);
 	STDMETHOD(RemoveVariantValue)(BSTR key);

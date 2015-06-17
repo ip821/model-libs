@@ -40,7 +40,7 @@ static HRESULT HrVariantObjectGetBSTR(IVariantObject* pVariantObject, BSTR bstrK
 
 	CComVariant v;
 	RETURN_IF_FAILED(pVariantObject->GetVariantValue(bstrKey, &v));
-	*pbstrValue = CComBSTR(v.bstrVal).Copy();
+	*pbstrValue = CComBSTR(v.bstrVal).Detach();
 	return S_OK;
 }
 

@@ -47,6 +47,7 @@ interface IBstrCollection : IUnknown
 ]
 interface IVariantObject : IUnknown
 {
+	HRESULT Clear();
 	HRESULT GetVariantValue([in] BSTR key, [out, retval] VARIANT* v);
 	HRESULT SetVariantValue([in] BSTR key, [out, retval] VARIANT* v);
 	HRESULT RemoveVariantValue([in] BSTR key);

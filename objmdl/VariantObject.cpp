@@ -6,6 +6,12 @@
 
 // CVariantObject
 
+STDMETHODIMP CVariantObject::Clear()
+{
+	m_values.clear();
+	return S_OK;
+}
+
 STDMETHODIMP CVariantObject::CopyTo(IVariantObject* pVariantObject)
 {
 	CHECK_E_POINTER(pVariantObject);

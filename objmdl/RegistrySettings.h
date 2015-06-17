@@ -40,6 +40,7 @@ public:
 	STDMETHOD(RemoveSubSettings)(BSTR bstrPath);
 	STDMETHOD(GetCount)(UINT_PTR* puiCount);
 	STDMETHOD(GetKeyByIndex)(UINT_PTR uiIndex, BSTR* pbstrKey);
+	STDMETHOD(Clear)(){ return E_NOTIMPL; };
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(RegistrySettings), CRegistrySettings)
