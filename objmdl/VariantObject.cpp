@@ -45,6 +45,8 @@ STDMETHODIMP CVariantObject::SetVariantValue(BSTR key, VARIANT* v)
 {
 	CHECK_E_POINTER(key);
 	CHECK_E_POINTER(v);
+	if (v->vt == VT_BOOL && v->boolVal == ATL_VARIANT_TRUE)
+		v->boolVal = TRUE;
 	m_values[key] = *v;
 	return S_OK;
 }

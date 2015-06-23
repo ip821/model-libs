@@ -25,7 +25,7 @@ HRESULT CJsonConverter::ConvertObject(const JSONObject& obj, IVariantObject* pVa
 		case JSONType::JSONType_Null:
 			break;
 		case JSONType::JSONType_Number:
-			RETURN_IF_FAILED(pVariantObject->SetVariantValue(CComBSTR(key.c_str()), &CComVariant(value->AsNumber())));
+			RETURN_IF_FAILED(pVariantObject->SetVariantValue(CComBSTR(key.c_str()), &CComVariant((int)value->AsNumber())));
 			break;
 		case JSONType::JSONType_Object:
 		{
