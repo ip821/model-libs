@@ -43,7 +43,7 @@ private:
 	STDMETHOD(ResetIndexes)();
 	CString m_strSortColumnKey;
 	CString m_strFilterColumnKey;
-	CComVariant m_filterVariant;
+	CComVar m_filterVariant;
 	BOOL m_bDesc;
 
 	STDMETHOD(RestoreSort)();

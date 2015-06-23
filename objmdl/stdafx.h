@@ -48,5 +48,6 @@
 #include "Macros.h"
 #include "Plugins.h"
 #include "Metadata.h"
+#include "CComVar.h"
 // {6EA78630-DC6D-4D2B-91F0-686B260F29D6}
 //DEFINE_GUID(CLSID_PluginTable, 0x6ea78630, 0xdc6d, 0x4d2b, 0x91, 0xf0, 0x68, 0x6b, 0x26, 0xf, 0x29, 0xd6);

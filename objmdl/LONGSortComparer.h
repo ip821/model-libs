@@ -20,12 +20,12 @@ public:
 	{
 		CComPtr<IVariantObject> pVariantObject1;
 		m_pObjectArray->GetAt(index1, IID_IVariantObject, (LPVOID*)&pVariantObject1);
-		CComVariant v1;
+		CComVar v1;
 		pVariantObject1->GetVariantValue(m_bstrColumnKey, &v1);
 
 		CComPtr<IVariantObject> pVariantObject2;
 		m_pObjectArray->GetAt(index2, IID_IVariantObject, (LPVOID*)&pVariantObject2);
-		CComVariant v2;
+		CComVar v2;
 		pVariantObject2->GetVariantValue(m_bstrColumnKey, &v2);
 
 		auto bRes = false;

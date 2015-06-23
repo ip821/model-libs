@@ -49,7 +49,7 @@ STDMETHODIMP CRegistrySettings::CopyTo(IVariantObject* pVariantObject)
 	{
 		CComBSTR bstrKey;
 		RETURN_IF_FAILED(pKeysCollection->GetItem(i, &bstrKey));
-		CComVariant vValue;
+		CComVar vValue;
 		RETURN_IF_FAILED(GetVariantValue(bstrKey, &vValue));
 		RETURN_IF_FAILED(pVariantObject->SetVariantValue(bstrKey, &vValue));
 	}

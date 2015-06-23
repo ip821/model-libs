@@ -51,7 +51,7 @@ public:
 	{
 		CComPtr<IVariantObject> pVariantObject;
 		m_pObjectArray->GetAt(index, IID_IVariantObject, (LPVOID*)&pVariantObject);
-		CComVariant v;
+		CComVar v;
 		pVariantObject->GetVariantValue(bstrColumnKey, &v);
 
 		return CString(v.bstrVal).MakeLower().Find(CString(m_strValue).MakeLower()) != -1;

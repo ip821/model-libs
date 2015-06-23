@@ -25,7 +25,7 @@ public:
 	END_COM_MAP()
 
 private:
-	std::vector<CComVariant> m_vector;
+	std::vector<CComVar> m_vector;
 
 public:
 

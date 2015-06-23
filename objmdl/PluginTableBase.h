@@ -42,13 +42,13 @@ private:
 
 		m_infos.push_back(pVariantObject);
 
-		RETURN_IF_FAILED(pVariantObject->SetVariantValue(Metadata::Plugins::Object::Namespace, &CComVariant(gNamespace)));
-		RETURN_IF_FAILED(pVariantObject->SetVariantValue(Metadata::Plugins::Object::Type, &CComVariant(gType)));
-		RETURN_IF_FAILED(pVariantObject->SetVariantValue(Metadata::Plugins::Object::Id, &CComVariant(gId)));
-		RETURN_IF_FAILED(pVariantObject->SetVariantValue(Metadata::Plugins::Object::Clsid, &CComVariant(clsid)));
-		RETURN_IF_FAILED(pVariantObject->SetVariantValue(Metadata::Object::Name, &CComVariant(lpszName)));
-		RETURN_IF_FAILED(pVariantObject->SetVariantValue(Metadata::Object::Description, &CComVariant(lpszDescription)));
-		RETURN_IF_FAILED(pVariantObject->SetVariantValue(Metadata::Plugins::Object::ClassFactoryObject, &CComVariant(pClassFactory)));
+		RETURN_IF_FAILED(pVariantObject->SetVariantValue(Metadata::Plugins::Object::Namespace, &CComVar(gNamespace)));
+		RETURN_IF_FAILED(pVariantObject->SetVariantValue(Metadata::Plugins::Object::Type, &CComVar(gType)));
+		RETURN_IF_FAILED(pVariantObject->SetVariantValue(Metadata::Plugins::Object::Id, &CComVar(gId)));
+		RETURN_IF_FAILED(pVariantObject->SetVariantValue(Metadata::Plugins::Object::Clsid, &CComVar(clsid)));
+		RETURN_IF_FAILED(pVariantObject->SetVariantValue(Metadata::Object::Name, &CComVar(lpszName)));
+		RETURN_IF_FAILED(pVariantObject->SetVariantValue(Metadata::Object::Description, &CComVar(lpszDescription)));
+		RETURN_IF_FAILED(pVariantObject->SetVariantValue(Metadata::Plugins::Object::ClassFactoryObject, &CComVar(pClassFactory)));
 
 		return S_OK;
 	}

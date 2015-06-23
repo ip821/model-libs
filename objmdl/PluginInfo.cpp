@@ -12,7 +12,7 @@ HRESULT CPluginInfo::FinalConstruct()
 STDMETHODIMP CPluginInfo::GetStringValue(BSTR bstrKey, BSTR* bstr)
 {
 	CHECK_E_POINTER(bstr);
-	CComVariant v;
+	CComVar v;
 	m_pVariantObject->GetVariantValue(bstrKey, &v);
 	*bstr = ::SysAllocString(v.bstrVal);
 	return S_OK;
@@ -33,7 +33,7 @@ STDMETHODIMP CPluginInfo::GetDescription(BSTR* bstrName)
 STDMETHODIMP CPluginInfo::GetNamespace(GUID* guidNamespace)
 {
 	CHECK_E_POINTER(guidNamespace);
-	CComVariant v;
+	CComVar v;
 	m_pVariantObject->GetVariantValue(IP::ObjectModel::Metadata::Plugins::Object::Namespace, &v);
 	return CLSIDFromString(v.bstrVal, guidNamespace);
 }
@@ -41,7 +41,7 @@ STDMETHODIMP CPluginInfo::GetNamespace(GUID* guidNamespace)
 STDMETHODIMP CPluginInfo::GetType(GUID* guidType)
 {
 	CHECK_E_POINTER(guidType);
-	CComVariant v;
+	CComVar v;
 	m_pVariantObject->GetVariantValue(Metadata::Plugins::Object::Type, &v);
 	return CLSIDFromString(v.bstrVal, guidType);
 }
@@ -49,7 +49,7 @@ STDMETHODIMP CPluginInfo::GetType(GUID* guidType)
 STDMETHODIMP CPluginInfo::GetId(GUID* guidId)
 {
 	CHECK_E_POINTER(guidId);
-	CComVariant v;
+	CComVar v;
 	m_pVariantObject->GetVariantValue(Metadata::Plugins::Object::Id, &v);
 	return CLSIDFromString(v.bstrVal, guidId);
 }
@@ -57,7 +57,7 @@ STDMETHODIMP CPluginInfo::GetId(GUID* guidId)
 STDMETHODIMP CPluginInfo::GetCLSID(GUID* guidCLSID)
 {
 	CHECK_E_POINTER(guidCLSID);
-	CComVariant v;
+	CComVar v;
 	m_pVariantObject->GetVariantValue(Metadata::Plugins::Object::Clsid, &v);
 	return CLSIDFromString(v.bstrVal, guidCLSID);
 }
@@ -68,7 +68,7 @@ STDMETHODIMP CPluginInfo::CreateInstance(IUnknown** ppUnknown)
 	GUID clsid = {0};
 	RETURN_IF_FAILED(GetCLSID(&clsid));
 
-	CComVariant v;
+	CComVar v;
 	RETURN_IF_FAILED(m_pVariantObject->GetVariantValue(Metadata::Plugins::Object::ClassFactoryObject, &v));
 	if(v.vt == VT_UNKNOWN && v.punkVal)
 	{

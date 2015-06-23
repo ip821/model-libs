@@ -404,7 +404,7 @@ STDMETHODIMP CMainFrame::Load(ISettings* pSettings)
 	GetWindowRect(&rc);
 
 	bool posChanged = false;
-	CComVariant v;
+	CComVar v;
 	if (SUCCEEDED(pSettingsWindow->GetVariantValue(SETTINGS_LEFT, &v)) && v.vt == VT_I4)
 	{
 		rc.left = v.intVal;
@@ -429,7 +429,7 @@ STDMETHODIMP CMainFrame::Load(ISettings* pSettings)
 		posChanged = true;
 	}
 
-	CComVariant vShowCmd;
+	CComVar vShowCmd;
 	if (SUCCEEDED(pSettingsWindow->GetVariantValue(SETTINGS_SHOWCMD, &vShowCmd)) && vShowCmd.vt == VT_I4 && vShowCmd.intVal != SW_NORMAL)
 	{
 		m_CmdShow = vShowCmd.intVal;
@@ -458,13 +458,13 @@ STDMETHODIMP CMainFrame::Save(ISettings* pSettings)
 	{
 		CComPtr<ISettings> pSettingsWindow;
 		RETURN_IF_FAILED(pSettings->OpenSubSettings(L"MainWindow", &pSettingsWindow));
-		RETURN_IF_FAILED(pSettingsWindow->SetVariantValue(SETTINGS_SHOWCMD, &CComVariant((int)m_placement.showCmd)));
+		RETURN_IF_FAILED(pSettingsWindow->SetVariantValue(SETTINGS_SHOWCMD, &CComVar((int)m_placement.showCmd)));
 		if (m_placement.showCmd == SW_NORMAL)
 		{
-			RETURN_IF_FAILED(pSettingsWindow->SetVariantValue(SETTINGS_LEFT, &CComVariant(rc.left)));
-			RETURN_IF_FAILED(pSettingsWindow->SetVariantValue(SETTINGS_RIGHT, &CComVariant(rc.right)));
-			RETURN_IF_FAILED(pSettingsWindow->SetVariantValue(SETTINGS_TOP, &CComVariant(rc.top)));
-			RETURN_IF_FAILED(pSettingsWindow->SetVariantValue(SETTINGS_BOTTOM, &CComVariant(rc.bottom)));
+			RETURN_IF_FAILED(pSettingsWindow->SetVariantValue(SETTINGS_LEFT, &CComVar(rc.left)));
+			RETURN_IF_FAILED(pSettingsWindow->SetVariantValue(SETTINGS_RIGHT, &CComVar(rc.right)));
+			RETURN_IF_FAILED(pSettingsWindow->SetVariantValue(SETTINGS_TOP, &CComVar(rc.top)));
+			RETURN_IF_FAILED(pSettingsWindow->SetVariantValue(SETTINGS_BOTTOM, &CComVar(rc.bottom)));
 		}
 	}
 

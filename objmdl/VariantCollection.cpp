@@ -9,7 +9,7 @@
 STDMETHODIMP CVariantCollection::AddItem(VARIANT* pv)
 {
 	CHECK_E_POINTER(pv);
-	m_vector.push_back(CComVariant(*pv));
+	m_vector.push_back(CComVar(*pv));
 	return S_OK;
 }
 

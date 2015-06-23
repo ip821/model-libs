@@ -5,6 +5,7 @@
 #include "Macros.h"
 #include "ManualComObjectLoader.h"
 #include "objmdl_contract_i.h"
+#include "CComVar.h"
 
 static void SetCurrentDirectoryToApplicationRoot()
 {
@@ -38,7 +39,7 @@ static HRESULT HrVariantObjectGetBSTR(IVariantObject* pVariantObject, BSTR bstrK
 	CHECK_E_POINTER(bstrKey);
 	CHECK_E_POINTER(pbstrValue);
 
-	CComVariant v;
+	CComVar v;
 	RETURN_IF_FAILED(pVariantObject->GetVariantValue(bstrKey, &v));
 	*pbstrValue = CComBSTR(v.bstrVal).Detach();
 	return S_OK;
@@ -74,7 +75,7 @@ static HRESULT HrOpenSettings(BSTR bstrPath, ISettings** ppSettings)
 static HRESULT HrSettingsGetBSTR(ISettings* pSettings, BSTR bstrKey, BSTR* pbstrValue)
 {
 	CComBSTR bstrResult = L"";
-	CComVariant vValue;
+	CComVar vValue;
 	vValue.vt = VT_BSTR;
 	if (SUCCEEDED(pSettings->GetVariantValue(bstrKey, &vValue)) && vValue.vt == VT_BSTR)
 		bstrResult = vValue.bstrVal;

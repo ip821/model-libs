@@ -124,7 +124,7 @@ HRESULT CThreadService::Fire_OnFinishInternal()
 	{
 		RETURN_IF_FAILED(Fire_OnFinish());
 
-		CComVariant vRestart;
+		CComVar vRestart;
 		RETURN_IF_FAILED(pResult->GetVariantValue(Metadata::Timer::RestartFlag, &vRestart));
 		if (m_pTimerService && (vRestart.vt == VT_EMPTY || (vRestart.vt == VT_BOOL && vRestart.boolVal)))
 		{
@@ -167,14 +167,14 @@ void CThreadService::OnRun()
 		if (!pResult)
 			return;
 
-		pResult->SetVariantValue(Metadata::Thread::HResult, &CComVariant(m_hr));
+		pResult->SetVariantValue(Metadata::Thread::HResult, &CComVar(m_hr));
 
 		if (bstrDesc == CComBSTR(L""))
 		{
 			bstrDesc = errInfo.ErrorMessage();
 		}
 
-		pResult->SetVariantValue(Metadata::Thread::HResultDescription, &CComVariant(bstrDesc));
+		pResult->SetVariantValue(Metadata::Thread::HResultDescription, &CComVar(bstrDesc));
 	}
 }
 
@@ -197,7 +197,7 @@ HRESULT CThreadService::Fire_OnStart()
 	CComPtr<IVariantObject> pResult = m_pResult;
 	CComPtr<IUnknown> pUnk;
 	RETURN_IF_FAILED(this->QueryInterface(__uuidof(IUnknown), (LPVOID*)&pUnk));
-	RETURN_IF_FAILED(pResult->SetVariantValue(Metadata::Thread::Id, &CComVariant(pUnk)));
+	RETURN_IF_FAILED(pResult->SetVariantValue(Metadata::Thread::Id, &CComVar(pUnk)));
 	HRESULT hr = S_OK;
 	CThreadService* pThis = static_cast<CThreadService*>(this);
 	int cConnections = m_vec.GetSize();

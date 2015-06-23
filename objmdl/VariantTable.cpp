@@ -34,21 +34,21 @@ STDMETHODIMP CVariantTable::SetColumns(IObjArray* pObjectArray)
 		_column_data column_data = {0};
 		CComPtr<IVariantObject> pVariantObject;
 		RETURN_IF_FAILED(pObjectArray->GetAt(i, IID_IVariantObject, (LPVOID*)&pVariantObject));
-		CComVariant vKey;
+		CComVar vKey;
 		pVariantObject->GetVariantValue(Metadata::Table::Column::Key, &vKey);
 		if(vKey.vt == VT_BSTR)
 		{
 			column_data.strColumnKey = vKey.bstrVal;
 		}
 
-		CComVariant vName;
+		CComVar vName;
 		pVariantObject->GetVariantValue(Metadata::Table::Column::Name, &vName);
 		if(vName.vt == VT_BSTR)
 		{
 			column_data.strColumnName = vName.bstrVal;
 		}
 
-		CComVariant vType;
+		CComVar vType;
 		pVariantObject->GetVariantValue(Metadata::Table::Column::Type, &vType);
 		if(vType.vt == VT_UI2)
 		{
@@ -148,7 +148,7 @@ STDMETHODIMP CVariantTable::ResetSort()
 	ResetIndexes();
 	if(!m_strFilterColumnKey.IsEmpty())
 	{
-		SetFilter(CComBSTR(m_strFilterColumnKey), &CComVariant(m_filterVariant));
+		SetFilter(CComBSTR(m_strFilterColumnKey), &CComVar(m_filterVariant));
 	}
 	return S_OK;
 }

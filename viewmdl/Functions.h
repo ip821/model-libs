@@ -10,7 +10,7 @@ static HRESULT HrAddColumn(IPluginManager* pPluginManager, IVariantObject* pVari
 {
 	CHECK_E_POINTER(pPluginManager);
 	CHECK_E_POINTER(pVariantObject);
-	CComVariant v;
+	CComVar v;
 	CComPtr<IObjCollection> pObjectCollectionColumns;
 	RETURN_IF_FAILED(pVariantObject->GetVariantValue(IP::ObjectModel::Metadata::TableObject::ColumnsObject, &v));
 	if(v.vt == VT_EMPTY)
@@ -27,10 +27,10 @@ static HRESULT HrAddColumn(IPluginManager* pPluginManager, IVariantObject* pVari
 	CComPtr<IVariantObject> pVariantObjectColumn;
 	RETURN_IF_FAILED(pPluginManager->CoCreateInstance(CLSID_VariantObject, IID_IVariantObject, (LPVOID*)&pVariantObjectColumn));
 	pObjectCollectionColumns->AddObject(pVariantObjectColumn);
-	RETURN_IF_FAILED(pVariantObjectColumn->SetVariantValue(IP::ObjectModel::Metadata::Table::Column::Name, &CComVariant(strName)));
-	RETURN_IF_FAILED(pVariantObjectColumn->SetVariantValue(IP::ObjectModel::Metadata::Table::Column::Key, &CComVariant(bstrKey)));
-	RETURN_IF_FAILED(pVariantObjectColumn->SetVariantValue(IP::ObjectModel::Metadata::Table::Column::Type, &CComVariant(vt)));
-	RETURN_IF_FAILED(pVariantObjectColumn->SetVariantValue(IP::ObjectModel::Metadata::Table::Column::Width, &CComVariant(iWidth)));
+	RETURN_IF_FAILED(pVariantObjectColumn->SetVariantValue(IP::ObjectModel::Metadata::Table::Column::Name, &CComVar(strName)));
+	RETURN_IF_FAILED(pVariantObjectColumn->SetVariantValue(IP::ObjectModel::Metadata::Table::Column::Key, &CComVar(bstrKey)));
+	RETURN_IF_FAILED(pVariantObjectColumn->SetVariantValue(IP::ObjectModel::Metadata::Table::Column::Type, &CComVar(vt)));
+	RETURN_IF_FAILED(pVariantObjectColumn->SetVariantValue(IP::ObjectModel::Metadata::Table::Column::Width, &CComVar(iWidth)));
 	return S_OK;
 }
 
@@ -89,7 +89,7 @@ static HRESULT HrWrapToVariantTable(IPluginManager* pPluginManager, IVariantObje
 	if (!ppVariantTable)
 		return E_POINTER;
 
-	CComVariant v;
+	CComVar v;
 	CComPtr<IObjCollection> pObjectCollectionColumns;
 	RETURN_IF_FAILED(pVariantObject->GetVariantValue(IP::ObjectModel::Metadata::TableObject::ColumnsObject, &v));
 	RETURN_IF_FAILED(v.punkVal->QueryInterface(IID_IObjCollection, (LPVOID*)&pObjectCollectionColumns));

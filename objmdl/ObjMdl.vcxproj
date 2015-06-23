@@ -566,6 +566,7 @@
     <ClInclude Include="BstrCollection.h" />
     <ClInclude Include="BSTRFilterPredicate.h" />
     <ClInclude Include="BSTRSortComparer.h" />
+    <ClInclude Include="CComVar.h" />
     <ClInclude Include="dllmain.h" />
     <ClInclude Include="FindFileHandle.h" />
     <ClInclude Include="Functions.h" />

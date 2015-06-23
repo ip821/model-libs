@@ -16,27 +16,27 @@ HRESULT CJsonConverter::ConvertObject(const JSONObject& obj, IVariantObject* pVa
 			CComPtr<IObjCollection> pObjCollection;
 			RETURN_IF_FAILED(HrCoCreateInstance(CLSID_ObjectCollection, &pObjCollection));
 			RETURN_IF_FAILED(ConvertArray(value->AsArray(), pObjCollection));
-			RETURN_IF_FAILED(pVariantObject->SetVariantValue(CComBSTR(key.c_str()), &CComVariant(pObjCollection)));
+			RETURN_IF_FAILED(pVariantObject->SetVariantValue(CComBSTR(key.c_str()), &CComVar(pObjCollection)));
 			break;
 		}
 		case JSONType::JSONType_Bool:
-			RETURN_IF_FAILED(pVariantObject->SetVariantValue(CComBSTR(key.c_str()), &CComVariant(value->AsBool())));
+			RETURN_IF_FAILED(pVariantObject->SetVariantValue(CComBSTR(key.c_str()), &CComVar(value->AsBool())));
 			break;
 		case JSONType::JSONType_Null:
 			break;
 		case JSONType::JSONType_Number:
-			RETURN_IF_FAILED(pVariantObject->SetVariantValue(CComBSTR(key.c_str()), &CComVariant((int)value->AsNumber())));
+			RETURN_IF_FAILED(pVariantObject->SetVariantValue(CComBSTR(key.c_str()), &CComVar((int)value->AsNumber())));
 			break;
 		case JSONType::JSONType_Object:
 		{
 			CComPtr<IVariantObject> pValueObject;
 			RETURN_IF_FAILED(HrCoCreateInstance(CLSID_VariantObject, &pValueObject));
 			RETURN_IF_FAILED(ConvertObject(value->AsObject(), pValueObject));
-			RETURN_IF_FAILED(pVariantObject->SetVariantValue(CComBSTR(key.c_str()), &CComVariant(pValueObject)));
+			RETURN_IF_FAILED(pVariantObject->SetVariantValue(CComBSTR(key.c_str()), &CComVar(pValueObject)));
 			break;
 		}
 		case JSONType::JSONType_String:
-			RETURN_IF_FAILED(pVariantObject->SetVariantValue(CComBSTR(key.c_str()), &CComVariant(value->AsString().c_str())));
+			RETURN_IF_FAILED(pVariantObject->SetVariantValue(CComBSTR(key.c_str()), &CComVar(value->AsString().c_str())));
 			break;
 		}
 	}

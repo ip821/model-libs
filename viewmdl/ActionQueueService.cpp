@@ -95,7 +95,7 @@ HRESULT CActionQueueService::ThreadProc()
 				CEventScope eventScope(m_hControlWnd);
 				if (actionContext.m_pAction)
 				{
-					CComVariant vResult;
+					CComVar vResult;
 					HRESULT hr = actionContext.m_pAction->Execute();
 					if (FAILED(hr))
 					{

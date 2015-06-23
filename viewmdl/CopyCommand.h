@@ -53,7 +53,7 @@ public:
 	STDMETHOD(Invoke)(REFGUID guidCommand)
 	{
 		UNREFERENCED_PARAMETER(guidCommand);
-		CComVariant v;
+		CComVar v;
 		RETURN_IF_FAILED(m_pVariantObject->GetVariantValue(CComBSTR(m_strColumnName), &v));
 		{
 			if ( OpenClipboard(NULL) )

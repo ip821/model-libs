@@ -150,7 +150,7 @@ LRESULT CSimpleListView::OnGetDispInfo(int /*idCtrl*/, LPNMHDR pnmh, BOOL& /*bHa
 
 	if (pDispInfo->item.mask & LVIF_TEXT)
 	{
-		CComVariant v;
+		CComVar v;
 		RETURN_IF_FAILED(m_pVariantTable->GetVariantValue(pDispInfo->item.iItem, CComBSTR(column_data.strColumnKey), &v));
 
 		switch (v.vt)
@@ -240,7 +240,7 @@ STDMETHODIMP CSimpleListView::OnClose()
 STDMETHODIMP CSimpleListView::AddColumns(IVariantObject* pVariantObject)
 {
 	CHECK_E_POINTER(pVariantObject);
-	CComVariant vColumns;
+	CComVar vColumns;
 	RETURN_IF_FAILED(pVariantObject->GetVariantValue(Metadata::TableObject::ColumnsObject, &vColumns));
 	if (vColumns.vt != (VT_UNKNOWN))
 		return HRESULT_FROM_WIN32(ERROR_INVALID_VARIANT);
@@ -261,13 +261,13 @@ STDMETHODIMP CSimpleListView::AddColumns(IVariantObject* pVariantObject)
 	{
 		CComPtr<IVariantObject> pVariantObjectValue;
 		RETURN_IF_FAILED(pObjectArray->GetAt(i, IID_IVariantObject, (LPVOID*)&pVariantObjectValue));
-		CComVariant vColumnKey;
+		CComVar vColumnKey;
 		pVariantObjectValue->GetVariantValue(Metadata::Table::Column::Key, &vColumnKey);
-		CComVariant vColumnName;
+		CComVar vColumnName;
 		pVariantObjectValue->GetVariantValue(Metadata::Table::Column::Name, &vColumnName);
-		CComVariant vColumnType;
+		CComVar vColumnType;
 		pVariantObjectValue->GetVariantValue(Metadata::Table::Column::Type, &vColumnType);
-		CComVariant vColumnWidth;
+		CComVar vColumnWidth;
 		pVariantObjectValue->GetVariantValue(Metadata::Table::Column::Width, &vColumnWidth);
 
 		m_listView.AddColumn(vColumnName.bstrVal, i);
@@ -303,7 +303,7 @@ STDMETHODIMP CSimpleListView::RefreshFilter()
 
 	m_pVariantTable->SetFilter(
 		index == -1 ? NULL : CComBSTR(m_columnsData[index].strColumnKey),
-		&CComVariant(strEditText)
+		&CComVar(strEditText)
 		);
 	RefreshList();
 	return S_OK;
@@ -349,7 +349,7 @@ STDMETHODIMP CSimpleListView::SetFilterVisible(BOOL bVisible)
 STDMETHODIMP CSimpleListView::AddItems(IVariantObject* pVariantObject)
 {
 	CHECK_E_POINTER(pVariantObject);
-	CComVariant vObjects;
+	CComVar vObjects;
 	RETURN_IF_FAILED(pVariantObject->GetVariantValue(Metadata::TableObject::ObjectsObject, &vObjects));
 	if (vObjects.vt != (VT_UNKNOWN))
 		return HRESULT_FROM_WIN32(ERROR_INVALID_VARIANT);
@@ -362,7 +362,7 @@ STDMETHODIMP CSimpleListView::AddItems(IVariantObject* pVariantObject)
 STDMETHODIMP CSimpleListView::UpdateCaption(IVariantObject* pVariantObject)
 {
 	CHECK_E_POINTER(pVariantObject);
-	CComVariant vCaption;
+	CComVar vCaption;
 	RETURN_IF_FAILED(pVariantObject->GetVariantValue(Metadata::Object::Name, &vCaption));
 	m_strCaption = vCaption.bstrVal;
 
@@ -392,7 +392,7 @@ STDMETHODIMP CSimpleListView::SetVariantObject(IVariantObject* pVariantObject)
 	RETURN_IF_FAILED(AddItems(pVariantObject));
 	RETURN_IF_FAILED(AutoResizeColumns());
 
-	CComVariant vId;
+	CComVar vId;
 	RETURN_IF_FAILED(pVariantObject->GetVariantValue(Metadata::Plugins::Object::Id, &vId));
 	if (vId.vt != VT_EMPTY)
 	{

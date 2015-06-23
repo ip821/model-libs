@@ -26,7 +26,7 @@ public:
 	END_COM_MAP()
 
 private:
-	std::map<CString, CComVariant> m_values;
+	std::map<CString, CComVar> m_values;
 public:
 
 	STDMETHOD(Clear)();

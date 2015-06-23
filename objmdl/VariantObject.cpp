@@ -3,7 +3,6 @@
 #include "stdafx.h"
 #include "VariantObject.h"
 
-
 // CVariantObject
 
 STDMETHODIMP CVariantObject::Clear()
@@ -19,7 +18,7 @@ STDMETHODIMP CVariantObject::CopyTo(IVariantObject* pVariantObject)
 	for(auto it = m_values.begin(); it != m_values.end(); it++)
 	{
 		CComBSTR key(it->first);
-		CComVariant v;
+		CComVar v;
 		RETURN_IF_FAILED(GetVariantValue(key, &v));
 		RETURN_IF_FAILED(pVariantObject->SetVariantValue(key, &v));
 	}
@@ -36,7 +35,7 @@ STDMETHODIMP CVariantObject::GetVariantValue(BSTR key, VARIANT* v)
 		return ::VariantClear(v);
 	}
 	
-	CComVariant cv(it->second);
+	CComVar cv(it->second);
 	RETURN_IF_FAILED(cv.Detach(v));
 	return S_OK;
 }
@@ -45,8 +44,6 @@ STDMETHODIMP CVariantObject::SetVariantValue(BSTR key, VARIANT* v)
 {
 	CHECK_E_POINTER(key);
 	CHECK_E_POINTER(v);
-	if (v->vt == VT_BOOL && v->boolVal == ATL_VARIANT_TRUE)
-		v->boolVal = TRUE;
 	m_values[key] = *v;
 	return S_OK;
 }
