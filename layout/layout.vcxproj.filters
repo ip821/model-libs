@@ -118,6 +118,30 @@
     <ClCompile Include="ColumnsInfoItem.cpp">
       <Filter>ColumnsInfo</Filter>
     </ClCompile>
+    <ClCompile Include="LayoutPainter_Container.cpp">
+      <Filter>Layout\Painter</Filter>
+    </ClCompile>
+    <ClCompile Include="LayoutPainter_TextColumn.cpp">
+      <Filter>Layout\Painter</Filter>
+    </ClCompile>
+    <ClCompile Include="LayoutPainter_ImageColumn.cpp">
+      <Filter>Layout\Painter</Filter>
+    </ClCompile>
+    <ClCompile Include="LayoutPainter_MarqueeProgressColumn.cpp">
+      <Filter>Layout\Painter</Filter>
+    </ClCompile>
+    <ClCompile Include="LayoutBuilder_HorizontalContainer.cpp">
+      <Filter>Layout\Builder</Filter>
+    </ClCompile>
+    <ClCompile Include="LayoutBuilder_ImageColumn.cpp">
+      <Filter>Layout\Builder</Filter>
+    </ClCompile>
+    <ClCompile Include="LayoutBuilder_MarqueeProgressColumn.cpp">
+      <Filter>Layout\Builder</Filter>
+    </ClCompile>
+    <ClCompile Include="LayoutBuilder_TextColumn.cpp">
+      <Filter>Layout\Builder</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

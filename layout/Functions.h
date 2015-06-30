@@ -1,7 +1,7 @@
 #pragma once
 
 #include <atlcomcli.h>
-#include "..\model-libs\objmdl\Macros.h"
+#include "..\objmdl\Macros.h"
 #include "objmdl_contract_i.h"
 #include "Metadata.h"
 

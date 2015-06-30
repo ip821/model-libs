@@ -41,3 +41,17 @@
 /viewmdl/ViewMdl_p.c
 /layout/Debug/*.log
 /layout/layout_p.c
+/layout/Debug/*.obj
+/layout/Debug
+/layout/Release
+/layout/layout_contract_i.c
+/layout/layout_contract_i.h
+/layout/layout_contract_p.c
+/layout/layout_i.c
+/layout/layout_i.h
+/layout/objmdl_contract_i.c
+/layout/objmdl_contract_i.h
+/layout/objmdl_contract_p.c
+/layout/viewmdl_contract_i.c
+/layout/viewmdl_contract_i.h
+/layout/viewmdl_contract_p.c

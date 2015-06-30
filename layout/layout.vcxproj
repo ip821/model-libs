@@ -140,12 +140,17 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="LayoutBuilder_HorizontalContainer.cpp" />
+    <ClCompile Include="LayoutBuilder_ImageColumn.cpp" />
     <ClCompile Include="ImageManagerService.cpp" />
     <ClCompile Include="JSONConverter.cpp" />
     <ClCompile Include="layout.cpp" />
     <ClCompile Include="LayoutBuilder.cpp" />
     <ClCompile Include="LayoutManager.cpp" />
     <ClCompile Include="LayoutPainter.cpp" />
+    <ClCompile Include="LayoutPainter_Container.cpp" />
+    <ClCompile Include="LayoutPainter_ImageColumn.cpp" />
+    <ClCompile Include="LayoutPainter_TextColumn.cpp" />
     <ClCompile Include="layout_contract_i.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -158,6 +163,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="LayoutPainter_MarqueeProgressColumn.cpp" />
+    <ClCompile Include="LayoutBuilder_MarqueeProgressColumn.cpp" />
     <ClCompile Include="objmdl_contract_i.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -167,6 +174,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="LayoutBuilder_TextColumn.cpp" />
     <ClCompile Include="ThemeColorMap.cpp" />
     <ClCompile Include="ThemeColorMap_KnownColors.cpp" />
     <ClCompile Include="ThemeFontMap.cpp" />
