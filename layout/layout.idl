@@ -1,0 +1,82 @@
+// layout.idl : IDL source for layout
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (layout.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "layout_contract_i.idl";
+
+[
+	uuid(85708919-2AEA-4CB2-90F8-8AB860D894DD),
+	version(1.0),
+]
+library layoutLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(6EA78630-DC6D-4D2B-91F0-686B260F29D6)
+	]
+	coclass PluginTable
+	{
+		[default] interface IPluginTable;
+	};
+	[
+		uuid(92F9FBB1-0F78-4B66-A783-0A891F3CC9F8)
+	]
+	coclass ColumnsInfoItem
+	{
+		[default] interface IColumnsInfoItem;
+	};
+	[
+		uuid(89CA168E-8568-4653-9DCF-8DEB3CA21A37)
+	]
+	coclass ColumnsInfo
+	{
+		[default] interface IColumnsInfo;
+	};
+	[
+		uuid(204D2E4F-72BE-41EF-8B7D-992B89BE36DA)
+	]
+	coclass ImageManagerService
+	{
+		[default] interface IImageManagerService;
+	};
+	[
+		uuid(41F33BEE-3D82-4173-9F5E-79C91523843B)
+	]
+	coclass ThemeColorMap
+	{
+		[default] interface IThemeColorMap;
+	};
+	[
+		uuid(986AF532-E457-4A2D-894D-0805AB6BD0B1)
+	]
+	coclass ThemeFontMap
+	{
+		[default] interface IThemeFontMap;
+	};
+	[
+		uuid(CEE6C71C-CA9F-4BE3-AA49-66F379D9F266)
+	]
+	coclass LayoutManager
+	{
+		[default] interface ILayoutManager;
+	};
+	[
+		uuid(B086CC3E-137A-4136-A2B9-92E1FB5BB267)
+	]
+	coclass LayoutBuilder
+	{
+		[default] interface ILayoutBuilder;
+	};
+	[
+		uuid(A158CE43-161C-44E5-A88C-D51BCBBB0309)
+	]
+	coclass LayoutPainter
+	{
+		[default] interface ILayoutPainter;
+	};
+};
+

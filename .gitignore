@@ -39,3 +39,5 @@
 /objmdl/x64/Debug
 /viewmdl/x64/Debug
 /viewmdl/ViewMdl_p.c
+/layout/Debug/*.log
+/layout/layout_p.c
