@@ -52,7 +52,7 @@
 #include <gdiplus.h>
 #include <map>
 #include <memory>
-#include <hash_set>
+#include <unordered_set>
 
 #include <boost/lexical_cast.hpp>
 #include <boost/thread/condition_variable.hpp>

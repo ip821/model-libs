@@ -766,7 +766,7 @@ namespace RunTimeHelper
 
 #endif // !_WIN32_WCE
 
-	inline int SizeOf_REBARBANDINFO()
+	inline UINT SizeOf_REBARBANDINFO()
 	{
 		int nSize = sizeof(REBARBANDINFO);
 #if !defined(_WTL_NO_RUNTIME_STRUCT_SIZE) && (_WIN32_WINNT >= 0x0600)
@@ -809,7 +809,7 @@ namespace RunTimeHelper
 	}
 
 #ifndef _WIN32_WCE
-	inline int SizeOf_NONCLIENTMETRICS()
+	inline UINT SizeOf_NONCLIENTMETRICS()
 	{
 		int nSize = sizeof(NONCLIENTMETRICS);
 #if !defined(_WTL_NO_RUNTIME_STRUCT_SIZE) && (WINVER >= 0x0600)

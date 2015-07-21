@@ -32,14 +32,6 @@ public:
 	void FinalRelease();
 
 private:
-	struct GUIDComparer
-	{
-		inline bool const operator() (const GUID & lhs, const GUID & rhs)
-		{
-			return ( memcmp( &lhs, &rhs, sizeof(GUID) ) > 0 ? true : false );
-		}
-	};
-
 	struct InnerMap : std::map<GUID, CComPtr<IPluginInfo> , GUIDComparer> {};
 	typedef std::map<GUID, std::map<GUID, InnerMap, GUIDComparer>, GUIDComparer > GuidMap;
 
@@ -47,7 +39,7 @@ private:
 	typedef std::map<GUID, std::map<GUID, InnerList, GUIDComparer>, GUIDComparer > GuidList;
 	GuidMap m_pPlugins;
 	GuidList m_pPluginsList;
-	std::hash_set<HMODULE> m_loadedLibs;
+	std::unordered_set<HMODULE> m_loadedLibs;
 	CString m_strPath;
 
 	STDMETHOD(InitializeByPluginTable)(IPluginTable* pPluginTable);

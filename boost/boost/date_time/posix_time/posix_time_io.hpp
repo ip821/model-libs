@@ -75,7 +75,10 @@ namespace posix_time {
     typename std::basic_istream<CharT, Traits>::sentry strm_sentry(is, false);
     if (strm_sentry) {
       try {
+#pragma warning(push)
+#pragma warning(disable:4459)
         typedef typename date_time::time_input_facet<ptime, CharT> time_input_facet;
+#pragma warning(pop)
         std::istreambuf_iterator<CharT,Traits> sit(is), str_end;
         if(std::has_facet<time_input_facet>(is.getloc())) {
           std::use_facet<time_input_facet>(is.getloc()).get(sit, str_end, is, pt);

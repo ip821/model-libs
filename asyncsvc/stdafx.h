@@ -34,7 +34,7 @@
 #include <atlctl.h>
 
 #include <vector>
-#include <hash_set>
+#include <unordered_set>
 #include <queue>
 #include <map>
 #include <atomic>

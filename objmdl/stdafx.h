@@ -36,7 +36,7 @@
 #include <atlstr.h>
 #include <comdef.h>
 
-#include <hash_set>
+#include <unordered_set>
 #include <map>
 #include <list>
 #include <algorithm>

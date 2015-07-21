@@ -271,7 +271,7 @@ STDMETHODIMP CSimpleListView::AddColumns(IVariantObject* pVariantObject)
 		pVariantObjectValue->GetVariantValue(Metadata::Table::Column::Width, &vColumnWidth);
 
 		m_listView.AddColumn(vColumnName.bstrVal, i);
-		_column_data cd = { vColumnKey.bstrVal, vColumnName.bstrVal, i, vColumnType.uiVal, vColumnWidth.intVal };
+		_column_data cd = { vColumnKey.bstrVal, vColumnName.bstrVal, (int)i, vColumnType.uiVal, (UINT)vColumnWidth.intVal };
 		m_columnsData.push_back(cd);
 		m_comboBox.AddString(cd.strColumnName);
 	}

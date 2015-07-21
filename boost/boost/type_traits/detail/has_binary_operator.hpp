@@ -92,7 +92,6 @@ struct operator_returns_void {
    // yes_type and no_type have different size by construction
    static ::boost::type_traits::yes_type returns_void(returns_void_t);
    static ::boost::type_traits::no_type returns_void(int);
-#pragma warning(suppress: 6334)
    BOOST_STATIC_CONSTANT(bool, value = (sizeof(::boost::type_traits::yes_type)==sizeof(returns_void((make<Lhs>() BOOST_TT_TRAIT_OP make<Rhs>(),returns_void_t())))));
 };
 

@@ -49,7 +49,7 @@
 #include <comdef.h>
 
 #include <map>
-#include <hash_map>
+#include <unordered_map>
 #include <list>
 #include <queue>
 

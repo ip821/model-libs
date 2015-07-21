@@ -15,13 +15,13 @@ public:
 	{
 		NMHDR hdr;
 		WPARAM wParam;
-		WPARAM lParam;
+		LPARAM lParam;
 	};
 
 	LRESULT OnContextMenu(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& /*bHandled*/)
 	{
 		int nID = GetDlgCtrlID();
-		NMMSG nm = { {m_hWnd, GetDlgCtrlID(), uMsg}, wParam, lParam };
+		NMMSG nm = { {m_hWnd, (UINT_PTR)GetDlgCtrlID(), uMsg}, wParam, lParam };
 
 		::SendMessage(GetParent(), WM_NOTIFY, (WPARAM)nID, (LPARAM)&nm);
 		return 0;
