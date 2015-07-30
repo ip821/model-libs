@@ -51,6 +51,9 @@ namespace IP
 				const static CComBSTR BorderBottom(L"border_bottom");
 				const static CComBSTR BorderBottomColor(L"border_bottom_color");
 				const static CComBSTR BorderBottomWidth(L"border_bottom_width");
+				const static CComBSTR BorderTop(L"border_top");
+				const static CComBSTR BorderTopColor(L"border_top_color");
+				const static CComBSTR BorderTopWidth(L"border_top_width");
 				const static CComBSTR AlignHorizontal(L"align_horizontal");
 			}
 
