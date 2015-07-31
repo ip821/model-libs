@@ -2,7 +2,7 @@
 #include "LayoutBuilder.h"
 #include "GdilPlusUtils.h"
 
-STDMETHODIMP CLayoutBuilder::BuildHorizontalContainer(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo)
+STDMETHODIMP CLayoutBuilder::BuildHorizontalContainer(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem)
 {
 	CRect sourceRect = *pSourceRect;
 	sourceRect.MoveToX(0);
@@ -15,6 +15,7 @@ STDMETHODIMP CLayoutBuilder::BuildHorizontalContainer(HDC hdc, RECT* pSourceRect
 
 	CComPtr<IColumnsInfoItem> pColumnsInfoItem;
 	RETURN_IF_FAILED(pColumnInfo->AddItem(&pColumnsInfoItem));
+	RETURN_IF_FAILED(pColumnsInfoItem->QueryInterface(ppColumnsInfoItem));
 
 	CComPtr<IColumnsInfo> pChildItems;
 	RETURN_IF_FAILED(pColumnsInfoItem->GetChildItems(&pChildItems));
@@ -41,27 +42,43 @@ STDMETHODIMP CLayoutBuilder::BuildHorizontalContainer(HDC hdc, RECT* pSourceRect
 		{
 			case ElementType::HorizontalContainer:
 			{
-				RETURN_IF_FAILED(BuildHorizontalContainer(hdc, &localSourceRect, &elementRect, pElement, pValueObject, pImageManagerService, pChildItems));
+				CComPtr<IColumnsInfoItem> pColumnsInfoItemElement;
+				RETURN_IF_FAILED(BuildHorizontalContainer(hdc, &localSourceRect, &elementRect, pElement, pValueObject, pImageManagerService, pChildItems, &pColumnsInfoItemElement));
 				break;
 			}
 			case ElementType::TextColumn:
+			{
+				CComPtr<IColumnsInfoItem> pColumnsInfoItemElement;
 				RETURN_IF_FAILED(ApplyStartMargins(pElement, localSourceRect));
-				RETURN_IF_FAILED(BuildTextColumn(hdc, &localSourceRect, &elementRect, pElement, pValueObject, pChildItems));
+				RETURN_IF_FAILED(BuildTextColumn(hdc, &localSourceRect, &elementRect, pElement, pValueObject, pChildItems, &pColumnsInfoItemElement));
 				RETURN_IF_FAILED(ApplyEndMargins(pElement, elementRect));
 				RETURN_IF_FAILED(FitToParent(pElement, localSourceRect, elementRect));
+				RETURN_IF_FAILED(CenterToParent(pElement, localSourceRect, elementRect));
+				RETURN_IF_FAILED(pColumnsInfoItemElement->SetRect(elementRect));
 				break;
+			}
 			case ElementType::ImageColumn:
+			{
+				CComPtr<IColumnsInfoItem> pColumnsInfoItemElement;
 				RETURN_IF_FAILED(ApplyStartMargins(pElement, localSourceRect));
-				RETURN_IF_FAILED(BuildImageColumn(hdc, &localSourceRect, &elementRect, pElement, pValueObject, pImageManagerService, pChildItems));
+				RETURN_IF_FAILED(BuildImageColumn(hdc, &localSourceRect, &elementRect, pElement, pValueObject, pImageManagerService, pChildItems, &pColumnsInfoItemElement));
 				RETURN_IF_FAILED(ApplyEndMargins(pElement, elementRect));
 				RETURN_IF_FAILED(FitToParent(pElement, localSourceRect, elementRect));
+				RETURN_IF_FAILED(CenterToParent(pElement, localSourceRect, elementRect));
+				RETURN_IF_FAILED(pColumnsInfoItemElement->SetRect(elementRect));
 				break;
+			}
 			case ElementType::MarqueeProgressColumn:
+			{
+				CComPtr<IColumnsInfoItem> pColumnsInfoItemElement;
 				RETURN_IF_FAILED(ApplyStartMargins(pElement, localSourceRect));
-				RETURN_IF_FAILED(BuildMarqueeProgressColumn(hdc, &localSourceRect, &elementRect, pElement, pValueObject, pChildItems));
+				RETURN_IF_FAILED(BuildMarqueeProgressColumn(hdc, &localSourceRect, &elementRect, pElement, pValueObject, pChildItems, &pColumnsInfoItemElement));
 				RETURN_IF_FAILED(ApplyEndMargins(pElement, elementRect));
 				RETURN_IF_FAILED(FitToParent(pElement, localSourceRect, elementRect));
+				RETURN_IF_FAILED(CenterToParent(pElement, localSourceRect, elementRect));
+				RETURN_IF_FAILED(pColumnsInfoItemElement->SetRect(elementRect));
 				break;
+			}
 		}
 
 		if (vVisible.boolVal)
@@ -84,6 +101,7 @@ STDMETHODIMP CLayoutBuilder::BuildHorizontalContainer(HDC hdc, RECT* pSourceRect
 	RETURN_IF_FAILED(ApplyStartMargins(pLayoutObject, containerRect));
 	RETURN_IF_FAILED(ApplyEndMargins(pLayoutObject, containerRect));
 	RETURN_IF_FAILED(FitToParent(pLayoutObject, parentRect, containerRect));
+	RETURN_IF_FAILED(CenterToParent(pLayoutObject, parentRect, containerRect));
 	RETURN_IF_FAILED(ApplyRightAlign(pChildItems, parentRect, containerRect));
 
 	RETURN_IF_FAILED(SetColumnProps(pLayoutObject, pColumnsInfoItem));

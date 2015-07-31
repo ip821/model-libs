@@ -70,13 +70,27 @@ static void DrawRoundedRect(CDCHandle& cdc, CRect rectText, bool strictRect = fa
 	else
 		rgn.CreateRoundRectRgn(rectText.left - diff_x, rectText.top - diff_y, rectText.right + diff_x, rectText.bottom + diff_y, 10, 10);
 
-	Gdiplus::Region r(rgn);
 	Gdiplus::Graphics g(cdc);
 	Color colorBrush(0x882F4F4F);
 	if (colorRefBrush)
-		colorBrush.SetFromCOLORREF(colorRefBrush);
+	{
+		if (colorRefBrush && 0xFFFFFF == 0)
+		{
+			colorBrush.SetFromCOLORREF(colorRefBrush);
+		}
+		else
+		{
+			auto component_r = colorRefBrush & 0x000000FF;
+			auto component_b = (colorRefBrush & 0x0000FF00) >> 8;
+			auto component_g = (colorRefBrush & 0x00FF0000) >> 16;
+			auto component_a = (colorRefBrush & 0xFF000000) >> 24;
+			auto argb = (component_a << 24) | (component_r << 16) | (component_g << 8) | (component_b);
+			colorBrush.SetValue(argb);
+		}
+	}
 	Gdiplus::SolidBrush brush(colorBrush);
-	g.FillRegion(&brush, &r);
+	Gdiplus::Region region(rgn);
+	g.FillRegion(&brush, &region);
 }
 
 class CDCSelectBitmapManualScope

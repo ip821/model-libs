@@ -26,10 +26,13 @@ private:
 	STDMETHOD(ApplyStartMargins)(IVariantObject* pElement, CRect& rect);
 	STDMETHOD(ApplyEndMargins)(IVariantObject* pElement, CRect& rect);
 	STDMETHOD(FitToParent)(IVariantObject* pElement, CRect& rectParent, CRect& rect);
-	STDMETHOD(BuildHorizontalContainer)(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo);
-	STDMETHOD(BuildTextColumn)(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IColumnsInfo* pColumnInfo);
-	STDMETHOD(BuildImageColumn)(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo);
-	STDMETHOD(BuildMarqueeProgressColumn)(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IColumnsInfo* pColumnInfo);
+	STDMETHOD(CenterToParent)(IVariantObject* pElement, CRect& rectParent, CRect& rect);
+
+	STDMETHOD(BuildHorizontalContainer)(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem);
+	STDMETHOD(BuildTextColumn)(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem);
+	STDMETHOD(BuildImageColumn)(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem);
+	STDMETHOD(BuildMarqueeProgressColumn)(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem);
+
 	STDMETHOD(SetColumnProps)(IVariantObject* pLayoutObject, IColumnsInfoItem* pColumnsInfoItem);
 	STDMETHOD(GetElementType)(IVariantObject* pVariantObject, ElementType* pElementType);
 	STDMETHOD(ApplyRightAlign)(IColumnsInfo* pChildItems, CRect& rectParent, CRect& rect);

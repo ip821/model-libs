@@ -2,7 +2,7 @@
 #include "LayoutBuilder.h"
 #include "GdilPlusUtils.h"
 
-STDMETHODIMP CLayoutBuilder::BuildImageColumn(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo)
+STDMETHODIMP CLayoutBuilder::BuildImageColumn(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem)
 {
 	CComVar vImageKey;
 	RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::ImageColumn::ImageKey, &vImageKey));
@@ -19,6 +19,7 @@ STDMETHODIMP CLayoutBuilder::BuildImageColumn(HDC hdc, RECT* pSourceRect, RECT* 
 
 	CComPtr<IColumnsInfoItem> pColumnsInfoItem;
 	RETURN_IF_FAILED(pColumnInfo->AddItem(&pColumnsInfoItem));
+	RETURN_IF_FAILED(pColumnsInfoItem->QueryInterface(ppColumnsInfoItem));
 	RETURN_IF_FAILED(SetColumnProps(pLayoutObject, pColumnsInfoItem));
 	RETURN_IF_FAILED(pColumnsInfoItem->SetRect(imageRect));
 	RETURN_IF_FAILED(pColumnsInfoItem->SetRectStringProp(Layout::Metadata::ImageColumn::ImageKey, vImageKey.bstrVal));

@@ -2,7 +2,7 @@
 #include "LayoutBuilder.h"
 #include "GdilPlusUtils.h"
 
-STDMETHODIMP CLayoutBuilder::BuildMarqueeProgressColumn(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IColumnsInfo* pColumnInfo)
+STDMETHODIMP CLayoutBuilder::BuildMarqueeProgressColumn(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem)
 {
 	CComVar vItemSize;
 	RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::MarqueeProgressColumn::ItemSize, &vItemSize));
@@ -30,6 +30,7 @@ STDMETHODIMP CLayoutBuilder::BuildMarqueeProgressColumn(HDC hdc, RECT* pSourceRe
 
 	CComPtr<IColumnsInfoItem> pColumnsInfoItem;
 	RETURN_IF_FAILED(pColumnInfo->AddItem(&pColumnsInfoItem));
+	RETURN_IF_FAILED(pColumnsInfoItem->QueryInterface(ppColumnsInfoItem));
 	RETURN_IF_FAILED(SetColumnProps(pLayoutObject, pColumnsInfoItem));
 	RETURN_IF_FAILED(pColumnsInfoItem->SetRect(columnRect));
 	*pDestRect = columnRect;

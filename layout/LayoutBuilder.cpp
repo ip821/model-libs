@@ -19,7 +19,8 @@ STDMETHODIMP CLayoutBuilder::SetFontMap(IThemeFontMap* pThemeFontMap)
 STDMETHODIMP CLayoutBuilder::BuildLayout(HDC hdc, RECT* pSourceRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo)
 {
 	CRect rect;
-	RETURN_IF_FAILED(BuildHorizontalContainer(hdc, pSourceRect, &rect, pLayoutObject, pValueObject, pImageManagerService, pColumnInfo));
+	CComPtr<IColumnsInfoItem> pColumnsInfoItem;
+	RETURN_IF_FAILED(BuildHorizontalContainer(hdc, pSourceRect, &rect, pLayoutObject, pValueObject, pImageManagerService, pColumnInfo, &pColumnsInfoItem));
 	CPoint pt;
 	RETURN_IF_FAILED(TranslateRects(&pt, pColumnInfo));
 	return S_OK;
@@ -103,6 +104,31 @@ STDMETHODIMP CLayoutBuilder::ApplyRightAlign(IColumnsInfo* pChildItems, CRect& r
 			maxRight -= rect.Width();
 			RETURN_IF_FAILED(pColumnsInfoItem->SetRect(rect));
 		}
+	}
+	return S_OK;
+}
+
+STDMETHODIMP CLayoutBuilder::CenterToParent(IVariantObject* pElement, CRect& rectParent, CRect& rect)
+{
+	CComVar vCenterHorizantal;
+	CComVar vCenterVertical;
+	pElement->GetVariantValue(Layout::Metadata::Element::CenterHorizontal, &vCenterHorizantal);
+	pElement->GetVariantValue(Layout::Metadata::Element::CenterVertical, &vCenterVertical);
+
+	if (vCenterHorizantal.vt == VT_BOOL && vCenterHorizantal.boolVal)
+	{
+		auto x = rectParent.Width() / 2 - rect.Width() / 2;
+		auto diff = x - rect.left;
+		rect.left += diff;
+		rect.right += diff;
+	}
+
+	if (vCenterVertical.vt == VT_BOOL && vCenterVertical.boolVal)
+	{
+		auto y = rectParent.Height() / 2 - rect.Height() / 2;
+		auto diff = y - rect.top;
+		rect.top += diff;
+		rect.bottom += diff;
 	}
 	return S_OK;
 }

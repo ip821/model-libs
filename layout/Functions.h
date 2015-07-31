@@ -5,6 +5,8 @@
 #include "objmdl_contract_i.h"
 #include "Metadata.h"
 
+using namespace IP;
+
 static inline HRESULT HrLayoutFindItemByName(IVariantObject* pElement, BSTR bstrName, IVariantObject** ppItem)
 {
 	CHECK_E_POINTER(pElement);

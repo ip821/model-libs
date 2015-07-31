@@ -42,12 +42,15 @@ namespace IP
 				const static CComBSTR Visible(L"visible");
 				const static CComBSTR Selected(L"selected");
 				const static CComBSTR ColorBackground(L"color_background");
+				const static CComBSTR BackgroundStyle(L"background_style");
 				const static CComBSTR MarginLeft(L"margin_left");
 				const static CComBSTR MarginRight(L"margin_right");
 				const static CComBSTR MarginTop(L"margin_top");
 				const static CComBSTR MarginBottom(L"margin_bottom");
 				const static CComBSTR FitHorizontal(L"fit_horizontal");
 				const static CComBSTR FitVertical(L"fit_vertical");
+				const static CComBSTR CenterHorizontal(L"center_horizontal");
+				const static CComBSTR CenterVertical(L"center_vertical");
 				const static CComBSTR BorderBottom(L"border_bottom");
 				const static CComBSTR BorderBottomColor(L"border_bottom_color");
 				const static CComBSTR BorderBottomWidth(L"border_bottom_width");
@@ -55,6 +58,11 @@ namespace IP
 				const static CComBSTR BorderTopColor(L"border_top_color");
 				const static CComBSTR BorderTopWidth(L"border_top_width");
 				const static CComBSTR AlignHorizontal(L"align_horizontal");
+			}
+
+			namespace BackgroundStyles
+			{
+				const static CComBSTR Rounded(L"rounded");
 			}
 
 			namespace AlignTypes
