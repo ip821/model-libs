@@ -112,7 +112,7 @@ STDMETHODIMP CLayoutBuilder::ApplyAlignVertical(IColumnsInfo* pChildItems, CRect
 		CRect rect;
 		RETURN_IF_FAILED(pColumnsInfoItem->GetRect(&rect));
 		CComBSTR bstrAlign;
-		RETURN_IF_FAILED(pColumnsInfoItem->GetRectStringProp(Layout::Metadata::Element::AlignHorizontal, &bstrAlign));
+		RETURN_IF_FAILED(pColumnsInfoItem->GetRectStringProp(Layout::Metadata::Element::AlignVertical, &bstrAlign));
 		if (bstrAlign == Layout::Metadata::AlignVerticalTypes::Down)
 		{
 			rect.top = maxBottom - rect.Height();
