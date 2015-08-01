@@ -130,9 +130,6 @@
     <ClCompile Include="LayoutPainter_MarqueeProgressColumn.cpp">
       <Filter>Layout\Painter</Filter>
     </ClCompile>
-    <ClCompile Include="LayoutBuilder_HorizontalContainer.cpp">
-      <Filter>Layout\Builder</Filter>
-    </ClCompile>
     <ClCompile Include="LayoutBuilder_ImageColumn.cpp">
       <Filter>Layout\Builder</Filter>
     </ClCompile>
@@ -140,6 +137,9 @@
       <Filter>Layout\Builder</Filter>
     </ClCompile>
     <ClCompile Include="LayoutBuilder_TextColumn.cpp">
+      <Filter>Layout\Builder</Filter>
+    </ClCompile>
+    <ClCompile Include="LayoutBuilder_Container.cpp">
       <Filter>Layout\Builder</Filter>
     </ClCompile>
   </ItemGroup>

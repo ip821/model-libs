@@ -49,8 +49,6 @@ namespace IP
 				const static CComBSTR MarginBottom(L"margin_bottom");
 				const static CComBSTR FitHorizontal(L"fit_horizontal");
 				const static CComBSTR FitVertical(L"fit_vertical");
-				const static CComBSTR CenterHorizontal(L"center_horizontal");
-				const static CComBSTR CenterVertical(L"center_vertical");
 				const static CComBSTR BorderBottom(L"border_bottom");
 				const static CComBSTR BorderBottomColor(L"border_bottom_color");
 				const static CComBSTR BorderBottomWidth(L"border_bottom_width");
@@ -58,6 +56,7 @@ namespace IP
 				const static CComBSTR BorderTopColor(L"border_top_color");
 				const static CComBSTR BorderTopWidth(L"border_top_width");
 				const static CComBSTR AlignHorizontal(L"align_horizontal");
+				const static CComBSTR AlignVertical(L"align_vertical");
 			}
 
 			namespace BackgroundStyles
@@ -65,14 +64,22 @@ namespace IP
 				const static CComBSTR Rounded(L"rounded");
 			}
 
-			namespace AlignTypes
+			namespace AlignHorizontalTypes
 			{
 				const static CComBSTR Right(L"right");
+				const static CComBSTR Center(L"center");
+			}
+
+			namespace AlignVerticalTypes
+			{
+				const static CComBSTR Down(L"down");
+				const static CComBSTR Center(L"center");
 			}
 
 			namespace LayoutTypes
 			{
 				const static CComBSTR HorizontalContainer(L"horizontal_container");
+				const static CComBSTR VerticalContainer(L"vertical_container");
 				const static CComBSTR ImageColumn(L"image_column");
 				const static CComBSTR TextColumn(L"text_column");
 				const static CComBSTR MarqueeProgressColumn(L"marquee_progress");

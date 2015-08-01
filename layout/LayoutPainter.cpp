@@ -31,7 +31,7 @@ STDMETHODIMP CLayoutPainter::EraseBackground(HDC hdc, IColumnsInfo* pColumnInfo)
 		RETURN_IF_FAILED(pColumnInfoItem->GetRectStringProp(Layout::Metadata::Element::Type, &bstrType));
 		ElementType elementType = ElementType::UnknownValue;
 		RETURN_IF_FAILED(CLayoutBuilder::MapType(bstrType, &elementType));
-		if (elementType == ElementType::HorizontalContainer)
+		if (elementType == ElementType::HorizontalContainer || elementType == ElementType::VerticalContainer)
 		{
 			CRect rect;
 			RETURN_IF_FAILED(pColumnInfoItem->GetRect(&rect));
@@ -76,6 +76,7 @@ STDMETHODIMP CLayoutPainter::PaintLayoutInternal(HDC hdc, IImageManagerService* 
 		switch (elementType)
 		{
 			case ElementType::HorizontalContainer:
+			case ElementType::VerticalContainer:
 			{
 				RETURN_IF_FAILED(PaintContainer(hdc, pColumnInfoItem));
 				CComPtr<IColumnsInfo> pChildItems;

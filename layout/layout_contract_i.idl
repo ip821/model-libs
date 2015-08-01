@@ -97,6 +97,7 @@ typedef enum ElementType
 {
 	UnknownValue,
 	HorizontalContainer,
+	VerticalContainer,
 	ImageColumn,
 	TextColumn,
 	MarqueeProgressColumn

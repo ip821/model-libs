@@ -20,7 +20,21 @@ STDMETHODIMP CLayoutBuilder::BuildLayout(HDC hdc, RECT* pSourceRect, IVariantObj
 {
 	CRect rect;
 	CComPtr<IColumnsInfoItem> pColumnsInfoItem;
-	RETURN_IF_FAILED(BuildHorizontalContainer(hdc, pSourceRect, &rect, pLayoutObject, pValueObject, pImageManagerService, pColumnInfo, &pColumnsInfoItem));
+
+	ElementType elementType = ElementType::UnknownValue;
+	RETURN_IF_FAILED(GetElementType(pLayoutObject, &elementType));
+
+	switch (elementType)
+	{
+		case ElementType::HorizontalContainer:
+			RETURN_IF_FAILED(BuildHorizontalContainer(hdc, pSourceRect, &rect, pLayoutObject, pValueObject, pImageManagerService, pColumnInfo, &pColumnsInfoItem));
+			break;
+
+		case ElementType::VerticalContainer:
+			RETURN_IF_FAILED(BuildVerticalContainer(hdc, pSourceRect, &rect, pLayoutObject, pValueObject, pImageManagerService, pColumnInfo, &pColumnsInfoItem));
+			break;
+	}
+
 	CPoint pt;
 	RETURN_IF_FAILED(TranslateRects(&pt, pColumnInfo));
 	return S_OK;
@@ -62,6 +76,8 @@ HRESULT CLayoutBuilder::MapType(BSTR bstrType, ElementType* pElementType)
 	CComBSTR type(bstrType);
 	if (type == CComBSTR(Layout::Metadata::LayoutTypes::HorizontalContainer))
 		*pElementType = ElementType::HorizontalContainer;
+	else if (type == CComBSTR(Layout::Metadata::LayoutTypes::VerticalContainer))
+		*pElementType = ElementType::VerticalContainer;
 	else if (type == CComBSTR(Layout::Metadata::LayoutTypes::ImageColumn))
 		*pElementType = ElementType::ImageColumn;
 	else if (type == CComBSTR(Layout::Metadata::LayoutTypes::TextColumn))
@@ -83,7 +99,40 @@ STDMETHODIMP CLayoutBuilder::GetElementType(IVariantObject* pVariantObject, Elem
 	return S_OK;
 }
 
-STDMETHODIMP CLayoutBuilder::ApplyRightAlign(IColumnsInfo* pChildItems, CRect& rectParent, CRect& rect)
+STDMETHODIMP CLayoutBuilder::ApplyAlignVertical(IColumnsInfo* pChildItems, CRect& rectParent, CRect& rect)
+{
+	UINT uiCount = 0;
+	RETURN_IF_FAILED(pChildItems->GetCount(&uiCount));
+	int maxBottom = rectParent.bottom;
+	while (uiCount > 0)
+	{
+		uiCount--;
+		CComPtr<IColumnsInfoItem> pColumnsInfoItem;
+		RETURN_IF_FAILED(pChildItems->GetItem(uiCount, &pColumnsInfoItem));
+		CRect rect;
+		RETURN_IF_FAILED(pColumnsInfoItem->GetRect(&rect));
+		CComBSTR bstrAlign;
+		RETURN_IF_FAILED(pColumnsInfoItem->GetRectStringProp(Layout::Metadata::Element::AlignHorizontal, &bstrAlign));
+		if (bstrAlign == Layout::Metadata::AlignVerticalTypes::Down)
+		{
+			rect.top = maxBottom - rect.Height();
+			rect.bottom = maxBottom;
+			maxBottom -= rect.Height();
+			RETURN_IF_FAILED(pColumnsInfoItem->SetRect(rect));
+		}
+		else if (bstrAlign == Layout::Metadata::AlignVerticalTypes::Center)
+		{
+			auto y = rectParent.Height() / 2 - rect.Height() / 2;
+			auto diff = y - rect.top;
+			rect.top += diff;
+			rect.bottom += diff;
+			RETURN_IF_FAILED(pColumnsInfoItem->SetRect(rect));
+		}
+	}
+	return S_OK;
+}
+
+STDMETHODIMP CLayoutBuilder::ApplyAlignHorizontal(IColumnsInfo* pChildItems, CRect& rectParent, CRect& rect)
 {
 	UINT uiCount = 0;
 	RETURN_IF_FAILED(pChildItems->GetCount(&uiCount));
@@ -97,38 +146,21 @@ STDMETHODIMP CLayoutBuilder::ApplyRightAlign(IColumnsInfo* pChildItems, CRect& r
 		RETURN_IF_FAILED(pColumnsInfoItem->GetRect(&rect));
 		CComBSTR bstrAlign;
 		RETURN_IF_FAILED(pColumnsInfoItem->GetRectStringProp(Layout::Metadata::Element::AlignHorizontal, &bstrAlign));
-		if (bstrAlign == Layout::Metadata::AlignTypes::Right)
+		if (bstrAlign == Layout::Metadata::AlignHorizontalTypes::Right)
 		{
 			rect.left = maxRight - rect.Width();
 			rect.right = maxRight;
 			maxRight -= rect.Width();
 			RETURN_IF_FAILED(pColumnsInfoItem->SetRect(rect));
 		}
-	}
-	return S_OK;
-}
-
-STDMETHODIMP CLayoutBuilder::CenterToParent(IVariantObject* pElement, CRect& rectParent, CRect& rect)
-{
-	CComVar vCenterHorizantal;
-	CComVar vCenterVertical;
-	pElement->GetVariantValue(Layout::Metadata::Element::CenterHorizontal, &vCenterHorizantal);
-	pElement->GetVariantValue(Layout::Metadata::Element::CenterVertical, &vCenterVertical);
-
-	if (vCenterHorizantal.vt == VT_BOOL && vCenterHorizantal.boolVal)
-	{
-		auto x = rectParent.Width() / 2 - rect.Width() / 2;
-		auto diff = x - rect.left;
-		rect.left += diff;
-		rect.right += diff;
-	}
-
-	if (vCenterVertical.vt == VT_BOOL && vCenterVertical.boolVal)
-	{
-		auto y = rectParent.Height() / 2 - rect.Height() / 2;
-		auto diff = y - rect.top;
-		rect.top += diff;
-		rect.bottom += diff;
+		else if (bstrAlign == Layout::Metadata::AlignHorizontalTypes::Center)
+		{
+			auto x = rectParent.Width() / 2 - rect.Width() / 2;
+			auto diff = x - rect.left;
+			rect.left += diff;
+			rect.right += diff;
+			RETURN_IF_FAILED(pColumnsInfoItem->SetRect(rect));
+		}
 	}
 	return S_OK;
 }
