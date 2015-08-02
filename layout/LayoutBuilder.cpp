@@ -109,24 +109,39 @@ STDMETHODIMP CLayoutBuilder::ApplyAlignVertical(IColumnsInfo* pChildItems, CRect
 		uiCount--;
 		CComPtr<IColumnsInfoItem> pColumnsInfoItem;
 		RETURN_IF_FAILED(pChildItems->GetItem(uiCount, &pColumnsInfoItem));
-		CRect rect;
-		RETURN_IF_FAILED(pColumnsInfoItem->GetRect(&rect));
+		CRect rectChild;
+		RETURN_IF_FAILED(pColumnsInfoItem->GetRect(&rectChild));
 		CComBSTR bstrAlign;
 		RETURN_IF_FAILED(pColumnsInfoItem->GetRectStringProp(Layout::Metadata::Element::AlignVertical, &bstrAlign));
 		if (bstrAlign == Layout::Metadata::AlignVerticalTypes::Down)
 		{
-			rect.top = maxBottom - rect.Height();
-			rect.bottom = maxBottom;
-			maxBottom -= rect.Height();
-			RETURN_IF_FAILED(pColumnsInfoItem->SetRect(rect));
+			{
+				auto rectChildWithMargins = rectChild;
+				RETURN_IF_FAILED(ApplyEndMargins(pColumnsInfoItem, rectChildWithMargins));
+				auto diff = rectChildWithMargins.bottom - rectChild.bottom;
+				maxBottom -= diff;
+			}
+
+			rectChild.top = maxBottom - rectChild.Height();
+			rectChild.bottom = maxBottom;
+			maxBottom -= rectChild.Height();
+
+			{
+				auto rectChildWithMargins = rectChild;
+				RETURN_IF_FAILED(ApplyStartMargins(pColumnsInfoItem, rectChildWithMargins));
+				auto diff = rectChildWithMargins.top - rectChild.top;
+				maxBottom -= diff;
+			}
+
+			RETURN_IF_FAILED(pColumnsInfoItem->SetRect(rectChild));
 		}
 		else if (bstrAlign == Layout::Metadata::AlignVerticalTypes::Center)
 		{
-			auto y = rectParent.Height() / 2 - rect.Height() / 2;
-			auto diff = y - rect.top;
-			rect.top += diff;
-			rect.bottom += diff;
-			RETURN_IF_FAILED(pColumnsInfoItem->SetRect(rect));
+			auto y = rectParent.Height() / 2 - rectChild.Height() / 2;
+			auto diff = y - rectChild.top;
+			rectChild.top += diff;
+			rectChild.bottom += diff;
+			RETURN_IF_FAILED(pColumnsInfoItem->SetRect(rectChild));
 		}
 	}
 	return S_OK;
@@ -142,24 +157,41 @@ STDMETHODIMP CLayoutBuilder::ApplyAlignHorizontal(IColumnsInfo* pChildItems, CRe
 		uiCount--;
 		CComPtr<IColumnsInfoItem> pColumnsInfoItem;
 		RETURN_IF_FAILED(pChildItems->GetItem(uiCount, &pColumnsInfoItem));
-		CRect rect;
-		RETURN_IF_FAILED(pColumnsInfoItem->GetRect(&rect));
+		CRect rectChild;
+		RETURN_IF_FAILED(pColumnsInfoItem->GetRect(&rectChild));
 		CComBSTR bstrAlign;
 		RETURN_IF_FAILED(pColumnsInfoItem->GetRectStringProp(Layout::Metadata::Element::AlignHorizontal, &bstrAlign));
 		if (bstrAlign == Layout::Metadata::AlignHorizontalTypes::Right)
 		{
-			rect.left = maxRight - rect.Width();
-			rect.right = maxRight;
-			maxRight -= rect.Width();
-			RETURN_IF_FAILED(pColumnsInfoItem->SetRect(rect));
+			{
+				auto rectChildWithMargins = rectChild;
+				RETURN_IF_FAILED(ApplyEndMargins(pColumnsInfoItem, rectChildWithMargins));
+				auto diff = rectChildWithMargins.right - rectChild.right;
+				maxRight -= diff;
+			}
+
+			rectChild.left = maxRight - rectChild.Width();
+			rectChild.right = maxRight;
+			maxRight -= rectChild.Width();
+
+			{
+				auto rectChildWithMargins = rectChild;
+				RETURN_IF_FAILED(ApplyStartMargins(pColumnsInfoItem, rectChildWithMargins));
+				auto diff = rectChildWithMargins.left - rectChild.left;
+				maxRight -= diff;
+			}
+			CComPtr<IColumnsInfo> pChildrenOfChild;
+			RETURN_IF_FAILED(pColumnsInfoItem->GetChildItems(&pChildrenOfChild));
+			RETURN_IF_FAILED(ApplyAlignHorizontal(pChildrenOfChild, rectChild, rect));
+			RETURN_IF_FAILED(pColumnsInfoItem->SetRect(rectChild));
 		}
 		else if (bstrAlign == Layout::Metadata::AlignHorizontalTypes::Center)
 		{
-			auto x = rectParent.Width() / 2 - rect.Width() / 2;
-			auto diff = x - rect.left;
-			rect.left += diff;
-			rect.right += diff;
-			RETURN_IF_FAILED(pColumnsInfoItem->SetRect(rect));
+			auto x = rectParent.Width() / 2 - rectChild.Width() / 2;
+			auto diff = x - rectChild.left;
+			rectChild.left += diff;
+			rectChild.right += diff;
+			RETURN_IF_FAILED(pColumnsInfoItem->SetRect(rectChild));
 		}
 	}
 	return S_OK;

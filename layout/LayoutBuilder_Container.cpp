@@ -30,6 +30,12 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 		CComPtr<IVariantObject> pElement;
 		RETURN_IF_FAILED(pElements->GetAt(i, __uuidof(IVariantObject), (LPVOID*)&pElement));
 
+#ifdef DEBUG
+		CComVar vName;
+		pElement->GetVariantValue(Layout::Metadata::Element::Name, &vName);
+		auto str = vName.bstrVal;
+#endif
+
 		CRect elementRect;
 		ElementType elementType = ElementType::UnknownValue;
 		RETURN_IF_FAILED(GetElementType(pElement, &elementType));
@@ -59,8 +65,12 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 				RETURN_IF_FAILED(ApplyStartMargins(pElement, localSourceRect));
 				RETURN_IF_FAILED(BuildTextColumn(hdc, &localSourceRect, &elementRect, pElement, pValueObject, pChildItems, &pColumnsInfoItemElement));
 				RETURN_IF_FAILED(ApplyEndMargins(pElement, elementRect));
+				CRect elementRectWithMargins = elementRect;
 				RETURN_IF_FAILED(FitToParent(pElement, localSourceRect, elementRect));
-				RETURN_IF_FAILED(pColumnsInfoItemElement->SetRect(elementRect));
+				if (elementRectWithMargins != elementRect)
+				{
+					RETURN_IF_FAILED(pColumnsInfoItemElement->SetRect(elementRect));
+				}
 				break;
 			}
 			case ElementType::ImageColumn:
@@ -69,8 +79,12 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 				RETURN_IF_FAILED(ApplyStartMargins(pElement, localSourceRect));
 				RETURN_IF_FAILED(BuildImageColumn(hdc, &localSourceRect, &elementRect, pElement, pValueObject, pImageManagerService, pChildItems, &pColumnsInfoItemElement));
 				RETURN_IF_FAILED(ApplyEndMargins(pElement, elementRect));
+				CRect elementRectWithMargins = elementRect;
 				RETURN_IF_FAILED(FitToParent(pElement, localSourceRect, elementRect));
-				RETURN_IF_FAILED(pColumnsInfoItemElement->SetRect(elementRect));
+				if (elementRectWithMargins != elementRect)
+				{
+					RETURN_IF_FAILED(pColumnsInfoItemElement->SetRect(elementRect));
+				}
 				break;
 			}
 			case ElementType::MarqueeProgressColumn:
@@ -79,8 +93,12 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 				RETURN_IF_FAILED(ApplyStartMargins(pElement, localSourceRect));
 				RETURN_IF_FAILED(BuildMarqueeProgressColumn(hdc, &localSourceRect, &elementRect, pElement, pValueObject, pChildItems, &pColumnsInfoItemElement));
 				RETURN_IF_FAILED(ApplyEndMargins(pElement, elementRect));
+				CRect elementRectWithMargins = elementRect;
 				RETURN_IF_FAILED(FitToParent(pElement, localSourceRect, elementRect));
-				RETURN_IF_FAILED(pColumnsInfoItemElement->SetRect(elementRect));
+				if (elementRectWithMargins != elementRect)
+				{
+					RETURN_IF_FAILED(pColumnsInfoItemElement->SetRect(elementRect));
+				}
 				break;
 			}
 		}
