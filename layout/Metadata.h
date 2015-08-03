@@ -14,6 +14,7 @@ namespace IP
 			namespace ImageColumn
 			{
 				const static CComBSTR ImageKey(L"image");
+				const static CComBSTR Alpha(L"alpha");
 			}
 
 			namespace MarqueeProgressColumn
