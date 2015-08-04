@@ -74,7 +74,7 @@ static void DrawRoundedRect(CDCHandle& cdc, CRect rectText, bool strictRect = fa
 	Color colorBrush(0x882F4F4F);
 	if (colorRefBrush)
 	{
-		if (colorRefBrush && 0xFFFFFF == 0)
+		if ((colorRefBrush & 0xFF000000) == 0)
 		{
 			colorBrush.SetFromCOLORREF(colorRefBrush);
 		}
