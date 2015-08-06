@@ -2,11 +2,43 @@
 #include "LayoutBuilder.h"
 #include "GdilPlusUtils.h"
 
+STDMETHODIMP CLayoutBuilder::VarToString(CComVar& v, CComBSTR& bstr)
+{
+	switch (v.vt)
+	{
+		case VT_BSTR:
+			bstr = v.bstrVal;
+			break;
+		case VT_I4:
+			bstr = boost::lexical_cast<wstring>(v.intVal).c_str();
+			break;
+	}
+	return S_OK;
+}
+
 STDMETHODIMP CLayoutBuilder::BuildTextColumn(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem)
 {
-	CComVar vTextKey;
-	RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::Text, &vTextKey));
-	ATLASSERT(vTextKey.vt == VT_BSTR);
+	CComBSTR bstrText;
+
+	{
+		CComVar vText;
+		RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::Text, &vText));
+		VarToString(vText, bstrText);
+		
+		if (pValueObject)
+		{
+			CComVar vTextKey;
+			RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::TextKey, &vTextKey));
+			if (vTextKey.vt == VT_BSTR)
+			{
+				CComVar vTextByKey;
+				RETURN_IF_FAILED(pValueObject->GetVariantValue(vTextKey.bstrVal, &vTextByKey));
+				CComBSTR bstrTextByKey;
+				VarToString(vTextByKey, bstrTextByKey);
+				bstrText += bstrTextByKey;
+			}
+		}
+	}
 
 	CComVar vFont;
 	RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::Font, &vFont));
@@ -16,9 +48,8 @@ STDMETHODIMP CLayoutBuilder::BuildTextColumn(HDC hdc, RECT* pSourceRect, RECT* p
 	RETURN_IF_FAILED(m_pThemeFontMap->GetFont(vFont.bstrVal, &font));
 	CDCSelectFontScope cdcSelectFontScope(hdc, font);
 
-	CComBSTR bstr = vTextKey.bstrVal;
 	CSize sz;
-	GetTextExtentPoint32(hdc, bstr, bstr.Length(), &sz);
+	GetTextExtentPoint32(hdc, bstrText, bstrText.Length(), &sz);
 
 	CRect sourceRect = *pSourceRect;
 	CRect textRect;
@@ -38,12 +69,9 @@ STDMETHODIMP CLayoutBuilder::BuildTextColumn(HDC hdc, RECT* pSourceRect, RECT* p
 	ATLASSERT(vColor.vt == VT_BSTR);
 	CComVar vColorSelected;
 	RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::ColorSelected, &vColorSelected));
-	CComVar vText;
-	RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::Text, &vText));
-	ATLASSERT(vText.vt == VT_BSTR);
 
 	RETURN_IF_FAILED(pColumnsInfoItem->SetRectStringProp(Layout::Metadata::TextColumn::Color, vColor.bstrVal));
-	RETURN_IF_FAILED(pColumnsInfoItem->SetRectStringProp(Layout::Metadata::TextColumn::Text, vText.bstrVal));
+	RETURN_IF_FAILED(pColumnsInfoItem->SetRectStringProp(Layout::Metadata::TextColumn::Text, bstrText));
 	RETURN_IF_FAILED(pColumnsInfoItem->SetRectStringProp(Layout::Metadata::TextColumn::Font, vFont.bstrVal));
 
 	if (vColorSelected.vt == VT_BSTR)
