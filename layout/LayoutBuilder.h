@@ -41,6 +41,7 @@ private:
 	STDMETHOD(ApplyAlignVertical)(IColumnsInfo* pChildItems, CRect& rectParent, CRect& rect);
 	STDMETHOD(TranslateRects)(POINT* ptOrigin, IColumnsInfo* pColumnsInfo);
 	STDMETHOD(VarToString)(CComVar& v, CComBSTR& bstr);
+	STDMETHOD(CalculateRelativeWidth)(IVariantObject* pElement, CRect& rect);
 
 public:
 	static HRESULT MapType(BSTR bstrType, ElementType* pElementType);

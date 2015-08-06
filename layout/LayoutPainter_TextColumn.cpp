@@ -54,7 +54,11 @@ STDMETHODIMP CLayoutPainter::PaintTextColumn(HDC hdc, IColumnsInfoItem* pColumnI
 	cdc.SetBkMode(TRANSPARENT);
 	cdc.SetTextColor(dwColor);
 
-	DrawText(cdc, bstr, bstr.Length(), &rect, 0);
+	CComVar vMultiline;
+	RETURN_IF_FAILED(pColumnInfoItem->GetVariantValue(Layout::Metadata::TextColumn::Multiline, &vMultiline));
+	BOOL bWordWrap = vMultiline.vt == VT_BOOL && vMultiline.boolVal;
+
+	DrawText(cdc, bstr, bstr.Length(), &rect, bWordWrap ? DT_WORDBREAK : 0);
 
 	return S_OK;
 }

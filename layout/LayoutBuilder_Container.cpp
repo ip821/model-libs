@@ -54,6 +54,7 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 				CComPtr<IColumnsInfoItem> pColumnsInfoItemElement;
 				CRect rectParent = *pSourceRect;
 				RETURN_IF_FAILED(FitToParentStart(pElement, rectParent, localSourceRect));
+				RETURN_IF_FAILED(CalculateRelativeWidth(pElement, localSourceRect));
 				RETURN_IF_FAILED(BuildVerticalContainer(hdc, &localSourceRect, &elementRect, pElement, pValueObject, pImageManagerService, pChildItems, &pColumnsInfoItemElement));
 				RETURN_IF_FAILED(FitToParentEnd(pElement, rectParent, elementRect));
 				break;
@@ -63,6 +64,7 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 				CComPtr<IColumnsInfoItem> pColumnsInfoItemElement;
 				CRect rectParent = *pSourceRect;
 				RETURN_IF_FAILED(FitToParentStart(pElement, rectParent, localSourceRect));
+				RETURN_IF_FAILED(CalculateRelativeWidth(pElement, localSourceRect));
 				RETURN_IF_FAILED(BuildHorizontalContainer(hdc, &localSourceRect, &elementRect, pElement, pValueObject, pImageManagerService, pChildItems, &pColumnsInfoItemElement));
 				RETURN_IF_FAILED(FitToParentEnd(pElement, rectParent, elementRect));
 				break;
@@ -73,6 +75,7 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 				RETURN_IF_FAILED(ApplyStartMargins(pElement, localSourceRect));
 				CRect rectParent = *pSourceRect;
 				RETURN_IF_FAILED(FitToParentStart(pElement, rectParent, localSourceRect));
+				RETURN_IF_FAILED(CalculateRelativeWidth(pElement, localSourceRect));
 				RETURN_IF_FAILED(BuildTextColumn(hdc, &localSourceRect, &elementRect, pElement, pValueObject, pChildItems, &pColumnsInfoItemElement));
 				RETURN_IF_FAILED(ApplyEndMargins(pElement, elementRect));
 				CRect elementRectWithMargins = elementRect;
@@ -89,6 +92,7 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 				RETURN_IF_FAILED(ApplyStartMargins(pElement, localSourceRect));
 				CRect rectParent = *pSourceRect;
 				RETURN_IF_FAILED(FitToParentStart(pElement, rectParent, localSourceRect));
+				RETURN_IF_FAILED(CalculateRelativeWidth(pElement, localSourceRect));
 				RETURN_IF_FAILED(BuildImageColumn(hdc, &localSourceRect, &elementRect, pElement, pValueObject, pImageManagerService, pChildItems, &pColumnsInfoItemElement));
 				RETURN_IF_FAILED(ApplyEndMargins(pElement, elementRect));
 				CRect elementRectWithMargins = elementRect;
@@ -105,6 +109,7 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 				RETURN_IF_FAILED(ApplyStartMargins(pElement, localSourceRect));
 				CRect rectParent = *pSourceRect;
 				RETURN_IF_FAILED(FitToParentStart(pElement, rectParent, localSourceRect));
+				RETURN_IF_FAILED(CalculateRelativeWidth(pElement, localSourceRect));
 				RETURN_IF_FAILED(BuildMarqueeProgressColumn(hdc, &localSourceRect, &elementRect, pElement, pValueObject, pChildItems, &pColumnsInfoItemElement));
 				RETURN_IF_FAILED(ApplyEndMargins(pElement, elementRect));
 				CRect elementRectWithMargins = elementRect;
@@ -123,6 +128,7 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 	CRect parentRect = *pSourceRect;
 	containerRect.OffsetRect(parentRect.left, parentRect.top);
 
+	RETURN_IF_FAILED(CalculateRelativeWidth(pLayoutObject, containerRect));
 	RETURN_IF_FAILED(ApplyStartMargins(pLayoutObject, containerRect));
 	RETURN_IF_FAILED(ApplyEndMargins(pLayoutObject, containerRect));
 	RETURN_IF_FAILED(FitToParentEnd(pLayoutObject, parentRect, containerRect));

@@ -285,6 +285,20 @@ STDMETHODIMP CLayoutBuilder::ApplyStartMargins(IVariantObject* pElement, CRect& 
 	return S_OK;
 }
 
+STDMETHODIMP CLayoutBuilder::CalculateRelativeWidth(IVariantObject* pElement, CRect& rect)
+{
+	CComVar vWidthPercent;
+	pElement->GetVariantValue(Layout::Metadata::Element::WidthPercent, &vWidthPercent);
+
+	if (vWidthPercent.vt == VT_I4)
+	{
+		auto val = (double)vWidthPercent.intVal / 100;
+		rect.right -= rect.Width() - rect.Width() * val;
+	}
+
+	return S_OK;
+}
+
 STDMETHODIMP CLayoutBuilder::SetColumnProps(IVariantObject* pLayoutObject, IColumnsInfoItem* pColumnsInfoItem)
 {
 	UINT uiCount = 0;

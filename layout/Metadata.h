@@ -30,6 +30,7 @@ namespace IP
 			namespace TextColumn
 			{
 				const static CComBSTR Text(L"text");
+				const static CComBSTR Multiline(L"text_multiline");
 				const static CComBSTR TextKey(L"text_key");
 				const static CComBSTR Font(L"font");
 				const static CComBSTR Color(L"color");
@@ -59,6 +60,7 @@ namespace IP
 				const static CComBSTR BorderTopWidth(L"border_top_width");
 				const static CComBSTR AlignHorizontal(L"align_horizontal");
 				const static CComBSTR AlignVertical(L"align_vertical");
+				const static CComBSTR WidthPercent(L"width_percent");
 			}
 
 			namespace BackgroundStyles

@@ -48,8 +48,26 @@ STDMETHODIMP CLayoutBuilder::BuildTextColumn(HDC hdc, RECT* pSourceRect, RECT* p
 	RETURN_IF_FAILED(m_pThemeFontMap->GetFont(vFont.bstrVal, &font));
 	CDCSelectFontScope cdcSelectFontScope(hdc, font);
 
+	CComVar vMultiline;
+	RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::Multiline, &vMultiline));
+	BOOL bWordWrap = vMultiline.vt == VT_BOOL && vMultiline.boolVal;
+
 	CSize sz;
-	GetTextExtentPoint32(hdc, bstrText, bstrText.Length(), &sz);
+	if (bWordWrap)
+	{
+		CRect rectSource = *pSourceRect;
+		CRect rect;
+		rect.right = rectSource.Width();
+		rect.bottom = rectSource.Height();
+
+		DrawText(hdc, bstrText, bstrText.Length(), &rect, DT_WORDBREAK | DT_CALCRECT);
+		sz.cx = rect.Width();
+		sz.cy = rect.Height();
+	}
+	else
+	{
+		GetTextExtentPoint32(hdc, bstrText, bstrText.Length(), &sz);
+	}
 
 	CRect sourceRect = *pSourceRect;
 	CRect textRect;
