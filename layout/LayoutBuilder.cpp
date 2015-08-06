@@ -197,7 +197,26 @@ STDMETHODIMP CLayoutBuilder::ApplyAlignHorizontal(IColumnsInfo* pChildItems, CRe
 	return S_OK;
 }
 
-STDMETHODIMP CLayoutBuilder::FitToParent(IVariantObject* pElement, CRect& rectParent, CRect& rect)
+STDMETHODIMP CLayoutBuilder::FitToParentStart(IVariantObject* pElement, CRect& rectParent, CRect& rect)
+{
+	CComVar vFitHorizantal;
+	CComVar vFitVertical;
+	pElement->GetVariantValue(Layout::Metadata::Element::FitHorizontal, &vFitHorizantal);
+	pElement->GetVariantValue(Layout::Metadata::Element::FitVertical, &vFitVertical);
+
+	if (vFitHorizantal.vt == VT_BSTR && CComBSTR(vFitHorizantal.bstrVal) == Layout::Metadata::FitTypes::Parent)
+	{
+		rect.left = rectParent.left;
+	}
+
+	if (vFitVertical.vt == VT_BSTR && CComBSTR(vFitVertical.bstrVal) == Layout::Metadata::FitTypes::Parent)
+	{
+		rect.top = rectParent.top;
+	}
+	return S_OK;
+}
+
+STDMETHODIMP CLayoutBuilder::FitToParentEnd(IVariantObject* pElement, CRect& rectParent, CRect& rect)
 {
 	CComVar vFitHorizantal;
 	CComVar vFitVertical;

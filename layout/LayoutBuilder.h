@@ -25,7 +25,8 @@ private:
 	STDMETHOD(GetElements)(IVariantObject* pVariantObject, IObjArray** ppObjArray);
 	STDMETHOD(ApplyStartMargins)(IVariantObject* pElement, CRect& rect);
 	STDMETHOD(ApplyEndMargins)(IVariantObject* pElement, CRect& rect);
-	STDMETHOD(FitToParent)(IVariantObject* pElement, CRect& rectParent, CRect& rect);
+	STDMETHOD(FitToParentStart)(IVariantObject* pElement, CRect& rectParent, CRect& rect);
+	STDMETHOD(FitToParentEnd)(IVariantObject* pElement, CRect& rectParent, CRect& rect);
 
 	STDMETHOD(BuildContainerInternal)(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem, function<void (CComVar&, CRect&, CRect&, CRect&, CRect&)> itemAction);
 	STDMETHOD(BuildHorizontalContainer)(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem);
