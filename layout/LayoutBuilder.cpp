@@ -99,11 +99,11 @@ STDMETHODIMP CLayoutBuilder::GetElementType(IVariantObject* pVariantObject, Elem
 	return S_OK;
 }
 
-STDMETHODIMP CLayoutBuilder::ApplyAlignVertical(IColumnsInfo* pChildItems, CRect& rectParent, CRect& rect)
+STDMETHODIMP CLayoutBuilder::ApplyAlignVertical(IColumnsInfo* pChildItems, CRect& rect)
 {
 	UINT uiCount = 0;
 	RETURN_IF_FAILED(pChildItems->GetCount(&uiCount));
-	int maxBottom = rectParent.bottom;
+	int maxBottom = rect.Height();
 	while (uiCount > 0)
 	{
 		uiCount--;
@@ -137,7 +137,7 @@ STDMETHODIMP CLayoutBuilder::ApplyAlignVertical(IColumnsInfo* pChildItems, CRect
 		}
 		else if (bstrAlign == Layout::Metadata::AlignVerticalTypes::Center)
 		{
-			auto y = rectParent.Height() / 2 - rectChild.Height() / 2;
+			auto y = rect.Height() / 2 - rectChild.Height() / 2;
 			auto diff = y - rectChild.top;
 			rectChild.top += diff;
 			rectChild.bottom += diff;
@@ -147,11 +147,11 @@ STDMETHODIMP CLayoutBuilder::ApplyAlignVertical(IColumnsInfo* pChildItems, CRect
 	return S_OK;
 }
 
-STDMETHODIMP CLayoutBuilder::ApplyAlignHorizontal(IColumnsInfo* pChildItems, CRect& rectParent, CRect& rect)
+STDMETHODIMP CLayoutBuilder::ApplyAlignHorizontal(IColumnsInfo* pChildItems, CRect& rect)
 {
 	UINT uiCount = 0;
 	RETURN_IF_FAILED(pChildItems->GetCount(&uiCount));
-	int maxRight = rectParent.right;
+	int maxRight = rect.Width();
 	while (uiCount > 0)
 	{
 		uiCount--;
@@ -180,14 +180,11 @@ STDMETHODIMP CLayoutBuilder::ApplyAlignHorizontal(IColumnsInfo* pChildItems, CRe
 				auto diff = rectChildWithMargins.left - rectChild.left;
 				maxRight -= diff;
 			}
-			CComPtr<IColumnsInfo> pChildrenOfChild;
-			RETURN_IF_FAILED(pColumnsInfoItem->GetChildItems(&pChildrenOfChild));
-			RETURN_IF_FAILED(ApplyAlignHorizontal(pChildrenOfChild, rectChild, rect));
 			RETURN_IF_FAILED(pColumnsInfoItem->SetRect(rectChild));
 		}
 		else if (bstrAlign == Layout::Metadata::AlignHorizontalTypes::Center)
 		{
-			auto x = rectParent.Width() / 2 - rectChild.Width() / 2;
+			auto x = rect.Width() / 2 - rectChild.Width() / 2;
 			auto diff = x - rectChild.left;
 			rectChild.left += diff;
 			rectChild.right += diff;
@@ -293,7 +290,7 @@ STDMETHODIMP CLayoutBuilder::CalculateRelativeWidth(IVariantObject* pElement, CR
 	if (vWidthPercent.vt == VT_I4)
 	{
 		auto val = (double)vWidthPercent.intVal / 100;
-		rect.right -= rect.Width() - rect.Width() * val;
+		rect.right -= (LONG)(rect.Width() - rect.Width() * val);
 	}
 
 	return S_OK;

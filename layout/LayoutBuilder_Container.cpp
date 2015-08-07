@@ -36,7 +36,14 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 		CComVar vName;
 		pElement->GetVariantValue(Layout::Metadata::Element::Name, &vName);
 		auto str = vName.bstrVal;
+
+		if (str == L"BottomContainer")
+		{
+			str = vName.bstrVal;
+		}
 #endif
+
+		
 
 		CRect elementRect;
 		ElementType elementType = ElementType::UnknownValue;
@@ -132,8 +139,8 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 	RETURN_IF_FAILED(ApplyStartMargins(pLayoutObject, containerRect));
 	RETURN_IF_FAILED(ApplyEndMargins(pLayoutObject, containerRect));
 	RETURN_IF_FAILED(FitToParentEnd(pLayoutObject, parentRect, containerRect));
-	RETURN_IF_FAILED(ApplyAlignHorizontal(pChildItems, parentRect, containerRect));
-	RETURN_IF_FAILED(ApplyAlignVertical(pChildItems, parentRect, containerRect));
+	RETURN_IF_FAILED(ApplyAlignHorizontal(pChildItems, containerRect));
+	RETURN_IF_FAILED(ApplyAlignVertical(pChildItems, containerRect));
 
 	RETURN_IF_FAILED(SetColumnProps(pLayoutObject, pColumnsInfoItem));
 	RETURN_IF_FAILED(pColumnsInfoItem->SetRect(containerRect));

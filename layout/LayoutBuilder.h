@@ -37,8 +37,8 @@ private:
 
 	STDMETHOD(SetColumnProps)(IVariantObject* pLayoutObject, IColumnsInfoItem* pColumnsInfoItem);
 	STDMETHOD(GetElementType)(IVariantObject* pVariantObject, ElementType* pElementType);
-	STDMETHOD(ApplyAlignHorizontal)(IColumnsInfo* pChildItems, CRect& rectParent, CRect& rect);
-	STDMETHOD(ApplyAlignVertical)(IColumnsInfo* pChildItems, CRect& rectParent, CRect& rect);
+	STDMETHOD(ApplyAlignHorizontal)(IColumnsInfo* pChildItems, CRect& rect);
+	STDMETHOD(ApplyAlignVertical)(IColumnsInfo* pChildItems, CRect& rect);
 	STDMETHOD(TranslateRects)(POINT* ptOrigin, IColumnsInfo* pColumnsInfo);
 	STDMETHOD(VarToString)(CComVar& v, CComBSTR& bstr);
 	STDMETHOD(CalculateRelativeWidth)(IVariantObject* pElement, CRect& rect);
