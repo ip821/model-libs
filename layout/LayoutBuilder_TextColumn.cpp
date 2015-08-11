@@ -82,20 +82,8 @@ STDMETHODIMP CLayoutBuilder::BuildTextColumn(HDC hdc, RECT* pSourceRect, RECT* p
 	RETURN_IF_FAILED(SetColumnProps(pLayoutObject, pColumnsInfoItem));
 	RETURN_IF_FAILED(pColumnsInfoItem->SetRect(textRect));
 
-	CComVar vColor;
-	RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::Color, &vColor));
-	ATLASSERT(vColor.vt == VT_BSTR);
-	CComVar vColorSelected;
-	RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::ColorSelected, &vColorSelected));
-
-	RETURN_IF_FAILED(pColumnsInfoItem->SetRectStringProp(Layout::Metadata::TextColumn::Color, vColor.bstrVal));
 	RETURN_IF_FAILED(pColumnsInfoItem->SetRectStringProp(Layout::Metadata::TextColumn::Text, bstrText));
 	RETURN_IF_FAILED(pColumnsInfoItem->SetRectStringProp(Layout::Metadata::TextColumn::Font, vFont.bstrVal));
-
-	if (vColorSelected.vt == VT_BSTR)
-	{
-		RETURN_IF_FAILED(pColumnsInfoItem->SetRectStringProp(Layout::Metadata::TextColumn::ColorSelected, vColorSelected.bstrVal));
-	}
 
 	*pDestRect = textRect;
 	return S_OK;

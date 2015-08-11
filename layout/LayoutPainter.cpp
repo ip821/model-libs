@@ -35,11 +35,9 @@ STDMETHODIMP CLayoutPainter::EraseBackground(HDC hdc, IColumnsInfo* pColumnInfo)
 		{
 			CRect rect;
 			RETURN_IF_FAILED(pColumnInfoItem->GetRect(&rect));
-			CComBSTR bstrBackColorName;
-			RETURN_IF_FAILED(pColumnInfoItem->GetRectStringProp(Layout::Metadata::Element::ColorBackground, &bstrBackColorName));
 			CDCHandle cdc(hdc);
 			DWORD dwColor = 0;
-			RETURN_IF_FAILED(m_pThemeColorMap->GetColor(bstrBackColorName, &dwColor));
+			RETURN_IF_FAILED(GetItemBackColor(pColumnInfoItem, &dwColor));
 			CBrush brush;
 			brush.CreateSolidBrush(dwColor);
 			cdc.FillRect(rect, brush);
@@ -101,3 +99,85 @@ STDMETHODIMP CLayoutPainter::PaintLayoutInternal(HDC hdc, IImageManagerService* 
 	return S_OK;
 }
 
+STDMETHODIMP CLayoutPainter::PaintRoundedRect(HDC hdc, IColumnsInfoItem* pColumnInfoItem)
+{
+	CRect rect;
+	RETURN_IF_FAILED(pColumnInfoItem->GetRect(&rect));
+
+	{
+		CComBSTR bstrBackStyle;
+		RETURN_IF_FAILED(pColumnInfoItem->GetRectStringProp(Layout::Metadata::Element::BackgroundStyle, &bstrBackStyle));
+
+		if (bstrBackStyle != L"" && bstrBackStyle == Layout::Metadata::BackgroundStyles::Rounded)
+		{
+			DWORD dwColor = 0;
+			RETURN_IF_FAILED(GetItemBackColor(pColumnInfoItem, &dwColor));
+			CDCHandle cdc(hdc);
+			DrawRoundedRect(cdc, rect, false, dwColor);
+		}
+	}
+
+	return S_OK;
+}
+
+STDMETHODIMP CLayoutPainter::GetColorByParamName(IColumnsInfoItem* pColumnInfoItem, BSTR bstrParamName, DWORD* pdwColor)
+{
+	CComVar v;
+	RETURN_IF_FAILED(pColumnInfoItem->GetVariantValue(bstrParamName, &v));
+	if (v.vt != VT_BSTR)
+		return E_INVALIDARG;
+	RETURN_IF_FAILED(m_pThemeColorMap->GetColor(v.bstrVal, pdwColor));
+	return S_OK;
+}
+
+STDMETHODIMP CLayoutPainter::GetItemBackColor(IColumnsInfoItem* pColumnInfoItem, DWORD* pdwColor)
+{
+	CComBSTR bstrColorName = Layout::Metadata::Element::ColorBackground;
+	CComVar vDisabled;
+	pColumnInfoItem->GetVariantValue(Layout::Metadata::Element::Disabled, &vDisabled);
+	if (vDisabled.vt == VT_BOOL && vDisabled.boolVal)
+	{
+		bstrColorName = Layout::Metadata::Element::ColorBackgroundDisabled;
+		if (FAILED(GetColorByParamName(pColumnInfoItem, bstrColorName, pdwColor)))
+			bstrColorName = Layout::Metadata::Element::ColorBackground;
+	}
+	else
+	{
+		CComVar vSelected;
+		pColumnInfoItem->GetVariantValue(Layout::Metadata::Element::Selected, &vSelected);
+		if (vSelected.vt == VT_BOOL && vSelected.boolVal)
+		{
+			bstrColorName = Layout::Metadata::Element::ColorBackgroundSelected;
+			if (FAILED(GetColorByParamName(pColumnInfoItem, bstrColorName, pdwColor)))
+				bstrColorName = Layout::Metadata::Element::ColorBackground;
+		}
+	}
+	RETURN_IF_FAILED(GetColorByParamName(pColumnInfoItem, bstrColorName, pdwColor));
+	return S_OK;
+}
+
+STDMETHODIMP CLayoutPainter::GetItemColor(IColumnsInfoItem* pColumnInfoItem, DWORD* pdwColor)
+{
+	CComBSTR bstrColorName = Layout::Metadata::Element::Color;
+	CComVar vDisabled;
+	pColumnInfoItem->GetVariantValue(Layout::Metadata::Element::Disabled, &vDisabled);
+	if (vDisabled.vt == VT_BOOL && vDisabled.boolVal)
+	{
+		bstrColorName = Layout::Metadata::Element::ColorBackgroundDisabled;
+		if (FAILED(GetColorByParamName(pColumnInfoItem, bstrColorName, pdwColor)))
+			bstrColorName = Layout::Metadata::Element::Color;
+	}
+	else
+	{
+		CComVar vSelected;
+		pColumnInfoItem->GetVariantValue(Layout::Metadata::Element::Selected, &vSelected);
+		if (vSelected.vt == VT_BOOL && vSelected.boolVal)
+		{
+			bstrColorName = Layout::Metadata::Element::ColorBackgroundSelected;
+			if (FAILED(GetColorByParamName(pColumnInfoItem, bstrColorName, pdwColor)))
+				bstrColorName = Layout::Metadata::Element::Color;
+		}
+	}
+	RETURN_IF_FAILED(GetColorByParamName(pColumnInfoItem, bstrColorName, pdwColor));
+	return S_OK;
+}

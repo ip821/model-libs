@@ -33,8 +33,6 @@ namespace IP
 				const static CComBSTR Multiline(L"text_multiline");
 				const static CComBSTR TextKey(L"text_key");
 				const static CComBSTR Font(L"font");
-				const static CComBSTR Color(L"color");
-				const static CComBSTR ColorSelected(L"color_selected");
 			}
 
 			namespace Element
@@ -44,7 +42,13 @@ namespace IP
 				const static CComBSTR Type(L"type");
 				const static CComBSTR Visible(L"visible");
 				const static CComBSTR Selected(L"selected");
+				const static CComBSTR Disabled(L"disabled");
+				const static CComBSTR Color(L"color");
+				const static CComBSTR ColorSelected(L"color_selected");
+				const static CComBSTR ColorDisabled(L"color_disabled");
 				const static CComBSTR ColorBackground(L"color_background");
+				const static CComBSTR ColorBackgroundSelected(L"color_background_selected");
+				const static CComBSTR ColorBackgroundDisabled(L"color_background_disabled");
 				const static CComBSTR BackgroundStyle(L"background_style");
 				const static CComBSTR MarginLeft(L"margin_left");
 				const static CComBSTR MarginRight(L"margin_right");

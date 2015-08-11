@@ -14,6 +14,9 @@ HRESULT CThemeColorMap::FinalConstruct()
 STDMETHODIMP CThemeColorMap::GetColor(BSTR bstrColorName, DWORD* dwColor)
 {
 	CHECK_E_POINTER(dwColor);
+	if (m_colors.find(bstrColorName) == m_colors.end())
+		return E_INVALIDARG;
+
 	auto color = m_colors[bstrColorName];
 	auto gdiColor = Gdiplus::Color(color);
 	auto alpha = gdiColor.GetAlpha();

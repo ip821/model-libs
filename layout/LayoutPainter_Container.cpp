@@ -7,6 +7,10 @@
 STDMETHODIMP CLayoutPainter::PaintContainer(HDC hdc, IColumnsInfoItem* pColumnInfoItem)
 {
 	{
+		PaintRoundedRect(hdc, pColumnInfoItem);
+	}
+
+	{
 		BOOL bBorderTop = FALSE;
 		RETURN_IF_FAILED(pColumnInfoItem->GetRectBoolProp(Layout::Metadata::Element::BorderTop, &bBorderTop));
 		if (bBorderTop)

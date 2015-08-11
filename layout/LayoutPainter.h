@@ -21,6 +21,10 @@ private:
 	CComPtr<IThemeFontMap> m_pThemeFontMap;
 	CComPtr<IThemeColorMap> m_pThemeColorMap;
 
+	STDMETHOD(GetColorByParamName)(IColumnsInfoItem* pColumnInfoItem, BSTR bstrParamName, DWORD* pdwColor);
+	STDMETHOD(GetItemBackColor)(IColumnsInfoItem* pColumnInfoItem, DWORD* pdwColor);
+	STDMETHOD(GetItemColor)(IColumnsInfoItem* pColumnInfoItem, DWORD* pdwColor);
+	STDMETHOD(PaintRoundedRect)(HDC hdc, IColumnsInfoItem* pColumnInfoItem);
 	STDMETHOD(PaintContainer)(HDC hdc, IColumnsInfoItem* pColumnInfoItem);
 	STDMETHOD(PaintTextColumn)(HDC hdc, IColumnsInfoItem* pColumnInfoItem);
 	STDMETHOD(PaintImageColumn)(HDC hdc, IImageManagerService* pImageManagerService, IColumnsInfoItem* pColumnInfoItem);

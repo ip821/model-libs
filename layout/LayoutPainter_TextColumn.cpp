@@ -10,18 +10,7 @@ STDMETHODIMP CLayoutPainter::PaintTextColumn(HDC hdc, IColumnsInfoItem* pColumnI
 
 	CRect rect;
 	RETURN_IF_FAILED(pColumnInfoItem->GetRect(&rect));
-
-	CComBSTR bstrBackStyle;
-	RETURN_IF_FAILED(pColumnInfoItem->GetRectStringProp(Layout::Metadata::Element::BackgroundStyle, &bstrBackStyle));
-
-	if (bstrBackStyle != L"" && bstrBackStyle == Layout::Metadata::BackgroundStyles::Rounded)
-	{
-		CComBSTR bstrBackColorName;
-		RETURN_IF_FAILED(pColumnInfoItem->GetRectStringProp(Layout::Metadata::Element::ColorBackground, &bstrBackColorName));
-		DWORD dwColor = 0;
-		RETURN_IF_FAILED(m_pThemeColorMap->GetColor(bstrBackColorName, &dwColor));
-		DrawRoundedRect(cdc, rect, false, dwColor);
-	}
+	RETURN_IF_FAILED(PaintRoundedRect(hdc, pColumnInfoItem));
 
 	CComBSTR bstr;
 	RETURN_IF_FAILED(pColumnInfoItem->GetRectStringProp(Layout::Metadata::TextColumn::Text, &bstr));
@@ -41,15 +30,7 @@ STDMETHODIMP CLayoutPainter::PaintTextColumn(HDC hdc, IColumnsInfoItem* pColumnI
 
 	CComBSTR bstrColor;
 	DWORD dwColor = 0;
-	if (bSelected)
-	{
-		RETURN_IF_FAILED(pColumnInfoItem->GetRectStringProp(Layout::Metadata::TextColumn::ColorSelected, &bstrColor));
-	}
-	else
-	{
-		RETURN_IF_FAILED(pColumnInfoItem->GetRectStringProp(Layout::Metadata::TextColumn::Color, &bstrColor));
-	}
-	RETURN_IF_FAILED(m_pThemeColorMap->GetColor(bstrColor, &dwColor));
+	RETURN_IF_FAILED(GetItemColor(pColumnInfoItem, &dwColor));
 
 	cdc.SetBkMode(TRANSPARENT);
 	cdc.SetTextColor(dwColor);
