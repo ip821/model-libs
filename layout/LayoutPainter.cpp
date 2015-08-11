@@ -113,7 +113,7 @@ STDMETHODIMP CLayoutPainter::PaintRoundedRect(HDC hdc, IColumnsInfoItem* pColumn
 			DWORD dwColor = 0;
 			RETURN_IF_FAILED(GetItemBackColor(pColumnInfoItem, &dwColor));
 			CDCHandle cdc(hdc);
-			DrawRoundedRect(cdc, rect, false, dwColor);
+			DrawRoundedRect(cdc, rect, true, dwColor);
 		}
 	}
 
