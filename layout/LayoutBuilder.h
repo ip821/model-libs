@@ -28,7 +28,7 @@ private:
 	STDMETHOD(FitToParentStart)(IVariantObject* pElement, CRect& rectParent, CRect& rect);
 	STDMETHOD(FitToParentEnd)(IVariantObject* pElement, CRect& rectParent, CRect& rect);
 
-	STDMETHOD(BuildContainerInternal)(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem, function<void (CComVar&, CRect&, CRect&, CRect&, CRect&)> itemAction);
+	STDMETHOD(BuildContainerInternal)(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem, ElementType containerElementType);
 	STDMETHOD(BuildHorizontalContainer)(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem);
 	STDMETHOD(BuildVerticalContainer)(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem);
 	STDMETHOD(BuildTextColumn)(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem);
@@ -37,8 +37,8 @@ private:
 
 	STDMETHOD(SetColumnProps)(IVariantObject* pLayoutObject, IColumnsInfoItem* pColumnsInfoItem);
 	STDMETHOD(GetElementType)(IVariantObject* pVariantObject, ElementType* pElementType);
-	STDMETHOD(ApplyAlignHorizontal)(IColumnsInfo* pChildItems, CRect& rect);
-	STDMETHOD(ApplyAlignVertical)(IColumnsInfo* pChildItems, CRect& rect);
+	STDMETHOD(ApplyAlignHorizontal)(IColumnsInfo* pChildItems, CRect& rect, ElementType& elementType);
+	STDMETHOD(ApplyAlignVertical)(IColumnsInfo* pChildItems, CRect& rect, ElementType& elementType);
 	STDMETHOD(TranslateRects)(POINT* ptOrigin, IColumnsInfo* pColumnsInfo);
 	STDMETHOD(VarToString)(CComVar& v, CComBSTR& bstr);
 	STDMETHOD(CalculateRelativeWidth)(IVariantObject* pElement, CRect& rect);

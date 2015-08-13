@@ -99,13 +99,15 @@ STDMETHODIMP CLayoutBuilder::GetElementType(IVariantObject* pVariantObject, Elem
 	return S_OK;
 }
 
-STDMETHODIMP CLayoutBuilder::ApplyAlignVertical(IColumnsInfo* pChildItems, CRect& rect)
+STDMETHODIMP CLayoutBuilder::ApplyAlignVertical(IColumnsInfo* pChildItems, CRect& rect, ElementType& elementType)
 {
 	UINT uiCount = 0;
 	RETURN_IF_FAILED(pChildItems->GetCount(&uiCount));
 	int maxBottom = rect.Height();
 	while (uiCount > 0)
 	{
+		if (elementType != ElementType::VerticalContainer)
+			maxBottom = rect.Height();
 		uiCount--;
 		CComPtr<IColumnsInfoItem> pColumnsInfoItem;
 		RETURN_IF_FAILED(pChildItems->GetItem(uiCount, &pColumnsInfoItem));
@@ -138,6 +140,13 @@ STDMETHODIMP CLayoutBuilder::ApplyAlignVertical(IColumnsInfo* pChildItems, CRect
 		else if (bstrAlign == Layout::Metadata::AlignVerticalTypes::Center)
 		{
 			auto y = rect.Height() / 2 - rectChild.Height() / 2;
+			//auto rectChildWithMargins1 = rectChild;
+			//RETURN_IF_FAILED(ApplyStartMargins(pColumnsInfoItem, rectChildWithMargins1));
+			//auto diff1 = rectChild.Height() - rectChildWithMargins1.Height();
+			//auto rectChildWithMargins2 = rectChild;
+			//RETURN_IF_FAILED(ApplyEndMargins(pColumnsInfoItem, rectChildWithMargins2));
+			//auto diff2 = rectChild.Height() - rectChildWithMargins2.Height();
+			//auto y = rect.Height() / 2 - (rectChild.Height() / 2 + diff1 / 2 + diff2 / 2);
 			auto diff = y - rectChild.top;
 			rectChild.top += diff;
 			rectChild.bottom += diff;
@@ -147,7 +156,7 @@ STDMETHODIMP CLayoutBuilder::ApplyAlignVertical(IColumnsInfo* pChildItems, CRect
 	return S_OK;
 }
 
-STDMETHODIMP CLayoutBuilder::ApplyAlignHorizontal(IColumnsInfo* pChildItems, CRect& rect)
+STDMETHODIMP CLayoutBuilder::ApplyAlignHorizontal(IColumnsInfo* pChildItems, CRect& rect, ElementType& elementType)
 {
 	UINT uiCount = 0;
 	RETURN_IF_FAILED(pChildItems->GetCount(&uiCount));
@@ -234,18 +243,23 @@ STDMETHODIMP CLayoutBuilder::FitToParentEnd(IVariantObject* pElement, CRect& rec
 
 STDMETHODIMP CLayoutBuilder::ApplyEndMargins(IVariantObject* pElement, CRect& rect)
 {
+	CComVar vFitHorizantal;
+	CComVar vFitVertical;
+	pElement->GetVariantValue(Layout::Metadata::Element::FitHorizontal, &vFitHorizantal);
+	pElement->GetVariantValue(Layout::Metadata::Element::FitVertical, &vFitVertical);
+
 	CComVar vMarginRight;
 	CComVar vMarginBottom;
 	pElement->GetVariantValue(Layout::Metadata::Element::MarginRight, &vMarginRight);
 	pElement->GetVariantValue(Layout::Metadata::Element::MarginBottom, &vMarginBottom);
 
-	if (vMarginRight.vt == VT_I4)
+	if (vMarginRight.vt == VT_I4 && (vFitHorizantal.vt == VT_EMPTY || vFitHorizantal.bstrVal != Layout::Metadata::FitTypes::Parent))
 	{
 		auto val = vMarginRight.intVal;
 		rect.right += val;
 	}
 
-	if (vMarginBottom.vt == VT_I4)
+	if (vMarginBottom.vt == VT_I4 && (vFitVertical.vt == VT_EMPTY || vFitVertical.bstrVal != Layout::Metadata::FitTypes::Parent))
 	{
 		auto val = vMarginBottom.intVal;
 		rect.bottom += val;
@@ -257,13 +271,18 @@ STDMETHODIMP CLayoutBuilder::ApplyStartMargins(IVariantObject* pElement, CRect& 
 {
 	CHECK_E_POINTER(pElement);
 
+	CComVar vFitHorizantal;
+	CComVar vFitVertical;
+	pElement->GetVariantValue(Layout::Metadata::Element::FitHorizontal, &vFitHorizantal);
+	pElement->GetVariantValue(Layout::Metadata::Element::FitVertical, &vFitVertical);
+
 	CComVar vMarginLeft;
 	CComVar vMarginTop;
 
 	pElement->GetVariantValue(Layout::Metadata::Element::MarginLeft, &vMarginLeft);
 	pElement->GetVariantValue(Layout::Metadata::Element::MarginTop, &vMarginTop);
 
-	if (vMarginLeft.vt == VT_I4)
+	if (vMarginLeft.vt == VT_I4 && (vFitHorizantal.vt == VT_EMPTY || vFitHorizantal.bstrVal != Layout::Metadata::FitTypes::Parent))
 	{
 		auto val = vMarginLeft.intVal;
 		auto width = rect.Width();
@@ -271,7 +290,7 @@ STDMETHODIMP CLayoutBuilder::ApplyStartMargins(IVariantObject* pElement, CRect& 
 		rect.right = rect.left + width;
 	}
 
-	if (vMarginTop.vt == VT_I4)
+	if (vMarginTop.vt == VT_I4 && (vFitVertical.vt == VT_EMPTY || vFitVertical.bstrVal != Layout::Metadata::FitTypes::Parent))
 	{
 		auto val = vMarginTop.intVal;
 		auto height = rect.Height();

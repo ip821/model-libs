@@ -101,6 +101,14 @@ STDMETHODIMP CLayoutPainter::PaintLayoutInternal(HDC hdc, IImageManagerService* 
 
 STDMETHODIMP CLayoutPainter::PaintRoundedRect(HDC hdc, IColumnsInfoItem* pColumnInfoItem)
 {
+#ifdef DEBUG
+	CComBSTR bstrNameDebug;
+	pColumnInfoItem->GetRectStringProp(Layout::Metadata::Element::Name, &bstrNameDebug);
+	if (bstrNameDebug == L"TwitterUserImageContainer")
+	{
+		CString str = bstrNameDebug;
+	}
+#endif
 	CRect rect;
 	RETURN_IF_FAILED(pColumnInfoItem->GetRect(&rect));
 
@@ -108,12 +116,13 @@ STDMETHODIMP CLayoutPainter::PaintRoundedRect(HDC hdc, IColumnsInfoItem* pColumn
 		CComBSTR bstrBackStyle;
 		RETURN_IF_FAILED(pColumnInfoItem->GetRectStringProp(Layout::Metadata::Element::BackgroundStyle, &bstrBackStyle));
 
-		if (bstrBackStyle != L"" && bstrBackStyle == Layout::Metadata::BackgroundStyles::Rounded)
+		CString strBackStyle(bstrBackStyle);
+		if (bstrBackStyle != L"" && strBackStyle.Find(Layout::Metadata::BackgroundStyles::Rounded) != -1)
 		{
 			DWORD dwColor = 0;
 			RETURN_IF_FAILED(GetItemBackColor(pColumnInfoItem, &dwColor));
 			CDCHandle cdc(hdc);
-			DrawRoundedRect(cdc, rect, true, dwColor);
+			DrawRoundedRect(cdc, rect, strBackStyle == Layout::Metadata::BackgroundStyles::RoundedStrict ? true : false, dwColor);
 		}
 	}
 

@@ -15,6 +15,7 @@ namespace IP
 			{
 				const static CComBSTR ImageKey(L"image");
 				const static CComBSTR Alpha(L"alpha");
+				const static CComBSTR ImageStyle(L"image_style");
 			}
 
 			namespace MarqueeProgressColumn
@@ -67,9 +68,15 @@ namespace IP
 				const static CComBSTR WidthPercent(L"width_percent");
 			}
 
+			namespace ImageStyles
+			{
+				const static CComBSTR Fill(L"fill");
+			}
+
 			namespace BackgroundStyles
 			{
 				const static CComBSTR Rounded(L"rounded");
+				const static CComBSTR RoundedStrict(L"rounded_strict");
 			}
 
 			namespace AlignHorizontalTypes
@@ -82,6 +89,7 @@ namespace IP
 			{
 				const static CComBSTR Down(L"down");
 				const static CComBSTR Center(L"center");
+				const static CComBSTR Up(L"up");
 			}
 
 			namespace LayoutTypes

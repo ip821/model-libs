@@ -2,7 +2,7 @@
 #include "LayoutBuilder.h"
 #include "GdilPlusUtils.h"
 
-STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem, function<void(CComVar&, CRect&, CRect&, CRect&, CRect&)> itemAction)
+STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem, ElementType containerElementType)
 {
 	CRect sourceRect = *pSourceRect;
 	sourceRect.MoveToX(0);
@@ -37,7 +37,7 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 		pElement->GetVariantValue(Layout::Metadata::Element::Name, &vName);
 		auto str = vName.bstrVal;
 
-		if (str == L"BottomContainer")
+		if (str == L"TwitterUserImage")
 		{
 			str = vName.bstrVal;
 		}
@@ -129,7 +129,36 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 			}
 		}
 
-		itemAction(vVisible, sourceRect, localSourceRect, elementRect, containerRect);
+		if (containerElementType == ElementType::HorizontalContainer)
+		{
+			if (vVisible.boolVal)
+			{
+				sourceRect.left = elementRect.right;
+				containerRect.right = elementRect.right;
+				containerRect.bottom = max(elementRect.bottom, containerRect.bottom);
+			}
+			else
+			{
+				elementRect = localSourceRect;
+				elementRect.right = elementRect.left;
+				elementRect.bottom = elementRect.top;
+			}
+		}
+		else if (containerElementType == ElementType::VerticalContainer)
+		{
+			if (vVisible.boolVal)
+			{
+				sourceRect.top = elementRect.bottom;
+				containerRect.bottom = elementRect.bottom;
+				containerRect.right = max(elementRect.right, containerRect.right);
+			}
+			else
+			{
+				elementRect = localSourceRect;
+				elementRect.bottom = elementRect.top;
+				elementRect.right = elementRect.left;
+			}
+		}
 	}
 
 	CRect parentRect = *pSourceRect;
@@ -137,13 +166,13 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 
 	RETURN_IF_FAILED(CalculateRelativeWidth(pLayoutObject, containerRect));
 	RETURN_IF_FAILED(ApplyStartMargins(pLayoutObject, containerRect));
-	RETURN_IF_FAILED(ApplyEndMargins(pLayoutObject, containerRect));
 	RETURN_IF_FAILED(FitToParentEnd(pLayoutObject, parentRect, containerRect));
-	RETURN_IF_FAILED(ApplyAlignHorizontal(pChildItems, containerRect));
-	RETURN_IF_FAILED(ApplyAlignVertical(pChildItems, containerRect));
+	RETURN_IF_FAILED(ApplyAlignHorizontal(pChildItems, containerRect, containerElementType));
+	RETURN_IF_FAILED(ApplyAlignVertical(pChildItems, containerRect, containerElementType));
 
 	RETURN_IF_FAILED(SetColumnProps(pLayoutObject, pColumnsInfoItem));
 	RETURN_IF_FAILED(pColumnsInfoItem->SetRect(containerRect));
+	RETURN_IF_FAILED(ApplyEndMargins(pLayoutObject, containerRect));
 	*pDestRect = containerRect;
 	return S_OK;
 }
@@ -160,21 +189,7 @@ STDMETHODIMP CLayoutBuilder::BuildHorizontalContainer(HDC hdc, RECT* pSourceRect
 			pImageManagerService,
 			pColumnInfo,
 			ppColumnsInfoItem,
-			[&](CComVar& vVisible, CRect& sourceRect, CRect& localSourceRect, CRect& elementRect, CRect& containerRect)
-	{
-		if (vVisible.boolVal)
-		{
-			sourceRect.left = elementRect.right;
-			containerRect.right = elementRect.right;
-			containerRect.bottom = max(elementRect.bottom, containerRect.bottom);
-		}
-		else
-		{
-			elementRect = localSourceRect;
-			elementRect.right = elementRect.left;
-			elementRect.bottom = elementRect.top;
-		}
-	}
+			ElementType::HorizontalContainer
 	));
 	return S_OK;
 }
@@ -191,21 +206,7 @@ STDMETHODIMP CLayoutBuilder::BuildVerticalContainer(HDC hdc, RECT* pSourceRect, 
 			pImageManagerService,
 			pColumnInfo,
 			ppColumnsInfoItem,
-			[&](CComVar& vVisible, CRect& sourceRect, CRect& localSourceRect, CRect& elementRect, CRect& containerRect)
-	{
-		if (vVisible.boolVal)
-		{
-			sourceRect.top = elementRect.bottom;
-			containerRect.bottom = elementRect.bottom;
-			containerRect.right = max(elementRect.right, containerRect.right);
-		}
-		else
-		{
-			elementRect = localSourceRect;
-			elementRect.bottom = elementRect.top;
-			elementRect.right = elementRect.left;
-		}
-	}
+			ElementType::VerticalContainer
 	));
 	return S_OK;
 }
