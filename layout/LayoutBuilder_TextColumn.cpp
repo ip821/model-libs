@@ -60,9 +60,12 @@ STDMETHODIMP CLayoutBuilder::BuildTextColumn(HDC hdc, RECT* pSourceRect, RECT* p
 		rect.right = rectSource.Width();
 		rect.bottom = rectSource.Height();
 
-		DrawText(hdc, bstrText, bstrText.Length(), &rect, DT_WORDBREAK | DT_CALCRECT);
-		sz.cx = rect.Width();
-		sz.cy = rect.Height();
+		if (bstrText != L"")
+		{
+			DrawText(hdc, bstrText, bstrText.Length(), &rect, DT_WORDBREAK | DT_CALCRECT);
+			sz.cx = rect.Width();
+			sz.cy = rect.Height();
+		}
 	}
 	else
 	{

@@ -37,7 +37,7 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 		pElement->GetVariantValue(Layout::Metadata::Element::Name, &vName);
 		auto str = vName.bstrVal;
 
-		if (str == L"TwitterUserImage")
+		if (str == L"UserInfoString")
 		{
 			str = vName.bstrVal;
 		}
