@@ -172,7 +172,7 @@ STDMETHODIMP CLayoutPainter::GetItemColor(IColumnsInfoItem* pColumnInfoItem, DWO
 	pColumnInfoItem->GetVariantValue(Layout::Metadata::Element::Disabled, &vDisabled);
 	if (vDisabled.vt == VT_BOOL && vDisabled.boolVal)
 	{
-		bstrColorName = Layout::Metadata::Element::ColorBackgroundDisabled;
+		bstrColorName = Layout::Metadata::Element::ColorDisabled;
 		if (FAILED(GetColorByParamName(pColumnInfoItem, bstrColorName, pdwColor)))
 			bstrColorName = Layout::Metadata::Element::Color;
 	}
@@ -182,7 +182,7 @@ STDMETHODIMP CLayoutPainter::GetItemColor(IColumnsInfoItem* pColumnInfoItem, DWO
 		pColumnInfoItem->GetVariantValue(Layout::Metadata::Element::Selected, &vSelected);
 		if (vSelected.vt == VT_BOOL && vSelected.boolVal)
 		{
-			bstrColorName = Layout::Metadata::Element::ColorBackgroundSelected;
+			bstrColorName = Layout::Metadata::Element::ColorSelected;
 			if (FAILED(GetColorByParamName(pColumnInfoItem, bstrColorName, pdwColor)))
 				bstrColorName = Layout::Metadata::Element::Color;
 		}

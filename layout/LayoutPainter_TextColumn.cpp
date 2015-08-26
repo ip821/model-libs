@@ -25,9 +25,6 @@ STDMETHODIMP CLayoutPainter::PaintTextColumn(HDC hdc, IColumnsInfoItem* pColumnI
 	RETURN_IF_FAILED(m_pThemeFontMap->GetFont(bstrFont, &font));
 	CDCSelectFontScope cdcSelectFontScope(cdc, font);
 
-	BOOL bSelected = FALSE;
-	RETURN_IF_FAILED(pColumnInfoItem->GetRectBoolProp(Layout::Metadata::Element::Selected, &bSelected));
-
 	CComBSTR bstrColor;
 	DWORD dwColor = 0;
 	RETURN_IF_FAILED(GetItemColor(pColumnInfoItem, &dwColor));
