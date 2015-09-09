@@ -24,6 +24,8 @@ STDMETHODIMP CColumnsInfoItem::GetRect(RECT* rect)
 STDMETHODIMP CColumnsInfoItem::SetRect(RECT rect)
 {
 	m_rect = rect;
+	ATLASSERT(m_rect.Width() >= 0);
+	ATLASSERT(m_rect.Height() >= 0);
 	return S_OK;
 }
 

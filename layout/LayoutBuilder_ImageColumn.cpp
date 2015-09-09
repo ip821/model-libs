@@ -17,17 +17,38 @@ STDMETHODIMP CLayoutBuilder::BuildImageColumn(HDC hdc, RECT* pSourceRect, RECT* 
 
 	if (vVisible.boolVal)
 	{
+		CComVar vHeight;
+		RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::ImageColumn::Height, &vHeight));
+		CComVar vWidth;
+		RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::ImageColumn::Width, &vWidth));
+
 		CComVar vImageKey;
 		RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::ImageColumn::ImageKey, &vImageKey));
 		ATLASSERT(vImageKey.vt == VT_BSTR);
-		TBITMAP bitmapInfo = { 0 };
-		RETURN_IF_FAILED(pImageManagerService->GetImageInfo(vImageKey.bstrVal, &bitmapInfo));
 
-		CRect sourceRect = *pSourceRect;
-		imageRect.left = sourceRect.left;
-		imageRect.top = sourceRect.top;
-		imageRect.right = imageRect.left + bitmapInfo.Width;
-		imageRect.bottom = imageRect.top + bitmapInfo.Height;
+		int height = 0;
+		int width = 0;
+
+		if (vHeight.vt == VT_I4)
+			height = vHeight.intVal;
+
+		if (vWidth.vt == VT_I4)
+			width = vWidth.intVal;
+
+		if (!height || !width)
+		{
+			TBITMAP bitmapInfo = { 0 };
+			RETURN_IF_FAILED(pImageManagerService->GetImageInfo(vImageKey.bstrVal, &bitmapInfo));
+			if (!height)
+				height = bitmapInfo.Height;
+			if (!width)
+				width = bitmapInfo.Width;
+		}
+
+		imageRect.left = pSourceRect->left;
+		imageRect.top = pSourceRect->top;
+		imageRect.right = imageRect.left + width;
+		imageRect.bottom = imageRect.top + height;
 
 		RETURN_IF_FAILED(pColumnsInfoItem->SetRect(imageRect));
 		RETURN_IF_FAILED(pColumnsInfoItem->SetRectStringProp(Layout::Metadata::ImageColumn::ImageKey, vImageKey.bstrVal));
