@@ -2,6 +2,8 @@
 
 #include "stdafx.h"
 #include "VariantObject.h"
+#include "Functions.h"
+#include "ObjectCollection.h"
 
 // CVariantObject
 
@@ -20,7 +22,43 @@ STDMETHODIMP CVariantObject::CopyTo(IVariantObject* pVariantObject)
 		CComBSTR key(it->first);
 		CComVar v;
 		RETURN_IF_FAILED(GetVariantValue(key, &v));
-		RETURN_IF_FAILED(pVariantObject->SetVariantValue(key, &v));
+		if (v.vt == VT_UNKNOWN)
+		{
+			CComQIPtr<IObjCollection> pArray = v.punkVal;
+			if (pArray)
+			{
+				CComPtr<IObjCollection> pCollection;
+				RETURN_IF_FAILED(CObjectCollection::_CreatorClass::CreateInstance(NULL, __uuidof(IObjCollection), (LPVOID*)&pCollection));
+				UINT uiCount = 0;
+				RETURN_IF_FAILED(pArray->GetCount(&uiCount));
+				for (size_t i = 0; i < uiCount; i++)
+				{
+					CComPtr<IUnknown> pUnk;
+					RETURN_IF_FAILED(pArray->GetAt(i, __uuidof(IUnknown), (LPVOID*)&pUnk));
+					CComQIPtr<IVariantObject> pKnown = pUnk;
+					if (pKnown)
+					{
+						CComPtr<IVariantObject> pCopy;
+						RETURN_IF_FAILED(CVariantObject::_CreatorClass::CreateInstance(NULL, __uuidof(IVariantObject), (LPVOID*)&pCopy));
+						RETURN_IF_FAILED(pKnown->CopyTo(pCopy));
+						RETURN_IF_FAILED(pCollection->AddObject(pCopy));
+					}
+					else
+					{
+						RETURN_IF_FAILED(pCollection->AddObject(pUnk));
+					}
+				}
+				RETURN_IF_FAILED(pVariantObject->SetVariantValue(key, &CComVar(pCollection)));
+			}
+			else
+			{
+				RETURN_IF_FAILED(pVariantObject->SetVariantValue(key, &v));
+			}
+		}
+		else
+		{
+			RETURN_IF_FAILED(pVariantObject->SetVariantValue(key, &v));
+		}
 	}
 	return S_OK;
 }
