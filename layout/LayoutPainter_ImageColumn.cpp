@@ -17,8 +17,6 @@ STDMETHODIMP CLayoutPainter::PaintImageColumn(HDC hdc, IImageManagerService* pIm
 		return S_OK;
 	}
 
-	TBITMAP bitmapInfo = { 0 };
-	RETURN_IF_FAILED(pImageManagerService->GetImageInfo(bstrImageKey, &bitmapInfo));
 	CDC cdcBitmap;
 	cdcBitmap.CreateCompatibleDC(hdc);
 	CDCSelectBitmapScope cdcSelectBitmapScope(cdcBitmap, bitmap);
@@ -32,14 +30,9 @@ STDMETHODIMP CLayoutPainter::PaintImageColumn(HDC hdc, IImageManagerService* pIm
 	CComVar vImageStyle;
 	RETURN_IF_FAILED(pColumnInfoItem->GetVariantValue(Layout::Metadata::ImageColumn::ImageStyle, &vImageStyle));
 
-	CRect imageRect(0, 0, bitmapInfo.Width, bitmapInfo.Height);
+	CRect imageRect(0, 0, rect.Width(), rect.Height());
 	if (vImageStyle.vt == VT_BSTR && vImageStyle.bstrVal == Layout::Metadata::ImageStyles::Fill)
 	{
-		imageRect.left = 0;
-		imageRect.top = 0;
-		imageRect.right = bitmapInfo.Width;
-		imageRect.bottom = bitmapInfo.Height;
-
 		if (imageRect.Width() > rect.Width())
 		{
 			imageRect.left = imageRect.Width() / 2 - rect.Width() / 2;
@@ -58,16 +51,20 @@ STDMETHODIMP CLayoutPainter::PaintImageColumn(HDC hdc, IImageManagerService* pIm
 		BLENDFUNCTION bf = { 0 };
 		bf.BlendOp = AC_SRC_OVER;
 		bf.SourceConstantAlpha = (BYTE)vAlpha.uintVal;
-		auto res = AlphaBlend(hdc, rect.left, rect.top, bitmapInfo.Width, bitmapInfo.Height, cdcBitmap, imageRect.left, imageRect.top, imageRect.Width(), imageRect.Height(), bf);
-		if (!res)
-			return HRESULT_FROM_WIN32(GetLastError());
+		auto res = AlphaBlend(hdc, rect.left, rect.top, rect.Width(), rect.Height(), cdcBitmap, imageRect.left, imageRect.top, imageRect.Width(), imageRect.Height(), bf);
+#ifdef DEBUG
+		//if (!res)
+			//return HRESULT_FROM_WIN32(GetLastError());
+#endif
 	}
 	else
 	{
 		static Gdiplus::Color color(Gdiplus::Color::Transparent);
-		auto res = TransparentBlt(hdc, rect.left, rect.top, bitmapInfo.Width, bitmapInfo.Height, cdcBitmap, imageRect.left, imageRect.top, imageRect.Width(), imageRect.Height(), color.ToCOLORREF());
-		if (!res)
-			return HRESULT_FROM_WIN32(GetLastError());
+		auto res = TransparentBlt(hdc, rect.left, rect.top, rect.Width(), rect.Height(), cdcBitmap, imageRect.left, imageRect.top, imageRect.Width(), imageRect.Height(), color.ToCOLORREF());
+#ifdef DEBUG
+		//if (!res)
+			//return HRESULT_FROM_WIN32(GetLastError());
+#endif
 	}
 
 	return S_OK;

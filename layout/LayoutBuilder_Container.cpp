@@ -14,6 +14,18 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 	containerRect.top = sourceRect.top;
 	containerRect.bottom = sourceRect.top;
 
+#ifdef DEBUG
+	{
+		CComVar vName;
+		pLayoutObject->GetVariantValue(Layout::Metadata::Element::Name, &vName);
+		auto str = CString(vName.bstrVal);
+		if (str == L"UserNameContainer")
+		{
+			str = vName.bstrVal;
+		}
+	}
+#endif
+
 	RETURN_IF_FAILED(FitToParentStart(pLayoutObject, sourceRect, containerRect));
 
 	CComPtr<IColumnsInfoItem> pColumnsInfoItem;
@@ -33,17 +45,17 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 		RETURN_IF_FAILED(pElements->GetAt(i, __uuidof(IVariantObject), (LPVOID*)&pElement));
 
 #ifdef DEBUG
-		CComVar vName;
-		pElement->GetVariantValue(Layout::Metadata::Element::Name, &vName);
-		auto str = vName.bstrVal;
-
-		if (str == L"UserInfoString")
 		{
-			str = vName.bstrVal;
+			CComVar vName;
+			pElement->GetVariantValue(Layout::Metadata::Element::Name, &vName);
+			auto str = CString(vName.bstrVal);
+
+			if (str == L"UserDisplayName")
+			{
+				str = vName.bstrVal;
+			}
 		}
 #endif
-
-		
 
 		CRect elementRect;
 		ElementType elementType = ElementType::UnknownValue;
@@ -86,7 +98,7 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 				RETURN_IF_FAILED(BuildTextColumn(hdc, &localSourceRect, &elementRect, pElement, pValueObject, pChildItems, &pColumnsInfoItemElement));
 				RETURN_IF_FAILED(ApplyEndMargins(pElement, elementRect));
 				CRect elementRectWithMargins = elementRect;
-				RETURN_IF_FAILED(FitToParentStart(pElement, rectParent, elementRect));
+				RETURN_IF_FAILED(FitToParentEnd(pElement, rectParent, elementRect));
 				if (elementRectWithMargins != elementRect)
 				{
 					RETURN_IF_FAILED(pColumnsInfoItemElement->SetRect(elementRect));
@@ -190,7 +202,7 @@ STDMETHODIMP CLayoutBuilder::BuildHorizontalContainer(HDC hdc, RECT* pSourceRect
 			pColumnInfo,
 			ppColumnsInfoItem,
 			ElementType::HorizontalContainer
-	));
+			));
 	return S_OK;
 }
 
@@ -207,6 +219,6 @@ STDMETHODIMP CLayoutBuilder::BuildVerticalContainer(HDC hdc, RECT* pSourceRect, 
 			pColumnInfo,
 			ppColumnsInfoItem,
 			ElementType::VerticalContainer
-	));
+			));
 	return S_OK;
 }

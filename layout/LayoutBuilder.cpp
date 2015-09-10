@@ -48,6 +48,17 @@ STDMETHODIMP CLayoutBuilder::TranslateRects(POINT* ptOrigin, IColumnsInfo* pColu
 	{
 		CComPtr<IColumnsInfoItem> pColumnsInfoItem;
 		RETURN_IF_FAILED(pColumnsInfo->GetItem(i, &pColumnsInfoItem));
+#ifdef DEBUG
+		{
+			CComVar vName;
+			pColumnsInfoItem->GetVariantValue(Layout::Metadata::Element::Name, &vName);
+			auto str = CString(vName.bstrVal);
+			if (str == L"UserNameContainer")
+			{
+				str = vName.bstrVal;
+			}
+		}
+#endif
 		CRect rect;
 		RETURN_IF_FAILED(pColumnsInfoItem->GetRect(&rect));
 		rect.OffsetRect(*ptOrigin);
@@ -212,12 +223,12 @@ STDMETHODIMP CLayoutBuilder::FitToParentStart(IVariantObject* pElement, CRect& r
 
 	if (vFitHorizantal.vt == VT_BSTR && CComBSTR(vFitHorizantal.bstrVal) == Layout::Metadata::FitTypes::Parent)
 	{
-		rect.left = rectParent.left;
+		rect.left = 0;
 	}
 
 	if (vFitVertical.vt == VT_BSTR && CComBSTR(vFitVertical.bstrVal) == Layout::Metadata::FitTypes::Parent)
 	{
-		rect.top = rectParent.top;
+		rect.top = 0;
 	}
 	return S_OK;
 }
@@ -231,12 +242,12 @@ STDMETHODIMP CLayoutBuilder::FitToParentEnd(IVariantObject* pElement, CRect& rec
 
 	if (vFitHorizantal.vt == VT_BSTR && CComBSTR(vFitHorizantal.bstrVal) == Layout::Metadata::FitTypes::Parent)
 	{
-		rect.right = rectParent.right;
+		rect.right = rectParent.Width();
 	}
 
 	if (vFitVertical.vt == VT_BSTR && CComBSTR(vFitVertical.bstrVal) == Layout::Metadata::FitTypes::Parent)
 	{
-		rect.bottom = rectParent.bottom;
+		rect.bottom = rectParent.Height();
 	}
 	return S_OK;
 }
