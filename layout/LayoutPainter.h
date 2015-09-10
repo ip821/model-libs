@@ -24,6 +24,8 @@ private:
 	STDMETHOD(GetColorByParamName)(IColumnsInfoItem* pColumnInfoItem, BSTR bstrParamName, DWORD* pdwColor);
 	STDMETHOD(GetItemBackColor)(IColumnsInfoItem* pColumnInfoItem, DWORD* pdwColor);
 	STDMETHOD(GetItemColor)(IColumnsInfoItem* pColumnInfoItem, DWORD* pdwColor);
+	STDMETHOD(GetItemFont)(IColumnsInfoItem* pColumnInfoItem, HFONT* pFont);
+	STDMETHOD(GetFontByParamName)(IColumnsInfoItem* pColumnInfoItem, BSTR bstrParamName, HFONT* pFont);
 	STDMETHOD(PaintRoundedRect)(HDC hdc, IColumnsInfoItem* pColumnInfoItem);
 	STDMETHOD(PaintContainer)(HDC hdc, IColumnsInfoItem* pColumnInfoItem);
 	STDMETHOD(PaintTextColumn)(HDC hdc, IColumnsInfoItem* pColumnInfoItem);

@@ -36,6 +36,8 @@ namespace IP
 				const static CComBSTR Multiline(L"text_multiline");
 				const static CComBSTR TextKey(L"text_key");
 				const static CComBSTR Font(L"font");
+				const static CComBSTR FontSelected(L"font_selected");
+				const static CComBSTR FontDisabled(L"font_disabled");
 			}
 
 			namespace Element

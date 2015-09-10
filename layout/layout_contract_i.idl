@@ -91,6 +91,7 @@ interface IColumnsInfo : IUnknown
 	HRESULT DisableSelection(BOOL bDisabled);
 	HRESULT FindItemIndex(BSTR bstrName, UINT* puiIndex);
 	HRESULT FindItemByName(BSTR bstrName, IColumnsInfoItem** ppColumnsInfoItem);
+	HRESULT FindItemByPoint(POINT* ppt, IColumnsInfoItem** ppColumnsInfoItem);
 };
 
 typedef enum ElementType

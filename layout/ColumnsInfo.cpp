@@ -31,6 +31,30 @@ STDMETHODIMP CColumnsInfo::FindItemIndex(BSTR bstrName, UINT* puiIndex)
 	return E_NOT_SET;
 }
 
+STDMETHODIMP CColumnsInfo::FindItemByPoint(POINT* ppt, IColumnsInfoItem** ppColumnsInfoItem)
+{
+	CHECK_E_POINTER(ppColumnsInfoItem);
+	*ppColumnsInfoItem = nullptr;
+	CPoint pt(*ppt);
+	for (size_t i = 0; i < m_pItems.size(); i++)
+	{
+		CComPtr<IColumnsInfo> pChildObjects;
+		RETURN_IF_FAILED(m_pItems[i]->GetChildItems(&pChildObjects));
+		RETURN_IF_FAILED(pChildObjects->FindItemByPoint(ppt, ppColumnsInfoItem));
+		if (*ppColumnsInfoItem)
+			return S_OK;
+
+		CRect rect;
+		RETURN_IF_FAILED(m_pItems[i]->GetRect(&rect));
+		if (rect.PtInRect(pt))
+		{
+			RETURN_IF_FAILED(m_pItems[i]->QueryInterface(ppColumnsInfoItem));
+			return S_OK;
+		}
+	}
+	return S_OK;
+}
+
 STDMETHODIMP CColumnsInfo::FindItemByName(BSTR bstrName, IColumnsInfoItem** ppColumnsInfoItem)
 {
 	CHECK_E_POINTER(ppColumnsInfoItem);
