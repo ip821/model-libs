@@ -18,76 +18,84 @@ STDMETHODIMP CLayoutBuilder::VarToString(CComVar& v, CComBSTR& bstr)
 
 STDMETHODIMP CLayoutBuilder::BuildTextColumn(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem)
 {
-	CComBSTR bstrText;
+	CComVar vVisible;
+	RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::Element::Visible, &vVisible));
+	ATLASSERT(vVisible.vt == VT_BOOL);
 
+	CRect textRect;
+
+	if (vVisible.boolVal)
 	{
-		CComVar vText;
-		RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::Text, &vText));
-		VarToString(vText, bstrText);
-		
-		if (pValueObject)
+		CComBSTR bstrText;
+
 		{
-			CComVar vTextKey;
-			RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::TextKey, &vTextKey));
-			if (vTextKey.vt == VT_BSTR)
+			CComVar vText;
+			RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::Text, &vText));
+			VarToString(vText, bstrText);
+
+			if (pValueObject)
 			{
-				CComVar vTextByKey;
-				RETURN_IF_FAILED(pValueObject->GetVariantValue(vTextKey.bstrVal, &vTextByKey));
-				CComBSTR bstrTextByKey;
-				VarToString(vTextByKey, bstrTextByKey);
-				bstrText += bstrTextByKey;
+				CComVar vTextKey;
+				RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::TextKey, &vTextKey));
+				if (vTextKey.vt == VT_BSTR)
+				{
+					CComVar vTextByKey;
+					RETURN_IF_FAILED(pValueObject->GetVariantValue(vTextKey.bstrVal, &vTextByKey));
+					CComBSTR bstrTextByKey;
+					VarToString(vTextByKey, bstrTextByKey);
+					bstrText += bstrTextByKey;
+				}
 			}
 		}
-	}
 
-	CComVar vFont;
-	RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::Font, &vFont));
-	ATLASSERT(vFont.vt == VT_BSTR);
+		CComVar vFont;
+		RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::Font, &vFont));
+		ATLASSERT(vFont.vt == VT_BSTR);
 
-	HFONT font = 0;
-	RETURN_IF_FAILED(m_pThemeFontMap->GetFont(vFont.bstrVal, &font));
-	CDCSelectFontScope cdcSelectFontScope(hdc, font);
+		HFONT font = 0;
+		RETURN_IF_FAILED(m_pThemeFontMap->GetFont(vFont.bstrVal, &font));
+		CDCSelectFontScope cdcSelectFontScope(hdc, font);
 
-	CComVar vMultiline;
-	RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::Multiline, &vMultiline));
-	BOOL bWordWrap = vMultiline.vt == VT_BOOL && vMultiline.boolVal;
+		CComVar vMultiline;
+		RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::Multiline, &vMultiline));
+		BOOL bWordWrap = vMultiline.vt == VT_BOOL && vMultiline.boolVal;
 
-	CSize sz;
-	if (bWordWrap)
-	{
-		CRect rectSource = *pSourceRect;
-		CRect rect;
-		rect.right = rectSource.Width();
-		rect.bottom = rectSource.Height();
-
-		if (bstrText != L"")
+		CSize sz;
+		if (bWordWrap)
 		{
-			DrawText(hdc, bstrText, bstrText.Length(), &rect, DT_WORDBREAK | DT_CALCRECT);
-			sz.cx = rect.Width();
-			sz.cy = rect.Height();
+			CRect rectSource = *pSourceRect;
+			CRect rect;
+			rect.right = rectSource.Width();
+			rect.bottom = rectSource.Height();
+
+			if (bstrText != L"")
+			{
+				DrawText(hdc, bstrText, bstrText.Length(), &rect, DT_WORDBREAK | DT_CALCRECT);
+				sz.cx = rect.Width();
+				sz.cy = rect.Height();
+			}
 		}
+		else
+		{
+			GetTextExtentPoint32(hdc, bstrText, bstrText.Length(), &sz);
+		}
+
+		CRect sourceRect = *pSourceRect;
+		textRect.left = sourceRect.left;
+		textRect.top = sourceRect.top;
+		textRect.right = textRect.left + sz.cx;
+		textRect.bottom = textRect.top + sz.cy;
+
+		CComPtr<IColumnsInfoItem> pColumnsInfoItem;
+		RETURN_IF_FAILED(pColumnInfo->AddItem(&pColumnsInfoItem));
+		RETURN_IF_FAILED(pColumnsInfoItem->QueryInterface(ppColumnsInfoItem));
+		RETURN_IF_FAILED(SetColumnProps(pLayoutObject, pColumnsInfoItem));
+		RETURN_IF_FAILED(pColumnsInfoItem->SetRect(textRect));
+
+		RETURN_IF_FAILED(pColumnsInfoItem->SetRectStringProp(Layout::Metadata::TextColumn::Text, bstrText));
+		RETURN_IF_FAILED(pColumnsInfoItem->SetRectStringProp(Layout::Metadata::TextColumn::Font, vFont.bstrVal));
+
+		*pDestRect = textRect;
 	}
-	else
-	{
-		GetTextExtentPoint32(hdc, bstrText, bstrText.Length(), &sz);
-	}
-
-	CRect sourceRect = *pSourceRect;
-	CRect textRect;
-	textRect.left = sourceRect.left;
-	textRect.top = sourceRect.top;
-	textRect.right = textRect.left + sz.cx;
-	textRect.bottom = textRect.top + sz.cy;
-
-	CComPtr<IColumnsInfoItem> pColumnsInfoItem;
-	RETURN_IF_FAILED(pColumnInfo->AddItem(&pColumnsInfoItem));
-	RETURN_IF_FAILED(pColumnsInfoItem->QueryInterface(ppColumnsInfoItem));
-	RETURN_IF_FAILED(SetColumnProps(pLayoutObject, pColumnsInfoItem));
-	RETURN_IF_FAILED(pColumnsInfoItem->SetRect(textRect));
-
-	RETURN_IF_FAILED(pColumnsInfoItem->SetRectStringProp(Layout::Metadata::TextColumn::Text, bstrText));
-	RETURN_IF_FAILED(pColumnsInfoItem->SetRectStringProp(Layout::Metadata::TextColumn::Font, vFont.bstrVal));
-
-	*pDestRect = textRect;
 	return S_OK;
 }
