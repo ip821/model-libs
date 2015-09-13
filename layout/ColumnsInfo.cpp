@@ -14,6 +14,38 @@ STDMETHODIMP CColumnsInfo::AddItem(IColumnsInfoItem** ppColumnsInfoItem)
 	return S_OK;
 }
 
+STDMETHODIMP CColumnsInfo::FindItemsByProperty(BSTR bstrPropertyName, BOOL bDefined, IObjArray** ppColumnsInfoItems)
+{
+	CHECK_E_POINTER(bstrPropertyName);
+	CHECK_E_POINTER(ppColumnsInfoItems);
+
+	if (!(*ppColumnsInfoItems))
+	{
+		CComPtr<IObjCollection> pObjCollection;
+		RETURN_IF_FAILED(HrCoCreateInstance(CLSID_ObjectCollection, &pObjCollection));
+		RETURN_IF_FAILED(pObjCollection->QueryInterface(ppColumnsInfoItems));
+	}
+
+	for (size_t i = 0; i < m_pItems.size(); i++)
+	{
+		CComVar vPropValue;
+		RETURN_IF_FAILED(m_pItems[i]->GetVariantValue(bstrPropertyName, &vPropValue));
+
+		if ((bDefined && vPropValue.vt != VT_EMPTY)
+			||
+			(!bDefined && vPropValue.vt == VT_EMPTY))
+		{
+			CComQIPtr<IObjCollection> pObjCollection = *ppColumnsInfoItems;
+			RETURN_IF_FAILED(pObjCollection->AddObject(m_pItems[i]));
+		}
+
+		CComPtr<IColumnsInfo> pChildObjects;
+		RETURN_IF_FAILED(m_pItems[i]->GetChildItems(&pChildObjects));
+		RETURN_IF_FAILED(pChildObjects->FindItemsByProperty(bstrPropertyName, bDefined, ppColumnsInfoItems));
+	}
+	return S_OK;
+}
+
 STDMETHODIMP CColumnsInfo::FindItemIndex(BSTR bstrName, UINT* puiIndex)
 {
 	CHECK_E_POINTER(puiIndex);

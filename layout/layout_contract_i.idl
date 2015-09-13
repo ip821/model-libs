@@ -92,6 +92,7 @@ interface IColumnsInfo : IUnknown
 	HRESULT FindItemIndex(BSTR bstrName, UINT* puiIndex);
 	HRESULT FindItemByName(BSTR bstrName, IColumnsInfoItem** ppColumnsInfoItem);
 	HRESULT FindItemByPoint(POINT* ppt, IColumnsInfoItem** ppColumnsInfoItem);
+	HRESULT FindItemsByProperty(BSTR bstrPropertyName, BOOL bDefined, IObjArray** ppColumnsInfoItems);
 };
 
 typedef enum ElementType

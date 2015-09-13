@@ -39,6 +39,7 @@ public:
 	STDMETHOD(FindItemIndex)(BSTR bstrName, UINT* puiIndex);
 	STDMETHOD(FindItemByName)(BSTR bstrName, IColumnsInfoItem** ppColumnsInfoItem);
 	STDMETHOD(FindItemByPoint)(POINT* ppt, IColumnsInfoItem** ppColumnsInfoItem);
+	STDMETHOD(FindItemsByProperty)(BSTR bstrPropertyName, BOOL bDefined, IObjArray** ppColumnsInfoItems);
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(ColumnsInfo), CColumnsInfo)
