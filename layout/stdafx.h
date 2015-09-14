@@ -73,3 +73,5 @@ using namespace IP;
 using namespace std;
 
 #pragma comment (lib,"Gdiplus.lib")
+
+const static CComBSTR TextFullKey(L"text_full_key");

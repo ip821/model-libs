@@ -32,33 +32,24 @@ STDMETHODIMP CLayoutBuilder::BuildTextColumn(HDC hdc, RECT* pSourceRect, RECT* p
 		CComBSTR bstrText;
 
 		{
-			const static CComBSTR TextFullKey(L"text_full_key");
 			CComVar vText;
-			RETURN_IF_FAILED(pLayoutObject->GetVariantValue(TextFullKey, &vText));
-			if (vText.vt == VT_EMPTY)
-			{
-				RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::Text, &vText));
-				VarToString(vText, bstrText);
+			RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::Text, &vText));
+			VarToString(vText, bstrText);
 
-				if (pValueObject)
-				{
-					CComVar vTextKey;
-					RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::TextKey, &vTextKey));
-					if (vTextKey.vt == VT_BSTR)
-					{
-						CComVar vTextByKey;
-						RETURN_IF_FAILED(pValueObject->GetVariantValue(vTextKey.bstrVal, &vTextByKey));
-						CComBSTR bstrTextByKey;
-						VarToString(vTextByKey, bstrTextByKey);
-						bstrText += bstrTextByKey;
-					}
-				}
-				RETURN_IF_FAILED(pColumnsInfoItem->SetVariantValue(TextFullKey, &CComVar(bstrText)));
-			}
-			else
+			if (pValueObject)
 			{
-				bstrText = vText.bstrVal;
+				CComVar vTextKey;
+				RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::TextKey, &vTextKey));
+				if (vTextKey.vt == VT_BSTR)
+				{
+					CComVar vTextByKey;
+					RETURN_IF_FAILED(pValueObject->GetVariantValue(vTextKey.bstrVal, &vTextByKey));
+					CComBSTR bstrTextByKey;
+					VarToString(vTextByKey, bstrTextByKey);
+					bstrText += bstrTextByKey;
+				}
 			}
+			RETURN_IF_FAILED(pColumnsInfoItem->SetVariantValue(TextFullKey, &CComVar(bstrText)));
 		}
 
 		CComVar vFont;
@@ -103,7 +94,6 @@ STDMETHODIMP CLayoutBuilder::BuildTextColumn(HDC hdc, RECT* pSourceRect, RECT* p
 		RETURN_IF_FAILED(SetColumnProps(pLayoutObject, pColumnsInfoItem));
 		RETURN_IF_FAILED(pColumnsInfoItem->SetRect(textRect));
 
-		RETURN_IF_FAILED(pColumnsInfoItem->SetRectStringProp(Layout::Metadata::TextColumn::Text, bstrText));
 		RETURN_IF_FAILED(pColumnsInfoItem->SetRectStringProp(Layout::Metadata::TextColumn::Font, vFont.bstrVal));
 
 		*pDestRect = textRect;
