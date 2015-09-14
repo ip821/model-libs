@@ -29,20 +29,6 @@ STDMETHODIMP CLayoutBuilder::BuildLayout(HDC hdc, RECT* pSourceRect, IVariantObj
 	CComPtr<IColumnsInfoItem> pColumnsInfoItemTemp;
 	RETURN_IF_FAILED(BuildHorizontalContainer(hdc, pSourceRect, &rect, pLayoutObject, pValueObject, pImageManagerService, pColumnInfo, &pColumnsInfoItemTemp));
 
-	//ElementType elementType = ElementType::UnknownValue;
-	//RETURN_IF_FAILED(GetElementType(pLayoutObject, &elementType));
-
-	//switch (elementType)
-	//{
-	//	case ElementType::HorizontalContainer:
-	//		RETURN_IF_FAILED(BuildHorizontalContainer(hdc, pSourceRect, &rect, pLayoutObject, pValueObject, pImageManagerService, pColumnInfo, &pColumnsInfoItem));
-	//		break;
-
-	//	case ElementType::VerticalContainer:
-	//		RETURN_IF_FAILED(BuildVerticalContainer(hdc, pSourceRect, &rect, pLayoutObject, pValueObject, pImageManagerService, pColumnInfo, &pColumnsInfoItem));
-	//		break;
-	//}
-
 	CPoint pt;
 	RETURN_IF_FAILED(TranslateRects(&pt, pColumnInfo));
 	return S_OK;
