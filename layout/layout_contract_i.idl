@@ -65,6 +65,7 @@ interface IColumnsInfo;
 interface IColumnsInfoItem : IVariantObject
 {
 	HRESULT GetChildItems(IColumnsInfo** ppColumnsInfo);
+	HRESULT SetChildItems(IColumnsInfo* pColumnsInfo);
 	HRESULT GetRect(RECT* rect);
 	HRESULT SetRect(RECT rect);
 	HRESULT SetRectStringProp(BSTR bstrKey, BSTR bstrValue);

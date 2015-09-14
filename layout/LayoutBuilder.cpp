@@ -20,20 +20,28 @@ STDMETHODIMP CLayoutBuilder::BuildLayout(HDC hdc, RECT* pSourceRect, IVariantObj
 {
 	CRect rect;
 	CComPtr<IColumnsInfoItem> pColumnsInfoItem;
+	RETURN_IF_FAILED(HrCoCreateInstance(CLSID_ColumnsInfoItem, &pColumnsInfoItem));
+	RETURN_IF_FAILED(pColumnsInfoItem->SetVariantValue(Layout::Metadata::Element::Name, &CComVar(L"BuildLayoutHolder")));
+	RETURN_IF_FAILED(pColumnsInfoItem->SetVariantValue(Layout::Metadata::Element::FitHorizontal, &CComVar(Layout::Metadata::FitTypes::Parent)));
+	RETURN_IF_FAILED(pColumnsInfoItem->SetVariantValue(Layout::Metadata::Element::Type, &CComVar(Layout::Metadata::LayoutTypes::HorizontalContainer)));
+	RETURN_IF_FAILED(pColumnsInfoItem->SetChildItems(pColumnInfo));
 
-	ElementType elementType = ElementType::UnknownValue;
-	RETURN_IF_FAILED(GetElementType(pLayoutObject, &elementType));
+	CComPtr<IColumnsInfoItem> pColumnsInfoItemTemp;
+	RETURN_IF_FAILED(BuildHorizontalContainer(hdc, pSourceRect, &rect, pLayoutObject, pValueObject, pImageManagerService, pColumnInfo, &pColumnsInfoItemTemp));
 
-	switch (elementType)
-	{
-		case ElementType::HorizontalContainer:
-			RETURN_IF_FAILED(BuildHorizontalContainer(hdc, pSourceRect, &rect, pLayoutObject, pValueObject, pImageManagerService, pColumnInfo, &pColumnsInfoItem));
-			break;
+	//ElementType elementType = ElementType::UnknownValue;
+	//RETURN_IF_FAILED(GetElementType(pLayoutObject, &elementType));
 
-		case ElementType::VerticalContainer:
-			RETURN_IF_FAILED(BuildVerticalContainer(hdc, pSourceRect, &rect, pLayoutObject, pValueObject, pImageManagerService, pColumnInfo, &pColumnsInfoItem));
-			break;
-	}
+	//switch (elementType)
+	//{
+	//	case ElementType::HorizontalContainer:
+	//		RETURN_IF_FAILED(BuildHorizontalContainer(hdc, pSourceRect, &rect, pLayoutObject, pValueObject, pImageManagerService, pColumnInfo, &pColumnsInfoItem));
+	//		break;
+
+	//	case ElementType::VerticalContainer:
+	//		RETURN_IF_FAILED(BuildVerticalContainer(hdc, pSourceRect, &rect, pLayoutObject, pValueObject, pImageManagerService, pColumnInfo, &pColumnsInfoItem));
+	//		break;
+	//}
 
 	CPoint pt;
 	RETURN_IF_FAILED(TranslateRects(&pt, pColumnInfo));

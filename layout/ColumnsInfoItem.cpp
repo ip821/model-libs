@@ -15,6 +15,12 @@ STDMETHODIMP CColumnsInfoItem::GetChildItems(IColumnsInfo** ppColumnsInfo)
 	return S_OK;
 }
 
+STDMETHODIMP CColumnsInfoItem::SetChildItems(IColumnsInfo* pColumnsInfo)
+{
+	m_pChildItems = pColumnsInfo;
+	return S_OK;
+}
+
 STDMETHODIMP CColumnsInfoItem::GetRect(RECT* rect)
 {
 	*rect = m_rect;

@@ -41,6 +41,7 @@ public:
 
 	STDMETHOD(SetVariantValueRecursive)(BSTR key, VARIANT* v);
 	STDMETHOD(GetChildItems)(IColumnsInfo** ppColumnsInfo);
+	STDMETHOD(SetChildItems)(IColumnsInfo* pColumnsInfo);
 	STDMETHOD(SetRectStringProp)(BSTR bstrKey, BSTR bstrValue);
 	STDMETHOD(GetRectStringProp)(BSTR bstrKey, BSTR* bstrValue);
 	STDMETHOD(SetRectBoolProp)(BSTR bstrKey, BOOL bValue);
