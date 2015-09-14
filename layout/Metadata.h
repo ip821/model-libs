@@ -8,7 +8,7 @@ namespace IP
 		{
 			namespace Column
 			{
-				const static CComBSTR Name(L"ColumnName");
+				const static CComBSTR Name(L"name");
 			}
 
 			namespace ImageColumn

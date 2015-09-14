@@ -19,8 +19,13 @@ STDMETHODIMP CLayoutBuilder::SetFontMap(IThemeFontMap* pThemeFontMap)
 STDMETHODIMP CLayoutBuilder::BuildLayout(HDC hdc, RECT* pSourceRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo)
 {
 	CRect rect;
+	CComPtr<IVariantObject> pTempObj;
+	RETURN_IF_FAILED(HrCoCreateInstance(CLSID_VariantObject, &pTempObj));
 	CComPtr<IColumnsInfoItem> pColumnsInfoItem;
 	RETURN_IF_FAILED(HrCoCreateInstance(CLSID_ColumnsInfoItem, &pColumnsInfoItem));
+	CComQIPtr<IInitializeWithVariantObject> pInit = pColumnsInfoItem;
+	ATLASSERT(pInit);
+	RETURN_IF_FAILED(pInit->SetVariantObject(pTempObj));
 	RETURN_IF_FAILED(pColumnsInfoItem->SetVariantValue(Layout::Metadata::Element::Name, &CComVar(L"BuildLayoutHolder")));
 	RETURN_IF_FAILED(pColumnsInfoItem->SetVariantValue(Layout::Metadata::Element::FitHorizontal, &CComVar(Layout::Metadata::FitTypes::Parent)));
 	RETURN_IF_FAILED(pColumnsInfoItem->SetVariantValue(Layout::Metadata::Element::Type, &CComVar(Layout::Metadata::LayoutTypes::HorizontalContainer)));
@@ -322,20 +327,20 @@ STDMETHODIMP CLayoutBuilder::CalculateRelativeWidth(IVariantObject* pElement, CR
 
 STDMETHODIMP CLayoutBuilder::SetColumnProps(IVariantObject* pLayoutObject, IColumnsInfoItem* pColumnsInfoItem)
 {
-	UINT uiCount = 0;
-	RETURN_IF_FAILED(pLayoutObject->GetCount(&uiCount));
-	for (size_t i = 0; i < uiCount; i++)
-	{
-		CComBSTR bstrKey;
-		RETURN_IF_FAILED(pLayoutObject->GetKeyByIndex(i, &bstrKey));
-		CComVar vValue;
-		RETURN_IF_FAILED(pLayoutObject->GetVariantValue(bstrKey, &vValue));
-		RETURN_IF_FAILED(pColumnsInfoItem->SetVariantValue(bstrKey, &vValue));
-	}
+	//UINT uiCount = 0;
+	//RETURN_IF_FAILED(pLayoutObject->GetCount(&uiCount));
+	//for (size_t i = 0; i < uiCount; i++)
+	//{
+	//	CComBSTR bstrKey;
+	//	RETURN_IF_FAILED(pLayoutObject->GetKeyByIndex(i, &bstrKey));
+	//	CComVar vValue;
+	//	RETURN_IF_FAILED(pLayoutObject->GetVariantValue(bstrKey, &vValue));
+	//	RETURN_IF_FAILED(pColumnsInfoItem->SetVariantValue(bstrKey, &vValue));
+	//}
 
-	CComVar vName;
-	RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::Element::Name, &vName));
-	ATLASSERT(vName.vt == VT_BSTR);
-	RETURN_IF_FAILED(pColumnsInfoItem->SetRectStringProp(Layout::Metadata::Column::Name, vName.bstrVal));
+	//CComVar vName;
+	//RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::Element::Name, &vName));
+	//ATLASSERT(vName.vt == VT_BSTR);
+	//RETURN_IF_FAILED(pColumnsInfoItem->SetRectStringProp(Layout::Metadata::Column::Name, vName.bstrVal));
 	return S_OK;
 }

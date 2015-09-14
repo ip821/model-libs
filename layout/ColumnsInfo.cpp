@@ -4,11 +4,14 @@
 #include "ColumnsInfo.h"
 #include "Metadata.h"
 
-STDMETHODIMP CColumnsInfo::AddItem(IColumnsInfoItem** ppColumnsInfoItem)
+STDMETHODIMP CColumnsInfo::AddItem(IVariantObject* pPropsObject, IColumnsInfoItem** ppColumnsInfoItem)
 {
 	CHECK_E_POINTER(ppColumnsInfoItem);
 	CComPtr<IColumnsInfoItem> pColumnsInfoItem;
 	RETURN_IF_FAILED(HrCoCreateInstance(CLSID_ColumnsInfoItem, &pColumnsInfoItem));
+	CComQIPtr<IInitializeWithVariantObject> pInit = pColumnsInfoItem;
+	ATLASSERT(pInit);
+	RETURN_IF_FAILED(pInit->SetVariantObject(pPropsObject));
 	m_pItems.push_back(pColumnsInfoItem);
 	RETURN_IF_FAILED(pColumnsInfoItem->QueryInterface(ppColumnsInfoItem));
 	return S_OK;

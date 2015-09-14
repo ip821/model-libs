@@ -4,7 +4,13 @@
 HRESULT CColumnsInfoItem::FinalConstruct()
 {
 	RETURN_IF_FAILED(HrCoCreateInstance(CLSID_ColumnsInfo, &m_pChildItems));
-	RETURN_IF_FAILED(HrCoCreateInstance(CLSID_VariantObject, &m_pVariantObject));
+	//RETURN_IF_FAILED(HrCoCreateInstance(CLSID_VariantObject, &m_pVariantObject));
+	return S_OK;
+}
+
+STDMETHODIMP CColumnsInfoItem::SetVariantObject(IVariantObject* pObj)
+{
+	m_pVariantObject = pObj;
 	return S_OK;
 }
 

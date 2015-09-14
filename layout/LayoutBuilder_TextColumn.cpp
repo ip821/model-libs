@@ -24,27 +24,40 @@ STDMETHODIMP CLayoutBuilder::BuildTextColumn(HDC hdc, RECT* pSourceRect, RECT* p
 
 	CRect textRect;
 
+	CComPtr<IColumnsInfoItem> pColumnsInfoItem;
+	RETURN_IF_FAILED(pColumnInfo->AddItem(pLayoutObject, &pColumnsInfoItem));
+
 	if (vVisible.boolVal)
 	{
 		CComBSTR bstrText;
 
 		{
+			const static CComBSTR TextFullKey(L"text_full_key");
 			CComVar vText;
-			RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::Text, &vText));
-			VarToString(vText, bstrText);
-
-			if (pValueObject)
+			RETURN_IF_FAILED(pLayoutObject->GetVariantValue(TextFullKey, &vText));
+			if (vText.vt == VT_EMPTY)
 			{
-				CComVar vTextKey;
-				RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::TextKey, &vTextKey));
-				if (vTextKey.vt == VT_BSTR)
+				RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::Text, &vText));
+				VarToString(vText, bstrText);
+
+				if (pValueObject)
 				{
-					CComVar vTextByKey;
-					RETURN_IF_FAILED(pValueObject->GetVariantValue(vTextKey.bstrVal, &vTextByKey));
-					CComBSTR bstrTextByKey;
-					VarToString(vTextByKey, bstrTextByKey);
-					bstrText += bstrTextByKey;
+					CComVar vTextKey;
+					RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::TextKey, &vTextKey));
+					if (vTextKey.vt == VT_BSTR)
+					{
+						CComVar vTextByKey;
+						RETURN_IF_FAILED(pValueObject->GetVariantValue(vTextKey.bstrVal, &vTextByKey));
+						CComBSTR bstrTextByKey;
+						VarToString(vTextByKey, bstrTextByKey);
+						bstrText += bstrTextByKey;
+					}
 				}
+				RETURN_IF_FAILED(pColumnsInfoItem->SetVariantValue(TextFullKey, &CComVar(bstrText)));
+			}
+			else
+			{
+				bstrText = vText.bstrVal;
 			}
 		}
 
@@ -86,8 +99,6 @@ STDMETHODIMP CLayoutBuilder::BuildTextColumn(HDC hdc, RECT* pSourceRect, RECT* p
 		textRect.right = textRect.left + sz.cx;
 		textRect.bottom = textRect.top + sz.cy;
 
-		CComPtr<IColumnsInfoItem> pColumnsInfoItem;
-		RETURN_IF_FAILED(pColumnInfo->AddItem(&pColumnsInfoItem));
 		RETURN_IF_FAILED(pColumnsInfoItem->QueryInterface(ppColumnsInfoItem));
 		RETURN_IF_FAILED(SetColumnProps(pLayoutObject, pColumnsInfoItem));
 		RETURN_IF_FAILED(pColumnsInfoItem->SetRect(textRect));

@@ -30,7 +30,7 @@ private:
 	BOOL m_bDisabledSelection = FALSE;
 
 public:
-	STDMETHOD(AddItem)(IColumnsInfoItem** ppColumnsInfoItem);
+	STDMETHOD(AddItem)(IVariantObject* pPropsObject, IColumnsInfoItem** ppColumnsInfoItem);
 	STDMETHOD(GetItem)(UINT uiIndex, IColumnsInfoItem** ppColumnsInfoItem);
 	STDMETHOD(GetCount)(UINT* puiCount);
 	STDMETHOD(Clear)();

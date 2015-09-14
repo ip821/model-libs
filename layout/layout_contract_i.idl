@@ -84,7 +84,7 @@ interface IColumnsInfoItem : IVariantObject
 ]
 interface IColumnsInfo : IUnknown
 {
-	HRESULT AddItem(IColumnsInfoItem** ppColumnsInfoItem);
+	HRESULT AddItem(IVariantObject* pPropsObject, IColumnsInfoItem** ppColumnsInfoItem);
 	HRESULT GetItem(UINT uiIndex, IColumnsInfoItem** ppColumnsInfoItem);
 	HRESULT GetCount(UINT* puiCount);
 	HRESULT Clear();

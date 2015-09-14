@@ -5,7 +5,7 @@
 STDMETHODIMP CLayoutBuilder::BuildImageColumn(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem)
 {
 	CComPtr<IColumnsInfoItem> pColumnsInfoItem;
-	RETURN_IF_FAILED(pColumnInfo->AddItem(&pColumnsInfoItem));
+	RETURN_IF_FAILED(pColumnInfo->AddItem(pLayoutObject, &pColumnsInfoItem));
 	RETURN_IF_FAILED(pColumnsInfoItem->QueryInterface(ppColumnsInfoItem));
 	RETURN_IF_FAILED(SetColumnProps(pLayoutObject, pColumnsInfoItem));
 

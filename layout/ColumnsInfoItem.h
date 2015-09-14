@@ -9,7 +9,8 @@ using namespace ATL;
 class ATL_NO_VTABLE CColumnsInfoItem :
 	public CComObjectRootEx<CComSingleThreadModel>,
 	public CComCoClass<CColumnsInfoItem, &CLSID_ColumnsInfoItem>,
-	public IColumnsInfoItem
+	public IColumnsInfoItem,
+	public IInitializeWithVariantObject
 {
 public:
 	CColumnsInfoItem()
@@ -20,6 +21,7 @@ public:
 
 	BEGIN_COM_MAP(CColumnsInfoItem)
 		COM_INTERFACE_ENTRY(IColumnsInfoItem)
+		COM_INTERFACE_ENTRY(IInitializeWithVariantObject)
 	END_COM_MAP()
 
 	DECLARE_PROTECT_FINAL_CONSTRUCT()
@@ -39,6 +41,7 @@ public:
 	STDMETHOD(GetCount)(UINT_PTR* puiCount);
 	STDMETHOD(GetKeyByIndex)(UINT_PTR uiIndex, BSTR* pbstrKey);
 
+	STDMETHOD(SetVariantObject)(IVariantObject* pObj);
 	STDMETHOD(SetVariantValueRecursive)(BSTR key, VARIANT* v);
 	STDMETHOD(GetChildItems)(IColumnsInfo** ppColumnsInfo);
 	STDMETHOD(SetChildItems)(IColumnsInfo* pColumnsInfo);

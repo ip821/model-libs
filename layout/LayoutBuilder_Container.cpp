@@ -29,7 +29,7 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 	RETURN_IF_FAILED(FitToParentStart(pLayoutObject, sourceRect, containerRect));
 
 	CComPtr<IColumnsInfoItem> pColumnsInfoItem;
-	RETURN_IF_FAILED(pColumnInfo->AddItem(&pColumnsInfoItem));
+	RETURN_IF_FAILED(pColumnInfo->AddItem(pLayoutObject, &pColumnsInfoItem));
 	RETURN_IF_FAILED(pColumnsInfoItem->QueryInterface(ppColumnsInfoItem));
 
 	CComPtr<IColumnsInfo> pChildItems;

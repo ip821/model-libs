@@ -2,6 +2,7 @@
 #include "LayoutManager.h"
 #include "..\objmdl\textfile.h"
 #include "JSONConverter.h"
+#include "Metadata.h"
 
 HRESULT CLayoutManager::FinalConstruct()
 {
@@ -179,6 +180,7 @@ STDMETHODIMP CLayoutManager::CopyProps(IVariantObject* pSourceObject, IVariantOb
 			RETURN_IF_FAILED(pDestObject->SetVariantValue(bstrKey, &vProp));
 		}
 	}
+
 	return S_OK;
 }
 
