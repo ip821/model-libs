@@ -14,7 +14,6 @@ namespace IP
 			namespace ImageColumn
 			{
 				const static CComBSTR ImageKey(L"image");
-				const static CComBSTR Alpha(L"alpha");
 				const static CComBSTR ImageStyle(L"image_style");
 				const static CComBSTR Height(L"height");
 				const static CComBSTR Width(L"width");
@@ -43,6 +42,7 @@ namespace IP
 			namespace Element
 			{
 				const static CComBSTR Name(L"name");
+				const static CComBSTR Alpha(L"alpha");
 				const static CComBSTR Elements(L"elements");
 				const static CComBSTR Type(L"type");
 				const static CComBSTR Visible(L"visible");

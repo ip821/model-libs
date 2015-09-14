@@ -54,6 +54,51 @@ STDMETHODIMP CLayoutPainter::PaintLayout(HDC hdc, IImageManagerService* pImageMa
 	return S_OK;
 }
 
+class AlphaPaintScope
+{
+private:
+	CDCHandle m_hdc;
+	CComPtr<IColumnsInfoItem> m_pItem;
+	const DWORD MAX_ALPHA = 255;
+	CDC m_cdc;
+	shared_ptr<CBitmap> m_pBitmap;
+	CRect m_rect;
+	DWORD m_dwAlpha = MAX_ALPHA;
+
+public:
+	AlphaPaintScope(HDC hdc, IColumnsInfoItem* pItem)
+	{
+		m_hdc = hdc;
+		m_pItem = pItem;
+		pItem->GetRect(&m_rect);
+		CComVar vAlpha;
+		pItem->GetVariantValue(Layout::Metadata::Element::Alpha, &vAlpha);
+		if (vAlpha.vt == VT_UI4 && vAlpha.uintVal != MAX_ALPHA)
+		{
+			m_dwAlpha = vAlpha.uintVal;
+			m_cdc.CreateCompatibleDC(m_hdc);
+			m_pBitmap = make_shared<CBitmap>();
+			m_pBitmap->CreateCompatibleBitmap(m_hdc, m_rect.Width(), m_rect.Height());
+			m_cdc.SelectBitmap(m_pBitmap.get()->m_hBitmap);
+		}
+	}
+
+	HDC& GetHdc()
+	{
+		if (m_cdc.m_hDC)
+			return m_cdc.m_hDC;
+		return m_hdc.m_hDC;
+	}
+
+	void Flush()
+	{
+		BLENDFUNCTION bf = { 0 };
+		bf.BlendOp = AC_SRC_OVER;
+		bf.SourceConstantAlpha = (BYTE)m_dwAlpha;
+		m_hdc.AlphaBlend(m_rect.left, m_rect.top, m_rect.Width(), m_rect.Height(), m_cdc, 0, 0, m_rect.Width(), m_rect.Height(), bf);
+	}
+};
+
 STDMETHODIMP CLayoutPainter::PaintLayoutInternal(HDC hdc, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo, BSTR bstrItemName)
 {
 	CHECK_E_POINTER(pColumnInfo);
@@ -76,13 +121,17 @@ STDMETHODIMP CLayoutPainter::PaintLayoutInternal(HDC hdc, IImageManagerService* 
 			case ElementType::HorizontalContainer:
 			case ElementType::VerticalContainer:
 			{
-				RETURN_IF_FAILED(PaintContainer(hdc, pColumnInfoItem));
-				CComPtr<IColumnsInfo> pChildItems;
-				RETURN_IF_FAILED(pColumnInfoItem->GetChildItems(&pChildItems));
+				{
+					AlphaPaintScope aps(hdc, pColumnInfoItem);
+					RETURN_IF_FAILED(PaintContainer(aps.GetHdc(), pColumnInfoItem));
+					CComPtr<IColumnsInfo> pChildItems;
+					RETURN_IF_FAILED(pColumnInfoItem->GetChildItems(&pChildItems));
 
-				CRect rect;
-				RETURN_IF_FAILED(pColumnInfoItem->GetRect(&rect));
-				RETURN_IF_FAILED(PaintLayoutInternal(hdc, pImageManagerService, pChildItems, bstrItemName));
+					CRect rect;
+					RETURN_IF_FAILED(pColumnInfoItem->GetRect(&rect));
+					RETURN_IF_FAILED(PaintLayoutInternal(aps.GetHdc(), pImageManagerService, pChildItems, bstrItemName));
+					aps.Flush();
+				}
 				break;
 			}
 			case ElementType::TextColumn:

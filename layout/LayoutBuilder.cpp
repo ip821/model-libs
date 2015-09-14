@@ -312,7 +312,7 @@ STDMETHODIMP CLayoutBuilder::ApplyStartMargins(IVariantObject* pElement, CRect& 
 	return S_OK;
 }
 
-STDMETHODIMP CLayoutBuilder::CalculateRelativeWidth(IVariantObject* pElement, CRect& rect)
+STDMETHODIMP CLayoutBuilder::CalculateRelativeWidth(IVariantObject* pElement, CRect& rect, CRect& rectParent)
 {
 	CComVar vWidthPercent;
 	pElement->GetVariantValue(Layout::Metadata::Element::WidthPercent, &vWidthPercent);
@@ -320,7 +320,7 @@ STDMETHODIMP CLayoutBuilder::CalculateRelativeWidth(IVariantObject* pElement, CR
 	if (vWidthPercent.vt == VT_I4)
 	{
 		auto val = (double)vWidthPercent.intVal / 100;
-		rect.right -= (LONG)(rect.Width() - rect.Width() * val);
+		rect.right -= (LONG)(rect.Width() - rectParent.Width() * val);
 	}
 
 	return S_OK;

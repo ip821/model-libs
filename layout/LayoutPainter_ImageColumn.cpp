@@ -25,7 +25,7 @@ STDMETHODIMP CLayoutPainter::PaintImageColumn(HDC hdc, IImageManagerService* pIm
 	RETURN_IF_FAILED(pColumnInfoItem->GetRect(&rect));
 
 	CComVar vAlpha;
-	RETURN_IF_FAILED(pColumnInfoItem->GetVariantValue(Layout::Metadata::ImageColumn::Alpha, &vAlpha));
+	RETURN_IF_FAILED(pColumnInfoItem->GetVariantValue(Layout::Metadata::Element::Alpha, &vAlpha));
 
 	CComVar vImageStyle;
 	RETURN_IF_FAILED(pColumnInfoItem->GetVariantValue(Layout::Metadata::ImageColumn::ImageStyle, &vImageStyle));
