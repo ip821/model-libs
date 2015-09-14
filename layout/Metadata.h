@@ -17,6 +17,7 @@ namespace IP
 				const static CComBSTR ImageStyle(L"image_style");
 				const static CComBSTR Height(L"height");
 				const static CComBSTR Width(L"width");
+				const static CComBSTR Alpha(L"alpha");
 			}
 
 			namespace MarqueeProgressColumn
