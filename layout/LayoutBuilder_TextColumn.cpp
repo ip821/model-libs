@@ -91,10 +91,7 @@ STDMETHODIMP CLayoutBuilder::BuildTextColumn(HDC hdc, RECT* pSourceRect, RECT* p
 		textRect.bottom = textRect.top + sz.cy;
 
 		RETURN_IF_FAILED(pColumnsInfoItem->QueryInterface(ppColumnsInfoItem));
-		RETURN_IF_FAILED(SetColumnProps(pLayoutObject, pColumnsInfoItem));
 		RETURN_IF_FAILED(pColumnsInfoItem->SetRect(textRect));
-
-		RETURN_IF_FAILED(pColumnsInfoItem->SetRectStringProp(Layout::Metadata::TextColumn::Font, vFont.bstrVal));
 
 		*pDestRect = textRect;
 	}

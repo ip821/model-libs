@@ -38,7 +38,6 @@ STDMETHODIMP CLayoutBuilder::BuildMarqueeProgressColumn(HDC hdc, RECT* pSourceRe
 		CComPtr<IColumnsInfoItem> pColumnsInfoItem;
 		RETURN_IF_FAILED(pColumnInfo->AddItem(pLayoutObject, &pColumnsInfoItem));
 		RETURN_IF_FAILED(pColumnsInfoItem->QueryInterface(ppColumnsInfoItem));
-		RETURN_IF_FAILED(SetColumnProps(pLayoutObject, pColumnsInfoItem));
 		RETURN_IF_FAILED(pColumnsInfoItem->SetRect(columnRect));
 	}
 	*pDestRect = columnRect;

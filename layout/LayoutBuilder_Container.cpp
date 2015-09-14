@@ -182,7 +182,6 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 	RETURN_IF_FAILED(ApplyAlignHorizontal(pChildItems, containerRect, containerElementType));
 	RETURN_IF_FAILED(ApplyAlignVertical(pChildItems, containerRect, containerElementType));
 
-	RETURN_IF_FAILED(SetColumnProps(pLayoutObject, pColumnsInfoItem));
 	RETURN_IF_FAILED(pColumnsInfoItem->SetRect(containerRect));
 	RETURN_IF_FAILED(ApplyEndMargins(pLayoutObject, containerRect));
 	*pDestRect = containerRect;

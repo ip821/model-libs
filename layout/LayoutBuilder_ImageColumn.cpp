@@ -7,7 +7,6 @@ STDMETHODIMP CLayoutBuilder::BuildImageColumn(HDC hdc, RECT* pSourceRect, RECT* 
 	CComPtr<IColumnsInfoItem> pColumnsInfoItem;
 	RETURN_IF_FAILED(pColumnInfo->AddItem(pLayoutObject, &pColumnsInfoItem));
 	RETURN_IF_FAILED(pColumnsInfoItem->QueryInterface(ppColumnsInfoItem));
-	RETURN_IF_FAILED(SetColumnProps(pLayoutObject, pColumnsInfoItem));
 
 	CComVar vVisible;
 	RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::Element::Visible, &vVisible));
@@ -51,7 +50,6 @@ STDMETHODIMP CLayoutBuilder::BuildImageColumn(HDC hdc, RECT* pSourceRect, RECT* 
 		imageRect.bottom = imageRect.top + height;
 
 		RETURN_IF_FAILED(pColumnsInfoItem->SetRect(imageRect));
-		RETURN_IF_FAILED(pColumnsInfoItem->SetRectStringProp(Layout::Metadata::ImageColumn::ImageKey, vImageKey.bstrVal));
 	}
 
 	*pDestRect = imageRect;

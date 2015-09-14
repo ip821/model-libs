@@ -35,7 +35,6 @@ private:
 	STDMETHOD(BuildImageColumn)(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem);
 	STDMETHOD(BuildMarqueeProgressColumn)(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem);
 
-	STDMETHOD(SetColumnProps)(IVariantObject* pLayoutObject, IColumnsInfoItem* pColumnsInfoItem);
 	STDMETHOD(GetElementType)(IVariantObject* pVariantObject, ElementType* pElementType);
 	STDMETHOD(ApplyAlignHorizontal)(IColumnsInfo* pChildItems, CRect& rect, ElementType& elementType);
 	STDMETHOD(ApplyAlignVertical)(IColumnsInfo* pChildItems, CRect& rect, ElementType& elementType);
