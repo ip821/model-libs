@@ -13,7 +13,7 @@ STDMETHODIMP CLayoutPainter::PaintTextColumn(HDC hdc, IColumnsInfoItem* pColumnI
 	RETURN_IF_FAILED(PaintRoundedRect(hdc, pColumnInfoItem));
 
 	CComBSTR bstr;
-	RETURN_IF_FAILED(pColumnInfoItem->GetRectStringProp(TextFullKey, &bstr));
+	RETURN_IF_FAILED(pColumnInfoItem->GetRectStringProp(Layout::Metadata::TextColumn::TextFullKey, &bstr));
 
 	CComBSTR bstrName;
 	RETURN_IF_FAILED(pColumnInfoItem->GetRectStringProp(Layout::Metadata::Element::Name, &bstrName));

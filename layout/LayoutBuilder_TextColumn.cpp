@@ -49,7 +49,7 @@ STDMETHODIMP CLayoutBuilder::BuildTextColumn(HDC hdc, RECT* pSourceRect, RECT* p
 					bstrText += bstrTextByKey;
 				}
 			}
-			RETURN_IF_FAILED(pColumnsInfoItem->SetVariantValue(TextFullKey, &CComVar(bstrText)));
+			RETURN_IF_FAILED(pColumnsInfoItem->SetVariantValue(Layout::Metadata::TextColumn::TextFullKey, &CComVar(bstrText)));
 		}
 
 		CComVar vFont;
