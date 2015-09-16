@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\viewmdl;..\objmdl;..\gtest\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\WTL90_4140_Final\Include;..\viewmdl;..\objmdl;..\gtest\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\_dev\minitwi\model-libs\gtest\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -151,6 +151,7 @@
   <ItemGroup>
     <ClInclude Include="layout_contract_i.h" />
     <ClInclude Include="objmdl_contract_i.h" />
+    <ClInclude Include="LayoutTests.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="viewmdl_contract_i.h" />
@@ -163,7 +164,6 @@
     <ClCompile Include="objmdl_contract_i.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Layout.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

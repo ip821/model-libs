@@ -10,11 +10,23 @@
 #include <stdio.h>
 #include <tchar.h>
 
-
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS      // some CString constructors will be explicit
-
+#define _WTL_NO_CSTRING
 #include <atlbase.h>
 #include <atlstr.h>
+
+#include <atlcom.h>
+#include <atlhost.h>
+#include <atlwin.h>
+#include <atlctl.h>
+
+#include <atlapp.h>
+#include <atlframe.h>
+#include <atlctrls.h>
+#include <atldlgs.h>
+#include <atlctrlw.h>
+#include <atlctrlx.h>
+#include <atlmisc.h>
 
 // TODO: reference additional headers your program requires here
 
@@ -40,14 +52,5 @@ using namespace std;
 using namespace IP;
 
 #pragma comment(lib, "gtest.lib")
-#pragma comment(lib, "gtest_main.lib")
 #pragma comment (lib,"Gdiplus.lib")
 
-class Setup : public testing::Test
-{
-private:
-	ULONG_PTR g_gdiPlusToken;
-	Gdiplus::GdiplusStartupInput g_GdiplusStartupInput = { 0 };
-protected:
-	virtual void SetUp();
-};

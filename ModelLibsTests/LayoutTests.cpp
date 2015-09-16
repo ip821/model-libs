@@ -2,17 +2,37 @@
 //
 
 #include "stdafx.h"
+#include "LayoutTests.h"
 
-HMODULE g_hObjMdl;
+#include "objmdl_contract_i.h"
+#include "viewmdl_contract_i.h"
+#include "layout_contract_i.h"
 
-void Setup::SetUp()
+void LayoutTests::SetUp()
 {
-	g_hObjMdl = LoadLibrary(L"ObjMdl.dll");
-	CManualComObjectLoader loader(L"ObjMdl.dll");
+	m_GdiplusStartupInput.GdiplusVersion = 1;
+	Gdiplus::GdiplusStartup(&m_gdiPlusToken, &m_GdiplusStartupInput, NULL);
 
-	CComPtr<IPluginManager> pPluginManager;
-	ASSERT_IF_FAILED(loader.CoCreateInstance(CLSID_PluginManager, NULL, IID_IPluginManager, (LPVOID*)&pPluginManager));
-	ASSERT_IF_FAILED(pPluginManager->InitializePluginLibraryByName(L"ObjMdl.dll"));
-	ASSERT_IF_FAILED(pPluginManager->InitializePluginLibraryByName(L"ViewMdl.dll"));
-	ASSERT_IF_FAILED(pPluginManager->InitializePluginLibraryByName(L"Layout.dll"));
+	CRect rect(0, 0, 200, 200);
+	m_wnd.Create(NULL, rect, 0, WS_BORDER | WS_SYSMENU, WS_EX_CONTROLPARENT);
+}
+
+void LayoutTests::TearDown()
+{
+	m_wnd.DestroyWindow();
+	Gdiplus::GdiplusShutdown(m_gdiPlusToken);
+}
+
+TEST_F(LayoutTests, CreateLayoutManager)
+{
+	CComPtr<ILayoutManager> pLayoutManager;
+	EXPECT_HRESULT_SUCCEEDED(HrCoCreateInstance(CLSID_LayoutManager, &pLayoutManager));
+	EXPECT_NE(pLayoutManager, nullptr);
+}
+
+TEST_F(LayoutTests, Test2)
+{
+	CComPtr<ILayoutManager> pLayoutManager;
+	EXPECT_HRESULT_SUCCEEDED(HrCoCreateInstance(CLSID_LayoutManager, &pLayoutManager));
+	EXPECT_NE(pLayoutManager, nullptr);
 }
