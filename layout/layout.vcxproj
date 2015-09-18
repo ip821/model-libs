@@ -146,11 +146,13 @@
     <ClCompile Include="JSONConverter.cpp" />
     <ClCompile Include="layout.cpp" />
     <ClCompile Include="LayoutBuilder.cpp" />
+    <ClCompile Include="LayoutBuilder_TextMultiColumn.cpp" />
     <ClCompile Include="LayoutManager.cpp" />
     <ClCompile Include="LayoutPainter.cpp" />
     <ClCompile Include="LayoutPainter_Container.cpp" />
     <ClCompile Include="LayoutPainter_ImageColumn.cpp" />
     <ClCompile Include="LayoutPainter_TextColumn.cpp" />
+    <ClCompile Include="LayoutPainter_TextMultiColumn.cpp" />
     <ClCompile Include="layout_contract_i.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>

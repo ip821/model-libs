@@ -104,6 +104,7 @@ namespace IP
 				const static CComBSTR VerticalContainer(L"vertical_container");
 				const static CComBSTR ImageColumn(L"image_column");
 				const static CComBSTR TextColumn(L"text_column");
+				const static CComBSTR TextMultiColumn(L"text_multi_column");
 				const static CComBSTR MarqueeProgressColumn(L"marquee_progress");
 			}
 

@@ -92,6 +92,8 @@ HRESULT CLayoutBuilder::MapType(BSTR bstrType, ElementType* pElementType)
 		*pElementType = ElementType::ImageColumn;
 	else if (type == CComBSTR(Layout::Metadata::LayoutTypes::TextColumn))
 		*pElementType = ElementType::TextColumn;
+	else if (type == CComBSTR(Layout::Metadata::LayoutTypes::TextMultiColumn))
+		*pElementType = ElementType::TextMultiColumn;
 	else if (type == CComBSTR(Layout::Metadata::LayoutTypes::MarqueeProgressColumn))
 		*pElementType = ElementType::MarqueeProgressColumn;
 	else

@@ -29,6 +29,7 @@ private:
 	STDMETHOD(PaintRoundedRect)(HDC hdc, IColumnsInfoItem* pColumnInfoItem);
 	STDMETHOD(PaintContainer)(HDC hdc, IColumnsInfoItem* pColumnInfoItem);
 	STDMETHOD(PaintTextColumn)(HDC hdc, IColumnsInfoItem* pColumnInfoItem);
+	STDMETHOD(PaintTextMultiColumn)(HDC hdc, IColumnsInfoItem* pColumnInfoItem);
 	STDMETHOD(PaintImageColumn)(HDC hdc, IImageManagerService* pImageManagerService, IColumnsInfoItem* pColumnInfoItem);
 	STDMETHOD(PaintMarqueeProgressColumn)(HDC hdc, IColumnsInfoItem* pColumnInfoItem);
 	STDMETHOD(PaintLayoutInternal)(HDC hdc, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo, BSTR bstrItemName);

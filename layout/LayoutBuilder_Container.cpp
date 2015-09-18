@@ -88,6 +88,23 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 				RETURN_IF_FAILED(FitToParentEnd(pElement, rectParent, elementRect));
 				break;
 			}
+			case ElementType::TextMultiColumn:
+			{
+				CComPtr<IColumnsInfoItem> pColumnsInfoItemElement;
+				RETURN_IF_FAILED(ApplyStartMargins(pElement, localSourceRect));
+				CRect rectParent = *pSourceRect;
+				RETURN_IF_FAILED(FitToParentStart(pElement, rectParent, localSourceRect));
+				RETURN_IF_FAILED(CalculateRelativeWidth(pElement, localSourceRect, rectParent));
+				RETURN_IF_FAILED(BuildTextMultiColumn(hdc, &localSourceRect, &elementRect, pElement, pValueObject, pChildItems, &pColumnsInfoItemElement));
+				RETURN_IF_FAILED(ApplyEndMargins(pElement, elementRect));
+				CRect elementRectWithMargins = elementRect;
+				RETURN_IF_FAILED(FitToParentEnd(pElement, rectParent, elementRect));
+				if (elementRectWithMargins != elementRect)
+				{
+					RETURN_IF_FAILED(pColumnsInfoItemElement->SetRect(elementRect));
+				}
+				break;
+			}
 			case ElementType::TextColumn:
 			{
 				CComPtr<IColumnsInfoItem> pColumnsInfoItemElement;

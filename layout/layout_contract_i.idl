@@ -103,6 +103,7 @@ typedef enum ElementType
 	VerticalContainer,
 	ImageColumn,
 	TextColumn,
+	TextMultiColumn,
 	MarqueeProgressColumn
 } ElementType;
 
