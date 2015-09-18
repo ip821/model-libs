@@ -19,7 +19,7 @@
     <Filter Include="ZZZMisc\Generated Files">
       <UniqueIdentifier>{b846449e-e42c-42ca-8ed1-d97386df6b24}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Setup">
+    <Filter Include="Tests">
       <UniqueIdentifier>{1966c9dd-a8d4-4ce8-a674-c7db8008eec6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -43,7 +43,10 @@
       <Filter>ZZZMisc\Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="LayoutTests.h">
-      <Filter>Setup</Filter>
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>ZZZMisc\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -60,7 +63,7 @@
       <Filter>ZZZMisc\Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="LayoutTests.cpp">
-      <Filter>Setup</Filter>
+      <Filter>Tests</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -73,5 +76,15 @@
     <Midl Include="..\viewmdl\viewmdl_contract_i.idl">
       <Filter>ZZZMisc\Source Files</Filter>
     </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc">
+      <Filter>ZZZMisc\Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\theme1.json">
+      <Filter>ZZZMisc\Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

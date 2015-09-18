@@ -20,12 +20,11 @@ extern CTestWindow g_wnd;
 
 class LayoutTests : public testing::Test
 {
-private:
+protected:
 	ULONG_PTR m_gdiPlusToken;
 	Gdiplus::GdiplusStartupInput m_GdiplusStartupInput = { 0 };
 	CTestWindow m_wnd;
 
-protected:
 	virtual void SetUp();
 	virtual void TearDown();
 };

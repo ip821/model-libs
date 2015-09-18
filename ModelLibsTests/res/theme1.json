@@ -1,0 +1,57 @@
+[
+    {
+        "colors": [
+            {
+                "name": "Black",
+                "color": "Black"
+            }
+        ]
+    },
+
+    {
+        "fonts": [
+            {
+                "name": "font1",
+                "family": "Tahoma",
+                "size": 8,
+                "bold": false,
+                "underline": false
+            }
+        ]
+    },
+    {
+        "images": [
+            {
+                "name": "fav",
+                "type": "png",
+                "data": "iVBORw0KGgoAAAANSUhEUgAAABAAAAANCAIAAAAv2XlzAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC42/Ixj3wAAAOdJREFUKFOVkM0KRGAUhudmbSk/S7kE2WFKlNyARH42IqXcwNyB2LC1MG/fd6bxTTbzrDzn7dX5zuP8k/vCi0Eicl9QVVXTNBKRm0Lf908GPmh04bewrquu68uyzPNsGAaUgg9UCILANE1JkrDMNE18OI4jFENEYRjyIRWqqvJ9/zgOrlcwdF23aRqu35XKsoyiiOQC/l3XNcnPG9I07bqOhNG2bZZlJAyhgCxJEhJGHMd5npMwhILnecMwbNuGG4B93/mJKWYIBVwDHUVRsAmQZRlqWRbFDKFg2zaeTsIoisJxHBJwnm91BzCbWgA7kgAAAABJRU5ErkJggg=="
+            }
+        ]
+    },
+    {
+        "styles": [
+            {
+                "name": "",
+                "visible": true,
+                "color_background": "BrushBackground"
+            }
+        ]
+    },
+    {
+        "layouts": [
+            {
+                "name": "TextMultiColumn1Container",
+                "type": "horizontal_container",
+                "elements": [
+                    {
+                        "name": "TextMultiColumn1",
+                        "type": "text_multi_column",
+                        "text": "This is sample text for testing how text multi-column column works. This file is also used in tests. Links samples: #hashtag, @account_ref, http://ya.ru\r\nThis is sample text for testing how text multi-column column works. This file is also used in tests. Links samples: #hashtag, @account_ref, http://ya.ru\r\n\r\nThis is sample text for testing how text multi-column column works. This file is also used in tests. Links samples: #hashtag, @account_ref, http://ya.ru",
+                        "font": "font1",
+                        "color": "Black"
+                    }
+                ]
+            }
+        ]
+    }
+]
