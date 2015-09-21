@@ -41,6 +41,7 @@ private:
 	STDMETHOD(ApplyAlignVertical)(IColumnsInfo* pChildItems, CRect& rect, ElementType& elementType);
 	STDMETHOD(TranslateRects)(POINT* ptOrigin, IColumnsInfo* pColumnsInfo);
 	STDMETHOD(VarToString)(CComVar& v, CComBSTR& bstr);
+	STDMETHOD(GetTextForTextColumn)(IVariantObject* pLayoutObject, IVariantObject* pValueObject, BSTR* pbstrText);
 	STDMETHOD(CalculateRelativeWidth)(IVariantObject* pElement, CRect& rect, CRect& rectParent);
 
 public:

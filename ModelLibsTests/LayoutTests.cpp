@@ -56,7 +56,7 @@ TEST_F(LayoutTests, GetLayoutObject)
 	EXPECT_HRESULT_SUCCEEDED(pLayoutManager->LoadThemeFromStream(pStream));
 
 	CComPtr<IVariantObject> pLayoutObject;
-	EXPECT_HRESULT_SUCCEEDED(pLayoutManager->GetLayout(L"TextMultiColumn1", &pLayoutObject));
+	EXPECT_HRESULT_SUCCEEDED(pLayoutManager->GetLayout(L"TextMultiColumn1Container", &pLayoutObject));
 }
 
 TEST_F(LayoutTests, BuildTextMultiColumn)
@@ -82,4 +82,31 @@ TEST_F(LayoutTests, BuildTextMultiColumn)
 	EXPECT_HRESULT_SUCCEEDED(HrCoCreateInstance(CLSID_ColumnsInfo, &pColumnsInfo));
 
 	EXPECT_HRESULT_SUCCEEDED(pLayoutManager->BuildLayout(cdc, &rect, pLayoutObject, nullptr, pImageManagerService, pColumnsInfo));
+
+	UINT uiCount = 0;
+	EXPECT_HRESULT_SUCCEEDED(pColumnsInfo->GetCount(&uiCount));
+	EXPECT_EQ(uiCount, 1);
+
+	CComPtr<IColumnsInfoItem> pItemContainer;
+	EXPECT_HRESULT_SUCCEEDED(pColumnsInfo->GetItem(0, &pItemContainer));
+	EXPECT_NE(pItemContainer, nullptr);
+
+	CComPtr<IColumnsInfo> pContainerChildren;
+	EXPECT_HRESULT_SUCCEEDED(pItemContainer->GetChildItems(&pContainerChildren));
+	EXPECT_NE(pContainerChildren, nullptr);
+
+	UINT uiChildrenCount = 0;
+	EXPECT_HRESULT_SUCCEEDED(pContainerChildren->GetCount(&uiChildrenCount));
+	EXPECT_EQ(uiChildrenCount, 1);
+
+	CComPtr<IColumnsInfoItem> pMultiTextColumnItem;
+	EXPECT_HRESULT_SUCCEEDED(pContainerChildren->GetItem(0, &pMultiTextColumnItem));
+
+	CComPtr<IColumnsInfo> pMultiTextColumnChildren;
+	EXPECT_HRESULT_SUCCEEDED(pMultiTextColumnItem->GetChildItems(&pMultiTextColumnChildren));
+
+	UINT uiMultiTextColumnChildrenCount = 0;
+	EXPECT_HRESULT_SUCCEEDED(pMultiTextColumnChildren->GetCount(&uiMultiTextColumnChildrenCount));
+	EXPECT_NE(uiMultiTextColumnChildrenCount, 0);
+	EXPECT_GT(uiMultiTextColumnChildrenCount, (UINT)1);
 }

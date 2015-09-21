@@ -16,6 +16,33 @@ STDMETHODIMP CLayoutBuilder::VarToString(CComVar& v, CComBSTR& bstr)
 	return S_OK;
 }
 
+STDMETHODIMP CLayoutBuilder::GetTextForTextColumn(IVariantObject* pLayoutObject, IVariantObject* pValueObject, BSTR* pbstrText)
+{
+	CHECK_E_POINTER(pLayoutObject);
+	CHECK_E_POINTER(pbstrText);
+	CComBSTR bstrText;
+
+	CComVar vText;
+	RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::Text, &vText));
+	VarToString(vText, bstrText);
+
+	if (pValueObject)
+	{
+		CComVar vTextKey;
+		RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::TextKey, &vTextKey));
+		if (vTextKey.vt == VT_BSTR)
+		{
+			CComVar vTextByKey;
+			RETURN_IF_FAILED(pValueObject->GetVariantValue(vTextKey.bstrVal, &vTextByKey));
+			CComBSTR bstrTextByKey;
+			VarToString(vTextByKey, bstrTextByKey);
+			bstrText += bstrTextByKey;
+		}
+	}
+	*pbstrText = bstrText.Detach();
+	return S_OK;
+}
+
 STDMETHODIMP CLayoutBuilder::BuildTextColumn(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem)
 {
 	CComVar vVisible;
@@ -30,27 +57,8 @@ STDMETHODIMP CLayoutBuilder::BuildTextColumn(HDC hdc, RECT* pSourceRect, RECT* p
 	if (vVisible.boolVal)
 	{
 		CComBSTR bstrText;
-
-		{
-			CComVar vText;
-			RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::Text, &vText));
-			VarToString(vText, bstrText);
-
-			if (pValueObject)
-			{
-				CComVar vTextKey;
-				RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::TextKey, &vTextKey));
-				if (vTextKey.vt == VT_BSTR)
-				{
-					CComVar vTextByKey;
-					RETURN_IF_FAILED(pValueObject->GetVariantValue(vTextKey.bstrVal, &vTextByKey));
-					CComBSTR bstrTextByKey;
-					VarToString(vTextByKey, bstrTextByKey);
-					bstrText += bstrTextByKey;
-				}
-			}
-			RETURN_IF_FAILED(pColumnsInfoItem->SetVariantValue(Layout::Metadata::TextColumn::TextFullKey, &CComVar(bstrText)));
-		}
+		RETURN_IF_FAILED(GetTextForTextColumn(pLayoutObject, pValueObject, &bstrText));
+		RETURN_IF_FAILED(pColumnsInfoItem->SetVariantValue(Layout::Metadata::TextColumn::TextFullKey, &CComVar(bstrText)));
 
 		CComVar vFont;
 		RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::Font, &vFont));

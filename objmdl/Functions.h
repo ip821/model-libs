@@ -116,6 +116,17 @@ static HRESULT HrGetResourceStream(HMODULE hModule, DWORD dwResourceId, LPCWSTR 
 	return S_OK;
 }
 
+static HRESULT HrCopyProp(IVariantObject* pSourceObject, IVariantObject* pDestObject, BSTR bstrPropName)
+{
+	CComVar v;
+	RETURN_IF_FAILED(pSourceObject->GetVariantValue(bstrPropName, &v));
+	if (v.vt != VT_EMPTY)
+	{
+		RETURN_IF_FAILED(pDestObject->SetVariantValue(bstrPropName, &v));
+	}
+	return S_OK;
+}
+
 class CCoInitializeScope
 {
 public:

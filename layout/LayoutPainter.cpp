@@ -120,6 +120,7 @@ STDMETHODIMP CLayoutPainter::PaintLayoutInternal(HDC hdc, IImageManagerService* 
 		{
 			case ElementType::HorizontalContainer:
 			case ElementType::VerticalContainer:
+			case ElementType::TextMultiColumn:
 			{
 				{
 					AlphaPaintScope aps(hdc, pColumnInfoItem);
@@ -134,9 +135,6 @@ STDMETHODIMP CLayoutPainter::PaintLayoutInternal(HDC hdc, IImageManagerService* 
 				}
 				break;
 			}
-			case ElementType::TextMultiColumn:
-				RETURN_IF_FAILED(PaintTextMultiColumn(hdc, pColumnInfoItem));
-				break;
 			case ElementType::TextColumn:
 				RETURN_IF_FAILED(PaintTextColumn(hdc, pColumnInfoItem));
 				break;
