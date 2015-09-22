@@ -116,6 +116,29 @@ static HRESULT HrGetResourceStream(HMODULE hModule, DWORD dwResourceId, LPCWSTR 
 	return S_OK;
 }
 
+static HRESULT HrCopyProps(IVariantObject* pSourceObject, IVariantObject* pDestObject)
+{
+	UINT uiPropsCount = 0;
+	RETURN_IF_FAILED(pSourceObject->GetCount(&uiPropsCount));
+	for (size_t j = 0; j < uiPropsCount; j++)
+	{
+		CComBSTR bstrKey;
+		RETURN_IF_FAILED(pSourceObject->GetKeyByIndex(j, &bstrKey));
+
+		CComVar vValue;
+		RETURN_IF_FAILED(pDestObject->GetVariantValue(bstrKey, &vValue));
+
+		if (vValue.vt == VT_EMPTY)
+		{
+			CComVar vProp;
+			RETURN_IF_FAILED(pSourceObject->GetVariantValue(bstrKey, &vProp));
+			RETURN_IF_FAILED(pDestObject->SetVariantValue(bstrKey, &vProp));
+		}
+	}
+
+	return S_OK;
+}
+
 static HRESULT HrCopyProp(IVariantObject* pSourceObject, IVariantObject* pDestObject, BSTR bstrPropName)
 {
 	CComVar v;

@@ -41,6 +41,14 @@ namespace IP
 				const static CComBSTR FontDisabled(L"font_disabled");
 			}
 
+			namespace TextMultiColumn
+			{
+				const static CComBSTR ColumnDefinition(L"column_definition_key");
+				const static CComBSTR ColumnDefinitions(L"column_definitions");
+				const static CComBSTR ColumnStartIndex(L"StartIndex");
+				const static CComBSTR ColumnEndIndex(L"EndIndex");
+			}
+
 			namespace Element
 			{
 				const static CComBSTR Name(L"name");

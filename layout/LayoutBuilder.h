@@ -44,6 +44,13 @@ private:
 	STDMETHOD(GetTextForTextColumn)(IVariantObject* pLayoutObject, IVariantObject* pValueObject, BSTR* pbstrText);
 	STDMETHOD(CalculateRelativeWidth)(IVariantObject* pElement, CRect& rect, CRect& rectParent);
 
+	struct ColumnDefinition
+	{
+		int Start = 0;
+		int End = 0;
+		CComQIPtr<IVariantObject> ColumnObject;
+	};
+
 public:
 	static HRESULT MapType(BSTR bstrType, ElementType* pElementType);
 
