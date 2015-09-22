@@ -84,7 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\theme1.json">
-      <Filter>ZZZMisc\Resource Files</Filter>
+      <Filter>Tests</Filter>
     </None>
   </ItemGroup>
 </Project>

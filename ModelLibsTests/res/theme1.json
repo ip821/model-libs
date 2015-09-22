@@ -40,15 +40,50 @@
     {
         "layouts": [
             {
+                "name": "TwitterUrl",
+                "type": "text_column",
+                "font": "TwitterUrl",
+                "font_selected": "TwitterUrlSelected",
+                "color": "TwitterUrl",
+                "VAR_IS_URL": true
+            },
+            {
                 "name": "TextMultiColumn1Container",
                 "type": "horizontal_container",
                 "elements": [
                     {
                         "name": "TextMultiColumn1",
                         "type": "text_multi_column",
-                        "text": "This is sample text for testing how text multi-column column works. This file is also used in tests. Links samples: #hashtag, @account_ref, http://ya.ru\r\nThis is sample text for testing how text multi-column column works. This file is also used in tests. Links samples: #hashtag, @account_ref, http://ya.ru\r\n\r\nThis is sample text for testing how text multi-column column works. This file is also used in tests. Links samples: #hashtag, @account_ref, http://ya.ru",
+                        "text": "NEW COURSE!  Learn about #Azure AD with MSFT #MVP Marcin Policht!  https://t.co/agp2F9Owq6 #AzureAD http://t.co/MS4jMMYTYP",
                         "font": "font1",
-                        "color": "Black"
+                        "color": "Black",
+                        "column_definitions": [
+                            {
+                                "StartIndex": 25,
+                                "EndIndex": 31,
+                                "column_definition_key": "TwitterUrl"
+                            },
+                            {
+                                "StartIndex": 45,
+                                "EndIndex": 49,
+                                "column_definition_key": "TwitterUrl"
+                            },
+                            {
+                                "StartIndex": 67,
+                                "EndIndex": 90,
+                                "column_definition_key": "TwitterUrl"
+                            },
+                            {
+                                "StartIndex": 91,
+                                "EndIndex": 99,
+                                "column_definition_key": "TwitterUrl"
+                            },
+                            {
+                                "StartIndex": 100,
+                                "EndIndex": 122,
+                                "column_definition_key": "TwitterUrl"
+                            }
+                        ]
                     }
                 ]
             }

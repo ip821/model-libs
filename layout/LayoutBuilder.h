@@ -51,6 +51,13 @@ private:
 		CComQIPtr<IVariantObject> ColumnObject;
 	};
 
+	struct ItemDescriptor
+	{
+		ColumnDefinition* pColumnDefinition = nullptr;
+		CString Text;
+		CSize Size;
+	};
+
 public:
 	static HRESULT MapType(BSTR bstrType, ElementType* pElementType);
 

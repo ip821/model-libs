@@ -19,32 +19,47 @@ STDMETHODIMP CLayoutBuilder::BuildTextMultiColumn(HDC hdc, RECT* pSourceRect, RE
 		RETURN_IF_FAILED(GetTextForTextColumn(pLayoutObject, pValueObject, &bstrText));
 
 		CString strText(bstrText);
-		vector<CString> vStrItems;
-		
-		CComVar vColumnDefinition;
-		RETURN_IF_FAILED(pValueObject->GetVariantValue(Layout::Metadata::TextMultiColumn::ColumnDefinitions, &vColumnDefinition));
-		ATLASSERT(vColumnDefinition.vt == VT_UNKNOWN);
-		CComQIPtr<IObjCollection> pObjCollection = vColumnDefinition.punkVal;
+		vector<ItemDescriptor> vStrItems;
 
 		vector<ColumnDefinition> columnDefinitions;
-		UINT uiCount = 0;
-		RETURN_IF_FAILED(pObjCollection->GetCount(&uiCount));
-		for (size_t i = 0; i < uiCount; i++)
+
+		CComVar vColumnDefinition;
+		if (pValueObject)
 		{
-			CComPtr<IVariantObject> pItem;
-			RETURN_IF_FAILED(pObjCollection->GetAt(i, __uuidof(IVariantObject), (LPVOID*)&pItem));
-			CComVar vStartIndex;
-			RETURN_IF_FAILED(pItem->GetVariantValue(Layout::Metadata::TextMultiColumn::ColumnStartIndex, &vStartIndex));
-			CComVar vEndIndex;
-			RETURN_IF_FAILED(pItem->GetVariantValue(Layout::Metadata::TextMultiColumn::ColumnEndIndex, &vEndIndex));
-			CComVar vColumnDef;
-			RETURN_IF_FAILED(pItem->GetVariantValue(Layout::Metadata::TextMultiColumn::ColumnDefinition, &vColumnDef));
-			ATLASSERT(vStartIndex.vt == VT_I4 && vEndIndex.vt == VT_I4 && vColumnDef.vt == VT_UNKNOWN);
-			ColumnDefinition cd;
-			cd.Start = vStartIndex.intVal;
-			cd.End = vEndIndex.intVal;
-			cd.ColumnObject = vColumnDef.punkVal;
-			columnDefinitions.push_back(cd);
+			RETURN_IF_FAILED(pValueObject->GetVariantValue(Layout::Metadata::TextMultiColumn::ColumnDefinitions, &vColumnDefinition));
+		}
+
+		if (vColumnDefinition.vt == VT_EMPTY)
+		{
+			RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextMultiColumn::ColumnDefinitions, &vColumnDefinition));
+		}
+
+		if (vColumnDefinition.vt != VT_EMPTY)
+		{
+			ATLASSERT(vColumnDefinition.vt == VT_UNKNOWN);
+			CComQIPtr<IObjCollection> pObjCollection = vColumnDefinition.punkVal;
+
+			UINT uiCount = 0;
+			RETURN_IF_FAILED(pObjCollection->GetCount(&uiCount));
+			for (size_t i = 0; i < uiCount; i++)
+			{
+				CComPtr<IVariantObject> pItem;
+				RETURN_IF_FAILED(pObjCollection->GetAt(i, __uuidof(IVariantObject), (LPVOID*)&pItem));
+				CComVar vStartIndex;
+				RETURN_IF_FAILED(pItem->GetVariantValue(Layout::Metadata::TextMultiColumn::ColumnStartIndex, &vStartIndex));
+				CComVar vEndIndex;
+				RETURN_IF_FAILED(pItem->GetVariantValue(Layout::Metadata::TextMultiColumn::ColumnEndIndex, &vEndIndex));
+				CComVar vColumnDef;
+				RETURN_IF_FAILED(pItem->GetVariantValue(Layout::Metadata::TextMultiColumn::ColumnDefinition, &vColumnDef));
+				ATLASSERT(vStartIndex.vt == VT_I4);
+				ATLASSERT(vEndIndex.vt == VT_I4);
+				ATLASSERT(vColumnDef.vt == VT_UNKNOWN);
+				ColumnDefinition cd;
+				cd.Start = vStartIndex.intVal;
+				cd.End = vEndIndex.intVal;
+				cd.ColumnObject = vColumnDef.punkVal;
+				columnDefinitions.push_back(cd);
+			}
 		}
 
 		int lastStartIndex = 0;
@@ -70,109 +85,80 @@ STDMETHODIMP CLayoutBuilder::BuildTextMultiColumn(HDC hdc, RECT* pSourceRect, RE
 
 			if (((ch == L' ' || ch == L'\n') && lastStartIndex != i) || i == strTextLength - 1 || it != itNext)
 			{
-				vStrItems.push_back(item);
+				ItemDescriptor itemDescriptor;
+				itemDescriptor.Text = item;
+				if (it != columnDefinitions.end())
+					itemDescriptor.pColumnDefinition = &(*it);
+				GetTextExtentPoint32(hdc, item, item.GetLength(), &itemDescriptor.Size);
+				vStrItems.push_back(itemDescriptor);
 				item.Empty();
 			}
 		}
 
-		CRect rect = *pSourceRect;
-		CRect itemRect;
-		itemRect.right = itemRect.left;
-		itemRect.bottom = itemRect.top;
-		CString strLine;
-		CString strItemFull;
-		auto length = vStrItems.size();
 		CComPtr<IColumnsInfo> pChildren;
 		RETURN_IF_FAILED(pColumnsInfoItem->GetChildItems(&pChildren));
+
+		CString strLine;
+		auto size = vStrItems.size();
+		CRect rect = *pSourceRect;
+		auto width = rect.Width();
+		CRect itemRect;
 		int maxCx = 0;
 		int maxCy = 0;
-		int width = rect.Width();
-		int totalLength = 0;
-		for (size_t i = 0; i < length; i++)
+		for (size_t i = 0; i < size; i++)
 		{
-			CString strItem = vStrItems[i];
-			strLine += CString(strItem).Trim();
-			strItemFull += strItem;
+			ItemDescriptor& item = vStrItems[i];
+			strLine += item.Text;
 
-			CSize szItem = { 0 };
-			auto bRes = GetTextExtentPoint32(hdc, strLine, strLine.GetLength(), &szItem);
-			ATLASSERT(bRes);
+			itemRect.right += item.Size.cx;
+			itemRect.bottom = max(itemRect.top + item.Size.cy, itemRect.bottom);
 
-			auto it = find_if(columnDefinitions.begin(), columnDefinitions.end(), [&](ColumnDefinition columnDef)
-			{
-				auto itemLength = strItem.GetLength() - 1;
-				return totalLength == columnDef.Start && (itemLength + totalLength) == columnDef.End;
-			});
-
-			itemRect.right = itemRect.left + szItem.cx;
-			itemRect.bottom = itemRect.top + szItem.cy;
-
-			CString strWithNextItem = strLine;
-			CString strWithNextItemFull = strItemFull;
-			if (i != length - 1)
-			{
-				strWithNextItem += CString(vStrItems[i + 1]).Trim();
-				strWithNextItemFull += vStrItems[i + 1];
-			}
-
-			CSize szWithNextItem = { 0 };
-			bRes = GetTextExtentPoint32(hdc, strWithNextItem, strWithNextItem.GetLength(), &szWithNextItem);
-			ATLASSERT(bRes);
-
-			auto itWithItemNext = columnDefinitions.end();
-			if (i != length - 1)
-			{
-				itWithItemNext = find_if(columnDefinitions.begin(), columnDefinitions.end(), [&](ColumnDefinition columnDef)
-				{
-					auto itemLength = strItemFull.GetLength();
-					auto itemNextLength = vStrItems[i + 1].GetLength() - 1;
-					return (totalLength + itemLength) == columnDef.Start && (itemNextLength + itemLength + totalLength) == columnDef.End;
-				});
-			}
-
-			auto lastChar = strItem[strItem.GetLength() - 1];
-			if (it != itWithItemNext || i == length - 1 || szWithNextItem.cx >= width || lastChar == L'\n')
+			if (i == size - 1 || item.pColumnDefinition != vStrItems[i + 1].pColumnDefinition || (itemRect.Width() + vStrItems[i + 1].Size.cx) > width)
 			{
 				CComPtr<IVariantObject> pVariantObjectItem;
 				RETURN_IF_FAILED(HrCoCreateInstance(CLSID_VariantObject, &pVariantObjectItem));
+
 				CComPtr<IColumnsInfoItem> pItem;
 				RETURN_IF_FAILED(pChildren->AddItem(pVariantObjectItem, &pItem));
-				if (it == columnDefinitions.end())
+
+				if (item.pColumnDefinition)
 				{
-					RETURN_IF_FAILED(HrCopyProp(pColumnsInfoItem, pItem, Layout::Metadata::TextColumn::Font));
-					RETURN_IF_FAILED(HrCopyProp(pColumnsInfoItem, pItem, Layout::Metadata::Element::Color));
+					RETURN_IF_FAILED(HrCopyProps(item.pColumnDefinition->ColumnObject, pItem));
 				}
 				else
 				{
-					RETURN_IF_FAILED(HrCopyProps(it->ColumnObject, pItem));
+					RETURN_IF_FAILED(HrCopyProp(pColumnsInfoItem, pItem, Layout::Metadata::TextColumn::Font));
+					RETURN_IF_FAILED(HrCopyProp(pColumnsInfoItem, pItem, Layout::Metadata::Element::Color));
 				}
 
 				RETURN_IF_FAILED(pItem->SetRect(itemRect));
 				RETURN_IF_FAILED(pItem->SetVariantValue(Layout::Metadata::Element::Visible, &CComVar(true)));
 				RETURN_IF_FAILED(pItem->SetVariantValue(Layout::Metadata::Element::Type, &CComVar(Layout::Metadata::LayoutTypes::TextColumn)));
-				RETURN_IF_FAILED(pItem->SetVariantValue(Layout::Metadata::TextColumn::TextFullKey, &CComVar(strItemFull)));
+				RETURN_IF_FAILED(pItem->SetVariantValue(Layout::Metadata::TextColumn::TextFullKey, &CComVar(strLine)));
 
 				maxCx = max(maxCx, itemRect.right);
 				maxCy = max(maxCy, itemRect.bottom);
 
-				totalLength += strItemFull.GetLength();
-
 				strLine.Empty();
-				strItemFull.Empty();
-				if (it == itWithItemNext || szWithNextItem.cx >= width)
+
+				if (i != size - 1)
 				{
-					itemRect.left = 0;
-					itemRect.right = itemRect.left;
-					itemRect.top = itemRect.bottom;
-					width = rect.Width();
-				}
-				else
-				{
-					itemRect.left = itemRect.right;
-					width = rect.Width() - itemRect.left;
+					if (item.pColumnDefinition == vStrItems[i + 1].pColumnDefinition || (itemRect.Width() + vStrItems[i + 1].Size.cx) > width)
+					{
+						itemRect.left = 0;
+						itemRect.right = itemRect.left;
+						itemRect.top = itemRect.bottom;
+						width = rect.Width();
+					}
+					else
+					{
+						itemRect.left = itemRect.right;
+						width = rect.Width() - itemRect.left;
+					}
 				}
 			}
 		}
+
 		CRect rectResultRect = *pSourceRect;
 		rectResultRect.right = rectResultRect.left + maxCx;
 		rectResultRect.bottom = rectResultRect.top + maxCy;
