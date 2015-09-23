@@ -77,6 +77,12 @@ namespace IP
 				const static CComBSTR BorderTop(L"border_top");
 				const static CComBSTR BorderTopColor(L"border_top_color");
 				const static CComBSTR BorderTopWidth(L"border_top_width");
+				const static CComBSTR BorderLeft(L"border_left");
+				const static CComBSTR BorderLeftColor(L"border_left_color");
+				const static CComBSTR BorderLeftWidth(L"border_left_width");
+				const static CComBSTR BorderRight(L"border_right");
+				const static CComBSTR BorderRightColor(L"border_right_color");
+				const static CComBSTR BorderRightWidth(L"border_right_width");
 				const static CComBSTR AlignHorizontal(L"align_horizontal");
 				const static CComBSTR AlignVertical(L"align_vertical");
 				const static CComBSTR WidthPercent(L"width_percent");

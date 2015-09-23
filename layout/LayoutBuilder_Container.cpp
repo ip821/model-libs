@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "LayoutBuilder.h"
 #include "GdilPlusUtils.h"
+#include "..\layout\Functions.h"
 
 STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem, ElementType containerElementType)
 {
@@ -66,11 +67,13 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 		CComVar vVisible;
 		RETURN_IF_FAILED(pElement->GetVariantValue(Layout::Metadata::Element::Visible, &vVisible));
 		ATLASSERT(vVisible.vt == VT_BOOL);
+
+		CComPtr<IColumnsInfoItem> pColumnsInfoItemElement;
+
 		switch (elementType)
 		{
 			case ElementType::VerticalContainer:
 			{
-				CComPtr<IColumnsInfoItem> pColumnsInfoItemElement;
 				CRect rectParent = *pSourceRect;
 				RETURN_IF_FAILED(FitToParentStart(pElement, rectParent, localSourceRect));
 				RETURN_IF_FAILED(CalculateRelativeWidth(pElement, localSourceRect, rectParent));
@@ -80,7 +83,6 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 			}
 			case ElementType::HorizontalContainer:
 			{
-				CComPtr<IColumnsInfoItem> pColumnsInfoItemElement;
 				CRect rectParent = *pSourceRect;
 				RETURN_IF_FAILED(FitToParentStart(pElement, rectParent, localSourceRect));
 				RETURN_IF_FAILED(CalculateRelativeWidth(pElement, localSourceRect, rectParent));
@@ -90,7 +92,6 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 			}
 			case ElementType::TextMultiColumn:
 			{
-				CComPtr<IColumnsInfoItem> pColumnsInfoItemElement;
 				RETURN_IF_FAILED(ApplyStartMargins(pElement, localSourceRect));
 				CRect rectParent = *pSourceRect;
 				RETURN_IF_FAILED(FitToParentStart(pElement, rectParent, localSourceRect));
@@ -107,7 +108,6 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 			}
 			case ElementType::TextColumn:
 			{
-				CComPtr<IColumnsInfoItem> pColumnsInfoItemElement;
 				RETURN_IF_FAILED(ApplyStartMargins(pElement, localSourceRect));
 				CRect rectParent = *pSourceRect;
 				RETURN_IF_FAILED(FitToParentStart(pElement, rectParent, localSourceRect));
@@ -124,7 +124,6 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 			}
 			case ElementType::ImageColumn:
 			{
-				CComPtr<IColumnsInfoItem> pColumnsInfoItemElement;
 				RETURN_IF_FAILED(ApplyStartMargins(pElement, localSourceRect));
 				CRect rectParent = *pSourceRect;
 				RETURN_IF_FAILED(FitToParentStart(pElement, rectParent, localSourceRect));
@@ -141,7 +140,6 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 			}
 			case ElementType::MarqueeProgressColumn:
 			{
-				CComPtr<IColumnsInfoItem> pColumnsInfoItemElement;
 				RETURN_IF_FAILED(ApplyStartMargins(pElement, localSourceRect));
 				CRect rectParent = *pSourceRect;
 				RETURN_IF_FAILED(FitToParentStart(pElement, rectParent, localSourceRect));
@@ -157,6 +155,25 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 				break;
 			}
 		}
+
+#ifdef DEBUG
+		if (pColumnsInfoItemElement)
+		{
+			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderTop, &CComVar(true));
+			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderTop, &CComVar(true));
+			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderTopWidth, &CComVar(1));
+			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderTopColor, &CComVar(L"TwitterDelimiter"));
+			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderBottom, &CComVar(true));
+			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderBottomWidth, &CComVar(1));
+			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderBottomColor, &CComVar(L"TwitterDelimiter"));
+			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderLeft, &CComVar(true));
+			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderLeftWidth, &CComVar(1));
+			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderLeftColor, &CComVar(L"TwitterDelimiter"));
+			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderRight, &CComVar(true));
+			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderRightWidth, &CComVar(1));
+			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderRightColor, &CComVar(L"TwitterDelimiter"));
+		}
+#endif
 
 		if (containerElementType == ElementType::HorizontalContainer)
 		{

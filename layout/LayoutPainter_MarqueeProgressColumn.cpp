@@ -6,6 +6,7 @@
 
 STDMETHODIMP CLayoutPainter::PaintMarqueeProgressColumn(HDC hdc, IColumnsInfoItem* pColumnInfoItem)
 {
+	RETURN_IF_FAILED(PaintBorders(hdc, pColumnInfoItem));
 	CComVar vValue;
 	RETURN_IF_FAILED(pColumnInfoItem->GetVariantValue(Layout::Metadata::MarqueeProgressColumn::Value, &vValue));
 	CComVar vItemSize;

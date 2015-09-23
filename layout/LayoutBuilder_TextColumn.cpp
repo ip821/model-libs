@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "LayoutBuilder.h"
 #include "GdilPlusUtils.h"
+#include "LayoutPainter.h"
 
 STDMETHODIMP CLayoutBuilder::VarToString(CComVar& v, CComBSTR& bstr)
 {
@@ -60,12 +61,8 @@ STDMETHODIMP CLayoutBuilder::BuildTextColumn(HDC hdc, RECT* pSourceRect, RECT* p
 		RETURN_IF_FAILED(GetTextForTextColumn(pLayoutObject, pValueObject, &bstrText));
 		RETURN_IF_FAILED(pColumnsInfoItem->SetVariantValue(Layout::Metadata::TextColumn::TextFullKey, &CComVar(bstrText)));
 
-		CComVar vFont;
-		RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::TextColumn::Font, &vFont));
-		ATLASSERT(vFont.vt == VT_BSTR);
-
 		HFONT font = 0;
-		RETURN_IF_FAILED(m_pThemeFontMap->GetFont(vFont.bstrVal, &font));
+		RETURN_IF_FAILED(CLayoutPainter::GetItemFont(m_pThemeFontMap, pColumnsInfoItem, &font));
 		CDCSelectFontScope cdcSelectFontScope(hdc, font);
 
 		CComVar vMultiline;

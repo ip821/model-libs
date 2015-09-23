@@ -11,6 +11,7 @@ STDMETHODIMP CLayoutPainter::PaintTextColumn(HDC hdc, IColumnsInfoItem* pColumnI
 	CRect rect;
 	RETURN_IF_FAILED(pColumnInfoItem->GetRect(&rect));
 	RETURN_IF_FAILED(PaintRoundedRect(hdc, pColumnInfoItem));
+	RETURN_IF_FAILED(PaintBorders(hdc, pColumnInfoItem));
 
 	CComBSTR bstr;
 	RETURN_IF_FAILED(pColumnInfoItem->GetRectStringProp(Layout::Metadata::TextColumn::TextFullKey, &bstr));
@@ -22,7 +23,7 @@ STDMETHODIMP CLayoutPainter::PaintTextColumn(HDC hdc, IColumnsInfoItem* pColumnI
 	RETURN_IF_FAILED(pColumnInfoItem->GetRectStringProp(Layout::Metadata::TextColumn::Font, &bstrFont));
 
 	HFONT font = 0;
-	RETURN_IF_FAILED(GetItemFont(pColumnInfoItem, &font));
+	RETURN_IF_FAILED(CLayoutPainter::GetItemFont(m_pThemeFontMap, pColumnInfoItem, &font));
 	CDCSelectFontScope cdcSelectFontScope(cdc, font);
 
 	CComBSTR bstrColor;
@@ -36,12 +37,12 @@ STDMETHODIMP CLayoutPainter::PaintTextColumn(HDC hdc, IColumnsInfoItem* pColumnI
 	RETURN_IF_FAILED(pColumnInfoItem->GetVariantValue(Layout::Metadata::TextColumn::Multiline, &vMultiline));
 	BOOL bWordWrap = vMultiline.vt == VT_BOOL && vMultiline.boolVal;
 
-	DrawText(cdc, bstr, bstr.Length(), &rect, bWordWrap ? DT_WORDBREAK : 0);
+	auto width = DrawText(cdc, bstr, bstr.Length(), &rect, bWordWrap ? DT_WORDBREAK : DT_SINGLELINE | DT_LEFT);
 
 	return S_OK;
 }
 
-STDMETHODIMP CLayoutPainter::GetItemFont(IColumnsInfoItem* pColumnInfoItem, HFONT* pFont)
+HRESULT CLayoutPainter::GetItemFont(IThemeFontMap* pThemeFontMap, IColumnsInfoItem* pColumnInfoItem, HFONT* pFont)
 {
 	CComBSTR bstrFontName = Layout::Metadata::TextColumn::Font;
 	CComVar vDisabled;
@@ -49,7 +50,7 @@ STDMETHODIMP CLayoutPainter::GetItemFont(IColumnsInfoItem* pColumnInfoItem, HFON
 	if (vDisabled.vt == VT_BOOL && vDisabled.boolVal)
 	{
 		bstrFontName = Layout::Metadata::TextColumn::FontDisabled;
-		if (FAILED(GetFontByParamName(pColumnInfoItem, bstrFontName, pFont)))
+		if (FAILED(GetFontByParamName(pThemeFontMap, pColumnInfoItem, bstrFontName, pFont)))
 			bstrFontName = Layout::Metadata::TextColumn::Font;
 	}
 	else
@@ -59,20 +60,20 @@ STDMETHODIMP CLayoutPainter::GetItemFont(IColumnsInfoItem* pColumnInfoItem, HFON
 		if (vSelected.vt == VT_BOOL && vSelected.boolVal)
 		{
 			bstrFontName = Layout::Metadata::TextColumn::FontSelected;
-			if (FAILED(GetFontByParamName(pColumnInfoItem, bstrFontName, pFont)))
+			if (FAILED(GetFontByParamName(pThemeFontMap, pColumnInfoItem, bstrFontName, pFont)))
 				bstrFontName = Layout::Metadata::TextColumn::Font;
 		}
 	}
-	RETURN_IF_FAILED(GetFontByParamName(pColumnInfoItem, bstrFontName, pFont));
+	RETURN_IF_FAILED(GetFontByParamName(pThemeFontMap, pColumnInfoItem, bstrFontName, pFont));
 	return S_OK;
 }
 
-STDMETHODIMP CLayoutPainter::GetFontByParamName(IColumnsInfoItem* pColumnInfoItem, BSTR bstrParamName, HFONT* pFont)
+HRESULT CLayoutPainter::GetFontByParamName(IThemeFontMap* pThemeFontMap, IColumnsInfoItem* pColumnInfoItem, BSTR bstrParamName, HFONT* pFont)
 {
 	CComVar v;
 	RETURN_IF_FAILED(pColumnInfoItem->GetVariantValue(bstrParamName, &v));
 	if (v.vt != VT_BSTR)
 		return E_INVALIDARG;
-	RETURN_IF_FAILED(m_pThemeFontMap->GetFont(v.bstrVal, pFont));
+	RETURN_IF_FAILED(pThemeFontMap->GetFont(v.bstrVal, pFont));
 	return S_OK;
 }

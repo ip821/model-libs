@@ -53,6 +53,95 @@ STDMETHODIMP CLayoutPainter::EraseContainerBackground(HDC hdc, IColumnsInfoItem 
 	return S_OK;
 }
 
+STDMETHODIMP CLayoutPainter::PaintBorders(HDC hdc, IColumnsInfoItem * pColumnInfoItem)
+{
+	{
+		BOOL bBorderTop = FALSE;
+		RETURN_IF_FAILED(pColumnInfoItem->GetRectBoolProp(Layout::Metadata::Element::BorderTop, &bBorderTop));
+		if (bBorderTop)
+		{
+			CComBSTR vBorderTopColor;
+			RETURN_IF_FAILED(pColumnInfoItem->GetRectStringProp(Layout::Metadata::Element::BorderTopColor, &vBorderTopColor));
+			DWORD dwColor = 0;
+			RETURN_IF_FAILED(m_pThemeColorMap->GetColor(vBorderTopColor, &dwColor));
+			CBrush brush;
+			brush.CreateSolidBrush(dwColor);
+			CRect rect;
+			RETURN_IF_FAILED(pColumnInfoItem->GetRect(&rect));
+			CComVar vBorderTopWidth;
+			RETURN_IF_FAILED(pColumnInfoItem->GetVariantValue(Layout::Metadata::Element::BorderTopWidth, &vBorderTopWidth));
+			ATLASSERT(vBorderTopWidth.vt == VT_I4);
+			rect.bottom = rect.top + vBorderTopWidth.intVal;
+			FillRect(hdc, &rect, brush);
+		}
+	}
+
+	{
+		BOOL bBorderBottom = FALSE;
+		RETURN_IF_FAILED(pColumnInfoItem->GetRectBoolProp(Layout::Metadata::Element::BorderBottom, &bBorderBottom));
+		if (bBorderBottom)
+		{
+			CComBSTR vBorderBottomColor;
+			RETURN_IF_FAILED(pColumnInfoItem->GetRectStringProp(Layout::Metadata::Element::BorderBottomColor, &vBorderBottomColor));
+			DWORD dwColor = 0;
+			RETURN_IF_FAILED(m_pThemeColorMap->GetColor(vBorderBottomColor, &dwColor));
+			CBrush brush;
+			brush.CreateSolidBrush(dwColor);
+			CRect rect;
+			RETURN_IF_FAILED(pColumnInfoItem->GetRect(&rect));
+			CComVar vBorderBottomWidth;
+			RETURN_IF_FAILED(pColumnInfoItem->GetVariantValue(Layout::Metadata::Element::BorderBottomWidth, &vBorderBottomWidth));
+			ATLASSERT(vBorderBottomWidth.vt == VT_I4);
+			rect.top = rect.bottom - vBorderBottomWidth.intVal;
+			FillRect(hdc, &rect, brush);
+		}
+	}
+
+	{
+		BOOL bBorderLeft = FALSE;
+		RETURN_IF_FAILED(pColumnInfoItem->GetRectBoolProp(Layout::Metadata::Element::BorderLeft, &bBorderLeft));
+		if (bBorderLeft)
+		{
+			CComBSTR vBorderLeftColor;
+			RETURN_IF_FAILED(pColumnInfoItem->GetRectStringProp(Layout::Metadata::Element::BorderBottomColor, &vBorderLeftColor));
+			DWORD dwColor = 0;
+			RETURN_IF_FAILED(m_pThemeColorMap->GetColor(vBorderLeftColor, &dwColor));
+			CBrush brush;
+			brush.CreateSolidBrush(dwColor);
+			CRect rect;
+			RETURN_IF_FAILED(pColumnInfoItem->GetRect(&rect));
+			CComVar vBorderLeftWidth;
+			RETURN_IF_FAILED(pColumnInfoItem->GetVariantValue(Layout::Metadata::Element::BorderBottomWidth, &vBorderLeftWidth));
+			ATLASSERT(vBorderLeftWidth.vt == VT_I4);
+			rect.right = rect.left + vBorderLeftWidth.intVal;
+			FillRect(hdc, &rect, brush);
+		}
+	}
+
+	{
+		BOOL bBorderRight = FALSE;
+		RETURN_IF_FAILED(pColumnInfoItem->GetRectBoolProp(Layout::Metadata::Element::BorderLeft, &bBorderRight));
+		if (bBorderRight)
+		{
+			CComBSTR vBorderRIghtColor;
+			RETURN_IF_FAILED(pColumnInfoItem->GetRectStringProp(Layout::Metadata::Element::BorderBottomColor, &vBorderRIghtColor));
+			DWORD dwColor = 0;
+			RETURN_IF_FAILED(m_pThemeColorMap->GetColor(vBorderRIghtColor, &dwColor));
+			CBrush brush;
+			brush.CreateSolidBrush(dwColor);
+			CRect rect;
+			RETURN_IF_FAILED(pColumnInfoItem->GetRect(&rect));
+			CComVar vBorderRightWidth;
+			RETURN_IF_FAILED(pColumnInfoItem->GetVariantValue(Layout::Metadata::Element::BorderBottomWidth, &vBorderRightWidth));
+			ATLASSERT(vBorderRightWidth.vt == VT_I4);
+			rect.left = rect.right - vBorderRightWidth.intVal;
+			FillRect(hdc, &rect, brush);
+		}
+	}
+
+	return S_OK;
+}
+
 STDMETHODIMP CLayoutPainter::PaintLayout(HDC hdc, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo, BSTR bstrItemName)
 {
 	CPoint ptOrigin;
@@ -256,3 +345,4 @@ STDMETHODIMP CLayoutPainter::GetItemColor(IColumnsInfoItem* pColumnInfoItem, DWO
 	RETURN_IF_FAILED(GetColorByParamName(pColumnInfoItem, bstrColorName, pdwColor));
 	return S_OK;
 }
+

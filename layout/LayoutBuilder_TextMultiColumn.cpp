@@ -2,6 +2,7 @@
 #include "LayoutBuilder.h"
 #include "GdilPlusUtils.h"
 #include "..\objmdl\StringUtils.h"
+#include "LayoutPainter.h"
 
 STDMETHODIMP CLayoutBuilder::BuildTextMultiColumn(HDC hdc, RECT* pSourceRect, RECT* pDestRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IColumnsInfo* pColumnInfo, IColumnsInfoItem** ppColumnsInfoItem)
 {
@@ -62,6 +63,10 @@ STDMETHODIMP CLayoutBuilder::BuildTextMultiColumn(HDC hdc, RECT* pSourceRect, RE
 			}
 		}
 
+		HFONT font = 0;
+		RETURN_IF_FAILED(CLayoutPainter::GetItemFont(m_pThemeFontMap, pColumnsInfoItem, &font));
+		CDCSelectFontScope cdcSelectFontScope(hdc, font);
+
 		int lastStartIndex = 0;
 		CString item;
 		auto strTextLength = strText.GetLength();
@@ -89,6 +94,7 @@ STDMETHODIMP CLayoutBuilder::BuildTextMultiColumn(HDC hdc, RECT* pSourceRect, RE
 				itemDescriptor.Text = item;
 				if (it != columnDefinitions.end())
 					itemDescriptor.pColumnDefinition = &(*it);
+
 				GetTextExtentPoint32(hdc, item, item.GetLength(), &itemDescriptor.Size);
 				vStrItems.push_back(itemDescriptor);
 				item.Empty();
@@ -113,7 +119,7 @@ STDMETHODIMP CLayoutBuilder::BuildTextMultiColumn(HDC hdc, RECT* pSourceRect, RE
 			itemRect.right += item.Size.cx;
 			itemRect.bottom = max(itemRect.top + item.Size.cy, itemRect.bottom);
 
-			if (i == size - 1 || item.pColumnDefinition != vStrItems[i + 1].pColumnDefinition || (itemRect.Width() + vStrItems[i + 1].Size.cx) > width)
+			if (i == size - 1 || item.pColumnDefinition != vStrItems[i + 1].pColumnDefinition || (itemRect.Width() + vStrItems[i + 1].Size.cx) > width || strLine[strLine.GetLength() - 1] == L'\n')
 			{
 				CComPtr<IVariantObject> pVariantObjectItem;
 				RETURN_IF_FAILED(HrCoCreateInstance(CLSID_VariantObject, &pVariantObjectItem));
@@ -165,6 +171,7 @@ STDMETHODIMP CLayoutBuilder::BuildTextMultiColumn(HDC hdc, RECT* pSourceRect, RE
 		RETURN_IF_FAILED(pColumnsInfoItem->SetVariantValue(Layout::Metadata::Element::Visible, &CComVar(true)));
 		RETURN_IF_FAILED(pColumnsInfoItem->SetRect(rectResultRect));
 		*pDestRect = rectResultRect;
+		RETURN_IF_FAILED(pColumnsInfoItem->QueryInterface(ppColumnsInfoItem));
 	}
 
 	return S_OK;

@@ -7,6 +7,7 @@
 STDMETHODIMP CLayoutPainter::PaintImageColumn(HDC hdc, IImageManagerService* pImageManagerService, IColumnsInfoItem* pColumnInfoItem)
 {
 	RETURN_IF_FAILED(PaintRoundedRect(hdc, pColumnInfoItem));
+	RETURN_IF_FAILED(PaintBorders(hdc, pColumnInfoItem));
 
 	CComBSTR bstrImageKey;
 	RETURN_IF_FAILED(pColumnInfoItem->GetRectStringProp(Layout::Metadata::ImageColumn::ImageKey, &bstrImageKey));
