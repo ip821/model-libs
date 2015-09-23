@@ -77,3 +77,5 @@
 /ModelLibsTests/Debug/ModelLibsTests.tlog/unsuccessfulbuild
 /ModelLibsTests/Debug
 /ModelLibsTests/*.aps
+/ModelLibsTests/ModelLibsTests.vcxproj.user
+/asyncsvc/asyncsvc.vcxproj.user
