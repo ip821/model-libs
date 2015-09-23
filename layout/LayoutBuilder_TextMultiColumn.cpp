@@ -145,11 +145,9 @@ STDMETHODIMP CLayoutBuilder::BuildTextMultiColumn(HDC hdc, RECT* pSourceRect, RE
 				maxCx = max(maxCx, itemRect.right);
 				maxCy = max(maxCy, itemRect.bottom);
 
-				strLine.Empty();
-
 				if (i != size - 1)
 				{
-					if (item.pColumnDefinition == vStrItems[i + 1].pColumnDefinition || (itemRect.Width() + vStrItems[i + 1].Size.cx) > width)
+					if (item.pColumnDefinition == vStrItems[i + 1].pColumnDefinition || (itemRect.Width() + vStrItems[i + 1].Size.cx) > width || strLine[strLine.GetLength() - 1] == L'\n')
 					{
 						itemRect.left = 0;
 						itemRect.right = itemRect.left;
@@ -162,6 +160,8 @@ STDMETHODIMP CLayoutBuilder::BuildTextMultiColumn(HDC hdc, RECT* pSourceRect, RE
 						width = rect.Width() - itemRect.left;
 					}
 				}
+
+				strLine.Empty();
 			}
 		}
 
