@@ -33,6 +33,7 @@ private:
 	STDMETHOD(PaintImageColumn)(HDC hdc, IImageManagerService* pImageManagerService, IColumnsInfoItem* pColumnInfoItem);
 	STDMETHOD(PaintMarqueeProgressColumn)(HDC hdc, IColumnsInfoItem* pColumnInfoItem);
 	STDMETHOD(PaintLayoutInternal)(HDC hdc, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo, BSTR bstrItemName);
+	STDMETHOD(EraseContainerBackground)(HDC hdc, IColumnsInfoItem* pColumnInfoItem);
 
 public:
 	STDMETHOD(EraseBackground)(HDC hdc, IColumnsInfo* pColumnInfo);

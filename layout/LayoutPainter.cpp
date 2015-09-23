@@ -33,17 +33,23 @@ STDMETHODIMP CLayoutPainter::EraseBackground(HDC hdc, IColumnsInfo* pColumnInfo)
 		RETURN_IF_FAILED(CLayoutBuilder::MapType(bstrType, &elementType));
 		if (elementType == ElementType::HorizontalContainer || elementType == ElementType::VerticalContainer)
 		{
-			CRect rect;
-			RETURN_IF_FAILED(pColumnInfoItem->GetRect(&rect));
-			CDCHandle cdc(hdc);
-			DWORD dwColor = 0;
-			RETURN_IF_FAILED(GetItemBackColor(pColumnInfoItem, &dwColor));
-			CBrush brush;
-			brush.CreateSolidBrush(dwColor);
-			cdc.FillRect(rect, brush);
+			EraseContainerBackground(hdc, pColumnInfoItem);
 			break;
 		}
 	}
+	return S_OK;
+}
+
+STDMETHODIMP CLayoutPainter::EraseContainerBackground(HDC hdc, IColumnsInfoItem * pColumnInfoItem)
+{
+	CRect rect;
+	RETURN_IF_FAILED(pColumnInfoItem->GetRect(&rect));
+	CDCHandle cdc(hdc);
+	DWORD dwColor = 0;
+	RETURN_IF_FAILED(GetItemBackColor(pColumnInfoItem, &dwColor));
+	CBrush brush;
+	brush.CreateSolidBrush(dwColor);
+	cdc.FillRect(rect, brush);
 	return S_OK;
 }
 
@@ -59,13 +65,14 @@ class AlphaPaintScope
 private:
 	CDCHandle m_hdc;
 	CComPtr<IColumnsInfoItem> m_pItem;
-	const DWORD MAX_ALPHA = 255;
 	CDC m_cdc;
 	shared_ptr<CBitmap> m_pBitmap;
 	CRect m_rect;
 	DWORD m_dwAlpha = MAX_ALPHA;
 
 public:
+	static const DWORD MAX_ALPHA = 255;
+
 	AlphaPaintScope(HDC hdc, IColumnsInfoItem* pItem)
 	{
 		m_hdc = hdc;
@@ -83,7 +90,12 @@ public:
 		}
 	}
 
-	HDC& GetHdc()
+	const DWORD& GetAlpha()
+	{
+		return m_dwAlpha;
+	}
+
+	const HDC& GetHdc()
 	{
 		if (m_cdc.m_hDC)
 			return m_cdc.m_hDC;
@@ -124,6 +136,10 @@ STDMETHODIMP CLayoutPainter::PaintLayoutInternal(HDC hdc, IImageManagerService* 
 			{
 				{
 					AlphaPaintScope aps(hdc, pColumnInfoItem);
+					if (aps.GetAlpha() != AlphaPaintScope::MAX_ALPHA)
+					{
+						RETURN_IF_FAILED(EraseContainerBackground(aps.GetHdc(), pColumnInfoItem));
+					}
 					RETURN_IF_FAILED(PaintContainer(aps.GetHdc(), pColumnInfoItem));
 					CComPtr<IColumnsInfo> pChildItems;
 					RETURN_IF_FAILED(pColumnInfoItem->GetChildItems(&pChildItems));
