@@ -10,7 +10,10 @@ STDMETHODIMP CLayoutPainter::PaintImageColumn(HDC hdc, IImageManagerService* pIm
 
 	CComBSTR bstrImageKey;
 	RETURN_IF_FAILED(pColumnInfoItem->GetRectStringProp(Layout::Metadata::ImageColumn::ImageKey, &bstrImageKey));
-	ATLASSERT(bstrImageKey != L"");
+	
+	if(bstrImageKey == L"")
+		return S_OK;
+
 	CBitmap bitmap;
 	if (FAILED(pImageManagerService->CreateImageBitmap(bstrImageKey, &bitmap.m_hBitmap)))
 	{

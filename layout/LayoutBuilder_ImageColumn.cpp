@@ -21,10 +21,6 @@ STDMETHODIMP CLayoutBuilder::BuildImageColumn(HDC hdc, RECT* pSourceRect, RECT* 
 		CComVar vWidth;
 		RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::ImageColumn::Width, &vWidth));
 
-		CComVar vImageKey;
-		RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::ImageColumn::ImageKey, &vImageKey));
-		ATLASSERT(vImageKey.vt == VT_BSTR);
-
 		int height = 0;
 		int width = 0;
 
@@ -36,6 +32,10 @@ STDMETHODIMP CLayoutBuilder::BuildImageColumn(HDC hdc, RECT* pSourceRect, RECT* 
 
 		if (!height || !width)
 		{
+			CComVar vImageKey;
+			RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::ImageColumn::ImageKey, &vImageKey));
+			ATLASSERT(vImageKey.vt == VT_BSTR);
+
 			TBITMAP bitmapInfo = { 0 };
 			RETURN_IF_FAILED(pImageManagerService->GetImageInfo(vImageKey.bstrVal, &bitmapInfo));
 			if (!height)
