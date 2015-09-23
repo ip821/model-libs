@@ -294,7 +294,7 @@ STDMETHODIMP CLayoutBuilder::ApplyStartMargins(IVariantObject* pElement, CRect& 
 	pElement->GetVariantValue(Layout::Metadata::Element::MarginLeft, &vMarginLeft);
 	pElement->GetVariantValue(Layout::Metadata::Element::MarginTop, &vMarginTop);
 
-	if (vMarginLeft.vt == VT_I4 && (vFitHorizantal.vt == VT_EMPTY || vFitHorizantal.bstrVal != Layout::Metadata::FitTypes::Parent))
+	if (vMarginLeft.vt == VT_I4)
 	{
 		auto val = vMarginLeft.intVal;
 		auto width = rect.Width();
@@ -302,12 +302,32 @@ STDMETHODIMP CLayoutBuilder::ApplyStartMargins(IVariantObject* pElement, CRect& 
 		rect.right = rect.left + width;
 	}
 
-	if (vMarginTop.vt == VT_I4 && (vFitVertical.vt == VT_EMPTY || vFitVertical.bstrVal != Layout::Metadata::FitTypes::Parent))
+	if (vFitHorizantal.vt != VT_EMPTY && CComBSTR(vFitHorizantal.bstrVal) == Layout::Metadata::FitTypes::Parent)
+	{
+		CComVar vMarginRight;
+		pElement->GetVariantValue(Layout::Metadata::Element::MarginRight, &vMarginRight);
+		if (vMarginRight.vt == VT_I4)
+		{
+			rect.right -= vMarginRight.intVal;
+		}
+	}
+
+	if (vMarginTop.vt == VT_I4)
 	{
 		auto val = vMarginTop.intVal;
 		auto height = rect.Height();
 		rect.top += val;
 		rect.bottom = rect.top + height;
+	}
+
+	if (vFitVertical.vt != VT_EMPTY && CComBSTR(vFitVertical.bstrVal) == Layout::Metadata::FitTypes::Parent)
+	{
+		CComVar vMarginBottom;
+		pElement->GetVariantValue(Layout::Metadata::Element::MarginBottom, &vMarginBottom);
+		if (vMarginBottom.vt == VT_I4)
+		{
+			rect.bottom -= vMarginBottom.intVal;
+		}
 	}
 
 	return S_OK;
