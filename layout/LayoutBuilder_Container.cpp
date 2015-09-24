@@ -159,19 +159,20 @@ STDMETHODIMP CLayoutBuilder::BuildContainerInternal(HDC hdc, RECT* pSourceRect, 
 #ifdef DEBUG
 		if (pColumnsInfoItemElement)
 		{
+			m_pThemeColorMap->SetColor(L"DebugBorderColor", 0xFFD3D3D3); // LightGray
 			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderTop, &CComVar(true));
 			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderTop, &CComVar(true));
 			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderTopWidth, &CComVar(1));
-			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderTopColor, &CComVar(L"TwitterDelimiter"));
+			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderTopColor, &CComVar(L"DebugBorderColor"));
 			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderBottom, &CComVar(true));
 			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderBottomWidth, &CComVar(1));
-			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderBottomColor, &CComVar(L"TwitterDelimiter"));
+			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderBottomColor, &CComVar(L"DebugBorderColor"));
 			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderLeft, &CComVar(true));
 			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderLeftWidth, &CComVar(1));
-			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderLeftColor, &CComVar(L"TwitterDelimiter"));
+			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderLeftColor, &CComVar(L"DebugBorderColor"));
 			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderRight, &CComVar(true));
 			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderRightWidth, &CComVar(1));
-			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderRightColor, &CComVar(L"TwitterDelimiter"));
+			pColumnsInfoItemElement->SetVariantValueRecursive(Layout::Metadata::Element::BorderRightColor, &CComVar(L"DebugBorderColor"));
 		}
 #endif
 
