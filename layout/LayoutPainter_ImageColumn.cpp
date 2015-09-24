@@ -71,5 +71,17 @@ STDMETHODIMP CLayoutPainter::PaintImageColumn(HDC hdc, IImageManagerService* pIm
 #endif
 	}
 
+	CComPtr<IColumnsInfo> pChildItems;
+	RETURN_IF_FAILED(pColumnInfoItem->GetChildItems(&pChildItems));
+
+	UINT uiCount = 0;
+	RETURN_IF_FAILED(pChildItems->GetCount(&uiCount));
+	for (size_t i = 0; i < uiCount; i++)
+	{
+		CComPtr<IColumnsInfoItem> pOverlayItem;
+		RETURN_IF_FAILED(pChildItems->GetItem(i, &pOverlayItem));
+		RETURN_IF_FAILED(PaintImageColumn(hdc, pImageManagerService, pOverlayItem));
+	}
+
 	return S_OK;
 }

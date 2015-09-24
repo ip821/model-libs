@@ -13,6 +13,7 @@ namespace IP
 
 			namespace ImageColumn
 			{
+				const static CComBSTR ImageOverlay(L"image_overlay");
 				const static CComBSTR ImageKey(L"image");
 				const static CComBSTR ImageStyle(L"image_style");
 				const static CComBSTR Height(L"height");

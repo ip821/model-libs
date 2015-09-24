@@ -52,6 +52,26 @@ STDMETHODIMP CLayoutBuilder::BuildImageColumn(HDC hdc, RECT* pSourceRect, RECT* 
 		RETURN_IF_FAILED(pColumnsInfoItem->SetRect(imageRect));
 	}
 
+	CComVar vImageOverlay;
+	RETURN_IF_FAILED(pLayoutObject->GetVariantValue(Layout::Metadata::ImageColumn::ImageOverlay, &vImageOverlay));
+
+	if (vImageOverlay.vt == VT_UNKNOWN)
+	{
+		CComQIPtr<IVariantObject> pImageOverlay = vImageOverlay.punkVal;
+
+		CComVar vVisibleImageOverlay;
+		RETURN_IF_FAILED(pImageOverlay->GetVariantValue(Layout::Metadata::Element::Visible, &vVisibleImageOverlay));
+		ATLASSERT(vVisibleImageOverlay.vt == VT_BOOL);
+
+		if (vVisibleImageOverlay.boolVal)
+		{
+			CComPtr<IColumnsInfo> pChildItems;
+			RETURN_IF_FAILED(pColumnsInfoItem->GetChildItems(&pChildItems));
+			CComPtr<IColumnsInfoItem> pOverlayItem;
+			RETURN_IF_FAILED(BuildImageColumn(hdc, &imageRect, pDestRect, pImageOverlay, pValueObject, pImageManagerService, pChildItems, &pOverlayItem));
+		}
+	}
+
 	*pDestRect = imageRect;
 	return S_OK;
 }
