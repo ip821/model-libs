@@ -39,18 +39,18 @@ STDMETHODIMP CThreadService::OnShutdown()
 		RETURN_IF_FAILED(AtlUnadvise(m_pTimerService, __uuidof(ITimerServiceEventSink), m_dwAdvice));
 	}
 
-	StopInternal();
-
 	{
 		boost::lock_guard<boost::mutex> lock(m_mutex);
+		m_hControlWnd = NULL;
+		StopInternal();
+
 		if (m_pResult)
 			m_pResult.Release();
+
+		RETURN_IF_FAILED(IInitializeWithControlImpl::OnShutdown());
+		m_pTimerService.Release();
+		m_pServiceProvider.Release();
 	}
-
-	RETURN_IF_FAILED(IInitializeWithControlImpl::OnShutdown());
-	m_pTimerService.Release();
-	m_pServiceProvider.Release();
-
 	return S_OK;
 }
 
@@ -109,8 +109,13 @@ STDMETHODIMP CThreadService::OnTimer(ITimerService* /*pTimerService*/)
 
 STDMETHODIMP CThreadService::Run()
 {
-	if (m_hControlWnd)
-		::SendMessage(m_hControlWnd, WM_STARTING, (WPARAM)this, 0);
+	HWND hWnd = 0;
+	{
+		boost::lock_guard<boost::mutex> lock(m_mutex);
+		hWnd = m_hControlWnd;
+	}
+	if (hWnd)
+		::SendMessage(hWnd, WM_STARTING, (WPARAM)this, 0);
 	else
 		RETURN_IF_FAILED(Fire_OnStart());
 	StartInternal();
@@ -180,8 +185,14 @@ void CThreadService::OnRun()
 
 void CThreadService::OnStop()
 {
-	if (m_hControlWnd)
-		::SendMessage(m_hControlWnd, WM_FINISHED, (WPARAM)this, 0);
+	HWND hWnd = 0;
+	{
+		boost::lock_guard<boost::mutex> lock(m_mutex);
+		hWnd = m_hControlWnd;
+	}
+
+	if (hWnd)
+		::SendMessage(hWnd, WM_FINISHED, (WPARAM)this, 0);
 	else
 		Fire_OnFinishInternal();
 	g_guard.Release();
