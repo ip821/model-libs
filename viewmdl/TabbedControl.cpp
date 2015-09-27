@@ -323,3 +323,10 @@ STDMETHODIMP CTabbedControl::OnShutdown()
 	m_pServiceProvider.Release();
 	return S_OK;
 }
+
+STDMETHODIMP CTabbedControl::GetPageIndex(IControl* pControl, DWORD* pdwIndex)
+{
+	UNREFERENCED_PARAMETER(pControl);
+	UNREFERENCED_PARAMETER(pdwIndex);
+	return E_NOTIMPL;
+}

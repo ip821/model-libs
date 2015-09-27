@@ -156,6 +156,7 @@ interface ITabbedControl : IContainerControl
 	HRESULT ActivatePage(IControl* pControl);
 	HRESULT GetPageCount(DWORD* pdwCount);
 	HRESULT GetPage(DWORD dwIndex, IControl** ppControl);
+	HRESULT GetPageIndex(IControl* pControl, DWORD* pdwIndex);
 };
 
 [

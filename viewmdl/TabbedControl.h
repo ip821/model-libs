@@ -94,6 +94,7 @@ public:
 	STDMETHOD(Load)(ISettings* pSettings);
 	STDMETHOD(Save)(ISettings* pSettings);
 	METHOD_EMPTY(STDMETHOD(Reset)(ISettings* /*pSettings*/));
+	STDMETHOD(GetPageIndex)(IControl* pControl, DWORD* pdwIndex);
 
 	STDMETHOD(OnInitialized)(IServiceProvider* pServiceProvider);
 	STDMETHOD(OnShutdown)();
