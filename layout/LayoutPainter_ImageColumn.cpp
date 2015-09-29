@@ -53,12 +53,12 @@ STDMETHODIMP CLayoutPainter::PaintImageColumn(HDC hdc, IImageManagerService* pIm
 	TBITMAP tb = { 0 };
 	RETURN_IF_FAILED(pImageManagerService->GetImageInfo(bstrImageKey, &tb));
 
-	if (tb.Width != imageRect.Width())
+	if (tb.Width < (UINT)imageRect.Width())
 	{ //sometimes desired width does not equal real image width
 		imageRect.right -= imageRect.Width() - tb.Width;
 	}
 
-	if (tb.Height != imageRect.Height())
+	if (tb.Height < (UINT)imageRect.Height())
 	{ //sometimes desired height does not equal real image height
 		imageRect.bottom -= imageRect.Height() - tb.Height;
 	}
