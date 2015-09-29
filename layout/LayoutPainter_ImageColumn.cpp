@@ -50,6 +50,19 @@ STDMETHODIMP CLayoutPainter::PaintImageColumn(HDC hdc, IImageManagerService* pIm
 		}
 	}
 
+	TBITMAP tb = { 0 };
+	RETURN_IF_FAILED(pImageManagerService->GetImageInfo(bstrImageKey, &tb));
+
+	if (tb.Width != imageRect.Width())
+	{ //sometimes desired width does not equal real image width
+		imageRect.right -= imageRect.Width() - tb.Width;
+	}
+
+	if (tb.Height != imageRect.Height())
+	{ //sometimes desired height does not equal real image height
+		imageRect.bottom -= imageRect.Height() - tb.Height;
+	}
+
 	if (vAlpha.vt == VT_UI4)
 	{
 		BLENDFUNCTION bf = { 0 };
@@ -57,8 +70,8 @@ STDMETHODIMP CLayoutPainter::PaintImageColumn(HDC hdc, IImageManagerService* pIm
 		bf.SourceConstantAlpha = (BYTE)vAlpha.uintVal;
 		auto res = AlphaBlend(hdc, rect.left, rect.top, rect.Width(), rect.Height(), cdcBitmap, imageRect.left, imageRect.top, imageRect.Width(), imageRect.Height(), bf);
 #ifdef DEBUG
-		//if (!res)
-			//return HRESULT_FROM_WIN32(GetLastError());
+		if (!res)
+			RETURN_IF_FAILED(HRESULT_FROM_WIN32(GetLastError()));
 #endif
 	}
 	else
@@ -66,8 +79,8 @@ STDMETHODIMP CLayoutPainter::PaintImageColumn(HDC hdc, IImageManagerService* pIm
 		static Gdiplus::Color color(Gdiplus::Color::Transparent);
 		auto res = TransparentBlt(hdc, rect.left, rect.top, rect.Width(), rect.Height(), cdcBitmap, imageRect.left, imageRect.top, imageRect.Width(), imageRect.Height(), color.ToCOLORREF());
 #ifdef DEBUG
-		//if (!res)
-			//return HRESULT_FROM_WIN32(GetLastError());
+		if (!res)
+			RETURN_IF_FAILED(HRESULT_FROM_WIN32(GetLastError()));
 #endif
 	}
 
