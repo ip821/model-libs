@@ -61,27 +61,27 @@
                             {
                                 "StartIndex": 25,
                                 "EndIndex": 31,
-                                "column_definition_key": "TwitterUrl"
+                                "column_definition_key": { }
                             },
                             {
                                 "StartIndex": 45,
                                 "EndIndex": 49,
-                                "column_definition_key": "TwitterUrl"
+                                "column_definition_key": { }
                             },
                             {
                                 "StartIndex": 67,
                                 "EndIndex": 90,
-                                "column_definition_key": "TwitterUrl"
+                                "column_definition_key": { }
                             },
                             {
                                 "StartIndex": 91,
                                 "EndIndex": 99,
-                                "column_definition_key": "TwitterUrl"
+                                "column_definition_key": { }
                             },
                             {
                                 "StartIndex": 100,
                                 "EndIndex": 122,
-                                "column_definition_key": "TwitterUrl"
+                                "column_definition_key": { }
                             }
                         ]
                     }

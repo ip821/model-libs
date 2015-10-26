@@ -19,6 +19,8 @@ void LayoutTests::SetUp()
 	CRect rect(0, 0, 200, 200);
 	AdjustWindowRect(&rect, WS_BORDER | WS_SYSMENU, FALSE);
 	m_wnd.Create(NULL, rect, 0, WS_BORDER | WS_SYSMENU, WS_EX_CONTROLPARENT);
+    CRect clientRect;
+    m_wnd.GetClientRect(&clientRect);
 }
 
 void LayoutTests::TearDown()
