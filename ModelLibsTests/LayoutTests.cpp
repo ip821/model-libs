@@ -16,9 +16,8 @@ void LayoutTests::SetUp()
 	m_GdiplusStartupInput.GdiplusVersion = 1;
 	Gdiplus::GdiplusStartup(&m_gdiPlusToken, &m_GdiplusStartupInput, NULL);
 
-	CRect rect(0, 0, 200, 200);
-	AdjustWindowRect(&rect, WS_BORDER | WS_SYSMENU, FALSE);
-	m_wnd.Create(NULL, rect, 0, WS_BORDER | WS_SYSMENU, WS_EX_CONTROLPARENT);
+    m_wnd.Create(NULL, {0}, 0, WS_BORDER | WS_SYSMENU, WS_EX_CONTROLPARENT);
+    m_wnd.ResizeClient(200, 200);
     CRect clientRect;
     m_wnd.GetClientRect(&clientRect);
 }
