@@ -86,7 +86,7 @@ STDMETHODIMP CFormManager::OnClose(IControl* pControl)
 	CHECK_E_POINTER(pControl);
 	for(auto it = m_pControls.begin(); it != m_pControls.end(); it++)
 	{
-		if(it->second == pControl)
+		if(it->pControl == pControl)
 		{
 			m_pControls.erase(it);
 			break;
@@ -106,11 +106,11 @@ STDMETHODIMP CFormManager::ActivateForm2(IControl* pControl)
 
 STDMETHODIMP CFormManager::ActivateForm(GUID guidId)
 {
-	auto it = m_pControls.find(guidId);
-	if (it == m_pControls.end())
+    auto it = find_if(m_pControls.cbegin(), m_pControls.cend(), [&](auto it) {return it.guid == guidId; });
+	if (it == m_pControls.cend())
 		return HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND);
 
-	RETURN_IF_FAILED(m_pTabbedControl->ActivatePage(it->second));
+    RETURN_IF_FAILED(m_pTabbedControl->ActivatePage(it->pControl));
 	return S_OK;
 }
 
@@ -120,7 +120,10 @@ STDMETHODIMP CFormManager::OpenForm2(GUID guidNamespace, GUID guidType, GUID gui
 	CComPtr<IUnknown> pUnk;
 	RETURN_IF_FAILED(GetPluginManager()->CreatePluginInstance(guidNamespace, guidType, guidId, &pUnk));
 	CComQIPtr<IControl> pControl = pUnk;
-	m_pControls[guidId] = pControl;
+    Holder holder; 
+    holder.guid = guidId;
+    holder.pControl = pControl;
+    m_pControls.push_back(holder);
 	RETURN_IF_FAILED(OpenFormInternal(pControl));
 	return pControl->QueryInterface(IID_IControl, (LPVOID*)ppControl);
 }
@@ -149,7 +152,10 @@ STDMETHODIMP CFormManager::OpenForm(GUID guidId, IControl** ppControl)
 	CHECK_E_POINTER(ppControl);
 	CComPtr<IControl> pControl;
 	RETURN_IF_FAILED(HrCoCreateInstance(guidId, &pControl));
-	m_pControls[guidId] = pControl;
+    Holder holder;
+    holder.guid = guidId;
+    holder.pControl = pControl;
+    m_pControls.push_back(holder);
 	RETURN_IF_FAILED(OpenFormInternal(pControl));
 	return pControl->QueryInterface(IID_IControl, (LPVOID*)ppControl);
 }
@@ -160,7 +166,7 @@ STDMETHODIMP CFormManager::GetForms(IObjArray** ppFormsArray)
 	RETURN_IF_FAILED(HrCoCreateInstance(CLSID_ObjectCollection, &pObjCollection));
 	for (auto  it = m_pControls.cbegin(); it != m_pControls.cend(); it++)
 	{
-		RETURN_IF_FAILED(pObjCollection->AddObject(it->second));
+		RETURN_IF_FAILED(pObjCollection->AddObject(it->pControl));
 	}
 	RETURN_IF_FAILED(pObjCollection->QueryInterface(ppFormsArray));
 	return S_OK;
@@ -169,11 +175,11 @@ STDMETHODIMP CFormManager::GetForms(IObjArray** ppFormsArray)
 STDMETHODIMP CFormManager::FindForm(GUID guidId, IControl** ppControl)
 {
 	CHECK_E_POINTER(ppControl);
-	auto it = m_pControls.find(guidId);
+    auto it = find_if(m_pControls.cbegin(), m_pControls.cend(), [&](auto it) {return it.guid == guidId; });
 	if(it == m_pControls.end())
 		return HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND);
 
-	return it->second->QueryInterface(IID_IControl, (LPVOID*)ppControl);
+	return it->pControl->QueryInterface(IID_IControl, (LPVOID*)ppControl);
 }
 
 HRESULT CFormManager::Fire_OnActivate(IControl* pControl)

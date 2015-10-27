@@ -43,9 +43,17 @@ public:
 	END_CONNECTION_POINT_MAP()
 
 private:
+
+    struct Holder
+    {
+    public:
+        GUID guid = { 0 };
+        CComPtr<IControl> pControl;
+    };
+
 	CComPtr<ITabbedControl> m_pTabbedControl;
 
-	std::map< GUID, CComPtr<IControl>, GUIDComparer > m_pControls;
+	std::vector<Holder> m_pControls;
 	DWORD m_dwAdvice = 0;
 
 	STDMETHOD(GetContainerControl)(IContainerControl** ppContainerControl);
