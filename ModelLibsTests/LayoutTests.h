@@ -1,8 +1,15 @@
 #pragma once
 
+#include "..\objmdl\Functions.h"
+#include "objmdl_contract_i.h"
+#include "viewmdl_contract_i.h"
+#include "layout_contract_i.h"
+#include "resource.h"
+
 using namespace ATL;
 using namespace std;
 using namespace Gdiplus;
+using namespace testing;
 
 class CTestWindow : public CWindowImpl<CTestWindow>
 {
@@ -27,4 +34,6 @@ protected:
 
 	virtual void SetUp();
 	virtual void TearDown();
+
+    STDMETHOD(LoadAndGetLayout)(BSTR bstrLayoutName, ILayoutManager** ppLayoutManager, IVariantObject** ppLayoutObject);
 };

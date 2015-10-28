@@ -65,6 +65,12 @@
     <ClCompile Include="LayoutTests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="LayoutTests_MainTabHeaderLayout.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="LayoutTests_Simple.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="..\objmdl\objmdl_contract_i.idl">

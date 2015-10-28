@@ -2,6 +2,8 @@
 #include "LayoutBuilder.h"
 #include "GdilPlusUtils.h"
 
+#define TEST_LOG_LAYOUT
+
 STDMETHODIMP CLayoutBuilder::SetColorMap(IThemeColorMap* pThemeColorMap)
 {
 	CHECK_E_POINTER(pThemeColorMap);
@@ -15,6 +17,35 @@ STDMETHODIMP CLayoutBuilder::SetFontMap(IThemeFontMap* pThemeFontMap)
 	m_pThemeFontMap = pThemeFontMap;
 	return S_OK;
 }
+
+#ifdef DEBUG
+#ifdef TEST_LOG_LAYOUT
+HRESULT LogLayouts(IColumnsInfo* pColumnsInfo)
+{
+    UINT uiCount = 0;
+    RETURN_IF_FAILED(pColumnsInfo->GetCount(&uiCount));
+    for (size_t i = 0; i < uiCount; i++)
+    {
+        CComPtr<IColumnsInfoItem> pColumnsInfoItem;
+        RETURN_IF_FAILED(pColumnsInfo->GetItem(i, &pColumnsInfoItem));
+        {
+            CComVar vName;
+            pColumnsInfoItem->GetVariantValue(Layout::Metadata::Element::Name, &vName);
+            auto strName = CString(vName.bstrVal);
+            CRect rect;
+            RETURN_IF_FAILED(pColumnsInfoItem->GetRect(&rect));
+            CString str;
+            str.Format(L"{L\"%s\", CRect(%ld, %ld, %ld, %ld)},\n", strName, rect.left, rect.top, rect.right, rect.bottom);
+            OutputDebugString(str);
+        }
+        CComPtr<IColumnsInfo> pChildren;
+        RETURN_IF_FAILED(pColumnsInfoItem->GetChildItems(&pChildren));
+        RETURN_IF_FAILED(LogLayouts(pChildren));
+    }
+    return S_OK;
+}
+#endif
+#endif
 
 STDMETHODIMP CLayoutBuilder::BuildLayout(HDC hdc, RECT* pSourceRect, IVariantObject* pLayoutObject, IVariantObject* pValueObject, IImageManagerService* pImageManagerService, IColumnsInfo* pColumnInfo)
 {
@@ -36,6 +67,21 @@ STDMETHODIMP CLayoutBuilder::BuildLayout(HDC hdc, RECT* pSourceRect, IVariantObj
 
 	CPoint pt;
 	RETURN_IF_FAILED(TranslateRects(&pt, pColumnInfo));
+
+#ifdef DEBUG
+#ifdef TEST_LOG_LAYOUT
+    {
+        CComPtr<IColumnsInfoItem> pColumnsInfoItem;
+        pColumnInfo->GetItem(0, &pColumnsInfoItem);
+        CComVar vName;
+        pColumnsInfoItem->GetVariantValue(Layout::Metadata::Element::Name, &vName);
+        auto str = CString(vName.bstrVal);
+        OutputDebugString(str + L"\n");
+    }
+    LogLayouts(pColumnInfo);
+#endif
+#endif
+
 	return S_OK;
 }
 
