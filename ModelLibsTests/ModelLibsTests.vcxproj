@@ -150,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="layout_contract_i.h" />
+    <ClInclude Include="ObjectTests.h" />
     <ClInclude Include="objmdl_contract_i.h" />
     <ClInclude Include="LayoutTests.h" />
     <ClInclude Include="resource.h" />
@@ -165,6 +166,7 @@
     <ClCompile Include="layout_contract_i.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="ObjectTests.cpp" />
     <ClCompile Include="objmdl_contract_i.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>

@@ -28,7 +28,7 @@ vector<ResultItem> UserAccountControlLayoutResult =
     { L"TwitterItemFollowButton", CRect(384, 193, 450, 212) }
 };
 
-TEST_F(LayoutTests, UserAccountControlLayout)
+TEST_F(CLayoutTests, UserAccountControlLayout)
 {
     CComPtr<ILayoutManager> pLayoutManager;
     CComPtr<IVariantObject> pLayoutObject;

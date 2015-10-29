@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "LayoutTests.h"
 
-void LayoutTests::SetUp()
+void CLayoutTests::SetUp()
 {
 	m_GdiplusStartupInput.GdiplusVersion = 1;
 	Gdiplus::GdiplusStartup(&m_gdiPlusToken, &m_GdiplusStartupInput, NULL);
@@ -15,7 +15,7 @@ void LayoutTests::SetUp()
     m_wnd.GetClientRect(&clientRect);
 }
 
-void LayoutTests::TearDown()
+void CLayoutTests::TearDown()
 {
 	m_wnd.DestroyWindow();
 	Gdiplus::GdiplusShutdown(m_gdiPlusToken);
@@ -29,7 +29,7 @@ Message& operator<<(Message& os, const CRect& rect)
     return os;
 }
 
-STDMETHODIMP LayoutTests::LoadAndGetLayout(BSTR bstrLayoutName, ILayoutManager** ppLayoutManager, IVariantObject** ppLayoutObject)
+STDMETHODIMP CLayoutTests::LoadAndGetLayout(BSTR bstrLayoutName, ILayoutManager** ppLayoutManager, IVariantObject** ppLayoutObject)
 {
     EXPECT_HRESULT_SUCCEEDED(HrCoCreateInstance(CLSID_LayoutManager, ppLayoutManager));
     EXPECT_NE(*ppLayoutManager, nullptr);
@@ -43,7 +43,7 @@ STDMETHODIMP LayoutTests::LoadAndGetLayout(BSTR bstrLayoutName, ILayoutManager**
     return S_OK;
 }
 
-HRESULT LayoutTests::CompareLayouts(IColumnsInfo* pColumnsInfo, vector<ResultItem>* pVector, UINT* puiIndex)
+HRESULT CLayoutTests::CompareLayouts(IColumnsInfo* pColumnsInfo, vector<ResultItem>* pVector, UINT* puiIndex)
 {
     UINT uiCount = 0;
     RETURN_IF_FAILED(pColumnsInfo->GetCount(&uiCount));
@@ -63,7 +63,7 @@ HRESULT LayoutTests::CompareLayouts(IColumnsInfo* pColumnsInfo, vector<ResultIte
     return S_OK;
 }
 
-STDMETHODIMP LayoutTests::BuildAndCompareLayout(ILayoutManager* pLayoutManager, IVariantObject* pLayoutObject, vector<ResultItem>& results)
+STDMETHODIMP CLayoutTests::BuildAndCompareLayout(ILayoutManager* pLayoutManager, IVariantObject* pLayoutObject, vector<ResultItem>& results)
 {
     CComPtr<IImageManagerService> pImageManagerService;
     EXPECT_HRESULT_SUCCEEDED(pLayoutManager->GetImageManagerService(&pImageManagerService));

@@ -22,6 +22,12 @@
     <Filter Include="Tests">
       <UniqueIdentifier>{1966c9dd-a8d4-4ce8-a674-c7db8008eec6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Layout">
+      <UniqueIdentifier>{f487a861-876f-416f-a727-d4841e2ac98d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Object">
+      <UniqueIdentifier>{5515a69c-0233-4e4d-bb21-12ca921d16f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -42,11 +48,14 @@
     <ClInclude Include="viewmdl_contract_i.h">
       <Filter>ZZZMisc\Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="LayoutTests.h">
-      <Filter>Tests</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>ZZZMisc\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LayoutTests.h">
+      <Filter>Tests\Layout</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectTests.h">
+      <Filter>Tests\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -63,16 +72,19 @@
       <Filter>ZZZMisc\Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="LayoutTests.cpp">
-      <Filter>Tests</Filter>
+      <Filter>Tests\Layout</Filter>
     </ClCompile>
     <ClCompile Include="LayoutTests_MainTabHeaderLayout.cpp">
-      <Filter>Tests</Filter>
+      <Filter>Tests\Layout</Filter>
     </ClCompile>
     <ClCompile Include="LayoutTests_Simple.cpp">
-      <Filter>Tests</Filter>
+      <Filter>Tests\Layout</Filter>
     </ClCompile>
     <ClCompile Include="LayoutTests_UserAccountControl.cpp">
-      <Filter>Tests</Filter>
+      <Filter>Tests\Layout</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectTests.cpp">
+      <Filter>Tests\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -93,7 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\theme1.json">
-      <Filter>Tests</Filter>
+      <Filter>Tests\Layout</Filter>
     </None>
   </ItemGroup>
 </Project>

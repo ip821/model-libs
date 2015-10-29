@@ -1,14 +1,14 @@
 #include "stdafx.h"
 #include "LayoutTests.h"
 
-TEST_F(LayoutTests, CreateLayoutManager)
+TEST_F(CLayoutTests, CreateLayoutManager)
 {
     CComPtr<ILayoutManager> pLayoutManager;
     EXPECT_HRESULT_SUCCEEDED(HrCoCreateInstance(CLSID_LayoutManager, &pLayoutManager));
     EXPECT_NE(pLayoutManager, nullptr);
 }
 
-TEST_F(LayoutTests, LoadLayoutFile)
+TEST_F(CLayoutTests, LoadLayoutFile)
 {
     CComPtr<ILayoutManager> pLayoutManager;
     EXPECT_HRESULT_SUCCEEDED(HrCoCreateInstance(CLSID_LayoutManager, &pLayoutManager));
@@ -19,14 +19,14 @@ TEST_F(LayoutTests, LoadLayoutFile)
     EXPECT_HRESULT_SUCCEEDED(pLayoutManager->LoadThemeFromStream(pStream));
 }
 
-TEST_F(LayoutTests, GetLayoutObject)
+TEST_F(CLayoutTests, GetLayoutObject)
 {
     CComPtr<ILayoutManager> pLayoutManager;
     CComPtr<IVariantObject> pLayoutObject;
     EXPECT_HRESULT_SUCCEEDED(LoadAndGetLayout(L"TextMultiColumn1Container", &pLayoutManager, &pLayoutObject));
 }
 
-TEST_F(LayoutTests, BuildTextMultiColumn)
+TEST_F(CLayoutTests, BuildTextMultiColumn)
 {
     CComPtr<ILayoutManager> pLayoutManager;
     CComPtr<IVariantObject> pLayoutObject;

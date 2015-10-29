@@ -40,7 +40,7 @@ vector<ResultItem> MainTabHeaderLayout_WithProgress_Result =
     { L"InfoImage", CRect(425, 5, 425, 5) }
 };
 
-TEST_F(LayoutTests, MainTabHeaderLayout_WithoutProgress)
+TEST_F(CLayoutTests, MainTabHeaderLayout_WithoutProgress)
 {
     CComPtr<ILayoutManager> pLayoutManager;
     CComPtr<IVariantObject> pLayoutObject;
@@ -55,7 +55,7 @@ TEST_F(LayoutTests, MainTabHeaderLayout_WithoutProgress)
     EXPECT_HRESULT_SUCCEEDED(BuildAndCompareLayout(pLayoutManager, pLayoutObject, MainTabHeaderLayout_WithoutProgress_Result));
 }
 
-TEST_F(LayoutTests, MainTabHeaderLayout_WithProgress)
+TEST_F(CLayoutTests, MainTabHeaderLayout_WithProgress)
 {
     CComPtr<ILayoutManager> pLayoutManager;
     CComPtr<IVariantObject> pLayoutObject;

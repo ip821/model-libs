@@ -33,7 +33,7 @@ public:
 
 extern CTestWindow g_wnd;
 
-class LayoutTests : public testing::Test
+class CLayoutTests : public testing::Test
 {
 
 protected:
