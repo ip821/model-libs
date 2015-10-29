@@ -11,6 +11,14 @@ using namespace std;
 using namespace Gdiplus;
 using namespace testing;
 
+struct ResultItem
+{
+    wstring name;
+    CRect rect;
+};
+
+Message& operator<<(Message& os, const CRect& rect);
+
 class CTestWindow : public CWindowImpl<CTestWindow>
 {
 public:
@@ -27,6 +35,7 @@ extern CTestWindow g_wnd;
 
 class LayoutTests : public testing::Test
 {
+
 protected:
 	ULONG_PTR m_gdiPlusToken;
 	Gdiplus::GdiplusStartupInput m_GdiplusStartupInput = { 0 };
@@ -35,5 +44,11 @@ protected:
 	virtual void SetUp();
 	virtual void TearDown();
 
+    const int WIDTH = 470;
+    const int HEIGHT1 = 900;
+    const int HEIGHT2 = 240;
+
     STDMETHOD(LoadAndGetLayout)(BSTR bstrLayoutName, ILayoutManager** ppLayoutManager, IVariantObject** ppLayoutObject);
+    STDMETHOD(BuildAndCompareLayout)(ILayoutManager* pLayoutManager, IVariantObject* pLayoutObject, vector<ResultItem>& results);
+    HRESULT CompareLayouts(IColumnsInfo* pColumnsInfo, vector<ResultItem>* pVector, UINT* puiIndex);
 };

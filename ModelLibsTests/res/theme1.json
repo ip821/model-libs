@@ -379,6 +379,203 @@
                 ]
             },
             {
+                "name": "UserAccountControlLayout",
+                "type": "vertical_container",
+                "fit_horizontal": "parent",
+                "fit_vertical": "parent",
+                "color_background": "UserAccountControlBackground",
+                "elements": [
+                    {
+                        "name": "UserAccountControlLayoutBackgroundImageContainer",
+                        "type": "horizontal_container",
+                        "fit_horizontal": "parent",
+                        "fit_vertical": "parent",
+                        "elements": [
+                            {
+                                "name": "UserAccountControlLayoutBackgroundImage",
+                                "type": "image_column",
+                                "fit_horizontal": "parent",
+                                "fit_vertical": "parent",
+                                "image_style": "fill",
+                                "image": "home"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "UserAccountControlLayoutImageViewContainer",
+                        "type": "vertical_container",
+                        "fit_horizontal": "parent",
+                        "fit_vertical": "parent",
+                        "elements": [
+                            {
+                                "name": "UserAccountControlLayoutUserInfoContainer",
+                                "type": "horizontal_container",
+                                "align_horizontal": "center",
+                                "margin_top": 20,
+                                "elements": [
+                                    {
+                                        "name": "TwitterUserImageContainer",
+                                        "type": "horizontal_container",
+                                        "background_style": "rounded_strict",
+                                        "color_background": "RoundedColor",
+                                        "align_vertical": "center",
+                                        "elements": [
+                                            {
+                                                "name": "TwitterUserImage",
+                                                "type": "image_column",
+                                                "width": 48,
+                                                "height": 48,
+                                                "margin_left": 5,
+                                                "margin_right": 5,
+                                                "margin_top": 5,
+                                                "margin_bottom": 5
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "name": "UserInfoContainer",
+                                        "type": "vertical_container",
+                                        "margin_left": 10,
+                                        "background_style": "rounded",
+                                        "color_background": "RoundedColor",
+                                        "elements": [
+                                            {
+                                                "name": "UserDisplayName",
+                                                "type": "text_column",
+                                                "text_key": "TwitterUserDisplayName",
+                                                "text": "Хамуля",
+                                                "font": "TwitterDisplayNameUserAccount",
+                                                "color": "AccountControlText"
+                                            },
+                                            {
+                                                "name": "UserName",
+                                                "type": "text_column",
+                                                "text": "@Libertessa",
+                                                "font": "TwitterDisplayNameUserAccount",
+                                                "color": "AccountControlText"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "UserInfoString",
+                                "type": "text_column",
+                                "text": "Обережно! Ненормативна лексика.\nПидоры укртви безума от меня",
+                                "width_percent": 90,
+                                "text_multiline": true,
+                                "align_horizontal": "center",
+                                "font": "TwitterNormalizedText",
+                                "color": "AccountControlText",
+                                "background_style": "rounded",
+                                "color_background": "RoundedColor",
+                                "margin_top": 10
+                            },
+                            {
+                                "name": "BottomContainer",
+                                "type": "horizontal_container",
+                                "fit_horizontal": "parent",
+                                "align_vertical": "down",
+                                "elements": [
+                                    {
+                                        "name": "CounterContainer",
+                                        "type": "horizontal_container",
+                                        "margin_left": 30,
+                                        "margin_bottom": 10,
+                                        "align_vertical": "down",
+                                        "background_style": "rounded",
+                                        "color_background": "RoundedColor",
+                                        "elements": [
+                                            {
+                                                "name": "CounterContainerCatpion",
+                                                "type": "vertical_container",
+                                                "elements": [
+                                                    {
+                                                        "name": "TweetsCounter",
+                                                        "type": "text_column",
+                                                        "text": "Tweets: ",
+                                                        "font": "TwitterNormalizedText",
+                                                        "color": "AccountControlText"
+                                                    },
+                                                    {
+                                                        "name": "FollowingCounter",
+                                                        "type": "text_column",
+                                                        "text": "Following: ",
+                                                        "font": "TwitterNormalizedText",
+                                                        "color": "AccountControlText"
+                                                    },
+                                                    {
+                                                        "name": "FollowedCounter",
+                                                        "type": "text_column",
+                                                        "text": "Followers: ",
+                                                        "font": "TwitterNormalizedText",
+                                                        "color": "AccountControlText"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "name": "CounterContainerValues",
+                                                "type": "vertical_container",
+                                                "elements": [
+                                                    {
+                                                        "name": "TweetsCounter",
+                                                        "type": "text_column",
+                                                        "text": "19663",
+                                                        "font": "TwitterNormalizedText",
+                                                        "color": "AccountControlText"
+                                                    },
+                                                    {
+                                                        "name": "FollowingCounter",
+                                                        "type": "text_column",
+                                                        "text": "309",
+                                                        "font": "TwitterNormalizedText",
+                                                        "color": "AccountControlText"
+                                                    },
+                                                    {
+                                                        "name": "FollowedCounter",
+                                                        "type": "text_column",
+                                                        "text": "3590",
+                                                        "font": "TwitterNormalizedText",
+                                                        "color": "AccountControlText"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "name": "FollowButtonContainer",
+                                        "type": "horizontal_container",
+                                        "margin_right": 10,
+                                        "margin_bottom": 20,
+                                        "align_horizontal": "right",
+                                        "align_vertical": "down",
+                                        "background_style": "rounded_strict",
+                                        "color_background": "TwitterItemFollowButtonRect",
+                                        "color_background_selected": "TwitterItemFollowButtonRectPushed",
+                                        "color_background_disabled": "TwitterItemFollowButtonRectDisabled",
+                                        "elements": [
+                                            {
+                                                "name": "TwitterItemFollowButton",
+                                                "type": "text_column",
+                                                "text": "  Follow  ",
+                                                "font": "TwitterItemFollowButton",
+                                                "color": "AccountControlText",
+                                                "align_horizontal": "center",
+                                                "align_vertical": "center",
+                                                "margin_left": 10,
+                                                "margin_right": 10,
+                                                "margin_top": 8,
+                                                "margin_bottom": 8
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
                 "name": "MainTabContainerHeaderLayout",
                 "type": "horizontal_container",
                 "fit_horizontal": "parent",
