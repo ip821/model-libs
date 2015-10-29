@@ -79,3 +79,13 @@
 /ModelLibsTests/*.aps
 /ModelLibsTests/ModelLibsTests.vcxproj.user
 /asyncsvc/asyncsvc.vcxproj.user
+/ModelLibsTests/Release/ModelLibsTests.log
+/ModelLibsTests/Release/ModelLibsTests.tlog/ModelLibsTests.lastbuildstate
+/ModelLibsTests/Release/ModelLibsTests.tlog/midl-midlc-cl.read.1.tlog
+/ModelLibsTests/Release/ModelLibsTests.tlog/midl-midlc-cl.write.1.tlog
+/ModelLibsTests/Release/ModelLibsTests.tlog/midl-midlc.read.1.tlog
+/ModelLibsTests/Release/ModelLibsTests.tlog/midl-midlc.write.1.tlog
+/ModelLibsTests/Release/ModelLibsTests.tlog/midl.command.1.tlog
+/ModelLibsTests/Release/ModelLibsTests.tlog/midl.read.1.tlog
+/ModelLibsTests/Release/ModelLibsTests.tlog/midl.write.1.tlog
+/ModelLibsTests/Release/ModelLibsTests.tlog/unsuccessfulbuild
