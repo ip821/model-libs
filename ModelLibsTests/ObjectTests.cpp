@@ -41,3 +41,22 @@ TEST_F(CObjectTests, VariantObjectGetSetValues)
     EXPECT_HRESULT_SUCCEEDED(TestValueCanBeStored(pVariantObject, (BYTE)1));
     EXPECT_HRESULT_SUCCEEDED(TestValueCanBeStored(pVariantObject, true));
 }
+
+TEST_F(CObjectTests, VariantObjectCopyTo)
+{
+    CComPtr<IVariantObject> pVariantObject1;
+    EXPECT_HRESULT_SUCCEEDED(HrCoCreateInstance(CLSID_VariantObject, &pVariantObject1));
+    EXPECT_HRESULT_SUCCEEDED(pVariantObject1->SetVariantValue(L"test", &CComVar(L"test_string")));
+
+    CComVar v1;
+    EXPECT_HRESULT_SUCCEEDED(pVariantObject1->GetVariantValue(L"test", &v1));
+
+    CComPtr<IVariantObject> pVariantObject2;
+    EXPECT_HRESULT_SUCCEEDED(HrCoCreateInstance(CLSID_VariantObject, &pVariantObject2));
+    EXPECT_HRESULT_SUCCEEDED(pVariantObject1->CopyTo(pVariantObject2));
+
+    CComVar v2;
+    EXPECT_HRESULT_SUCCEEDED(pVariantObject2->GetVariantValue(L"test", &v2));
+    EXPECT_HRESULT_SUCCEEDED(CompareComVar(&v1, &v2));
+    EXPECT_NE(v1.bstrVal, v2.bstrVal);
+}
