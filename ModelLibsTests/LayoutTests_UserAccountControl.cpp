@@ -40,7 +40,7 @@ TEST_F(CLayoutTests, UserAccountControlLayout)
         //EXPECT_HRESULT_SUCCEEDED(HrLayoutSetVariantValueRecursive(pInfoContainerObject, L"visible", &CComVar(false)));
     }
 
-    m_wnd.ResizeClient(WIDTH, HEIGHT2);
+    m_wnd.ResizeClient(WIDTH1, HEIGHT2);
 
     EXPECT_HRESULT_SUCCEEDED(BuildAndCompareLayout(pLayoutManager, pLayoutObject, UserAccountControlLayoutResult));
 }

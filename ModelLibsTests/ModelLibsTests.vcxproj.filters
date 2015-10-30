@@ -86,6 +86,9 @@
     <ClCompile Include="ObjectTests.cpp">
       <Filter>Tests\Object</Filter>
     </ClCompile>
+    <ClCompile Include="LayoutTests_TimelineTwitLayout.cpp">
+      <Filter>Tests\Layout</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="..\objmdl\objmdl_contract_i.idl">

@@ -44,7 +44,8 @@ protected:
 	virtual void SetUp();
 	virtual void TearDown();
 
-    const int WIDTH = 470;
+    const int WIDTH1 = 470;
+    const int WIDTH2 = 453;
     const int HEIGHT1 = 900;
     const int HEIGHT2 = 240;
 

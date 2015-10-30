@@ -162,6 +162,7 @@
     <ClCompile Include="LayoutTests.cpp" />
     <ClCompile Include="LayoutTests_MainTabHeaderLayout.cpp" />
     <ClCompile Include="LayoutTests_Simple.cpp" />
+    <ClCompile Include="LayoutTests_TimelineTwitLayout.cpp" />
     <ClCompile Include="LayoutTests_UserAccountControl.cpp" />
     <ClCompile Include="layout_contract_i.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>

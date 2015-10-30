@@ -702,11 +702,45 @@ public:
 	}
 
 private:
-	inline HRESULT VarCmp(
-		_In_ LPVARIANT pvarLeft,
-		_In_ LPVARIANT pvarRight,
-		_In_ LCID lcid,
-		_In_ ULONG dwFlags) const throw();
+    inline HRESULT VarCmp(
+        _In_ LPVARIANT pvarLeft,
+        _In_ LPVARIANT pvarRight,
+        _In_ LCID lcid,
+        _In_ ULONG dwFlags) const throw()
+    {
+        switch (vt)
+        {
+            case VT_I1:
+                if (pvarLeft->cVal == pvarRight->cVal)
+                {
+                    return VARCMP_EQ;
+                }
+                return pvarLeft->cVal > pvarRight->cVal ? VARCMP_GT : VARCMP_LT;
+            case VT_UI2:
+                if (pvarLeft->uiVal == pvarRight->uiVal)
+                {
+                    return VARCMP_EQ;
+                }
+                return pvarLeft->uiVal > pvarRight->uiVal ? VARCMP_GT : VARCMP_LT;
+
+            case VT_UI4:
+                if (pvarLeft->uintVal == pvarRight->uintVal)
+                {
+                    return VARCMP_EQ;
+                }
+                return pvarLeft->uintVal > pvarRight->uintVal ? VARCMP_GT : VARCMP_LT;
+
+            case VT_UI8:
+                if (pvarLeft->ullVal == pvarRight->ullVal)
+                {
+                    return VARCMP_EQ;
+                }
+                return pvarLeft->ullVal > pvarRight->ullVal ? VARCMP_GT : VARCMP_LT;
+
+            default:
+                return ::VarCmp(pvarLeft, pvarRight, lcid, dwFlags);
+        }
+    }
 
 	// Operations
 public:

@@ -576,6 +576,222 @@
                 ]
             },
             {
+                "name": "TimelineItem",
+                "type": "vertical_container",
+                "fit_horizontal": "parent",
+                "border_bottom": true,
+                "border_bottom_width": 1,
+                "border_bottom_color": "TwitterDelimiter",
+                "color_background_selected": "BrushSelected",
+                "elements": [
+                    {
+                        "name": "ContentContainer",
+                        "type": "vertical_container",
+                        "margin_top": 5,
+                        "elements": [
+                            {
+                                "name": "RetweetContainer",
+                                "type": "horizontal_container",
+                                "margin_left": 58,
+                                "elements": [
+                                    {
+                                        "name": "RetweetImage",
+                                        "type": "image_column",
+                                        "image": "retweet"
+                                    },
+                                    {
+                                        "name": "RetweetTextStatic",
+                                        "type": "text_column",
+                                        "text": "Retweeted by",
+                                        "font": "TwitterRetweetedUserDisplayName",
+                                        "color": "TwitterRetweetedUserDisplayName",
+                                        "margin_right": 2
+                                    },
+                                    {
+                                        "name": "TwitterRetweetedUserDisplayName",
+                                        "type": "text_column",
+                                        "VAR_IS_URL": true,
+                                        "font": "TwitterRetweetedUserDisplayName",
+                                        "font_selected": "TwitterRetweetedUserDisplayNameSelected",
+                                        "color": "TwitterRetweetedUserDisplayName",
+                                        "text": "Українська правда"
+                                    },
+                                    {
+                                        "name": "TwitterRetweetedUserName",
+                                        "type": "text_column",
+                                        "VAR_IS_URL": true,
+                                        "font": "TwitterRetweetedUserDisplayName",
+                                        "font_selected": "TwitterRetweetedUserDisplayNameSelected",
+                                        "color": "TwitterRetweetedUserDisplayName",
+                                        "text": "@ukrpravda_news"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "UserInfoContainer",
+                                "type": "horizontal_container",
+                                "fit_horizontal": "parent",
+                                "elements": [
+                                    {
+                                        "name": "TwitterUserImage",
+                                        "type": "image_column",
+                                        "margin_top": 5,
+                                        "margin_bottom": 5,
+                                        "margin_left": 5,
+                                        "margin_right": 5,
+                                        "height": 48,
+                                        "width": 48,
+                                        "VAR_IS_URL": true
+                                    },
+                                    {
+                                        "name": "TextDataContainer",
+                                        "type": "vertical_container",
+                                        "elements": [
+                                            {
+                                                "name": "UserNameContainer",
+                                                "type": "horizontal_container",
+                                                "fit_horizontal": "parent",
+                                                "elements": [
+                                                    {
+                                                        "name": "TwitterUserDisplayName",
+                                                        "type": "text_column",
+                                                        "font": "TwitterUserDisplayName",
+                                                        "font_selected": "TwitterUserDisplayNameSelected",
+                                                        "VAR_IS_URL": true,
+                                                        "color": "TwitterUserDisplayName",
+                                                        "margin_right": 5,
+                                                        "text": "Городской журнал"
+                                                    },
+                                                    {
+                                                        "name": "TwitterUserName",
+                                                        "type": "text_column",
+                                                        "VAR_IS_URL": true,
+                                                        "font": "TwitterUserName",
+                                                        "font_selected": "TwitterUserNameSelected",
+                                                        "color": "TwitterUserName",
+                                                        "text": "@BzhLife"
+                                                    },
+                                                    {
+                                                        "name": "StatsContainer",
+                                                        "type": "horizontal_container",
+                                                        "elements": [
+                                                            {
+                                                                "name": "StatsRetweetContainer",
+                                                                "type": "horizontal_container",
+                                                                "margin_left": 10,
+                                                                "elements": [
+                                                                    {
+                                                                        "name": "StatsRetweetContentContainer",
+                                                                        "type": "horizontal_container",
+                                                                        "elements": [
+                                                                            {
+                                                                                "name": "StatsRetweetContentImage",
+                                                                                "margin_top": 1,
+                                                                                "type": "image_column",
+                                                                                "image": "retweet"
+                                                                            },
+                                                                            {
+                                                                                "name": "StatsRetweetContentCount",
+                                                                                "type": "text_column",
+                                                                                "font": "TwitterUserName",
+                                                                                "color": "TwitterRetweetedUserDisplayName",
+                                                                                "text": "1"
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                "name": "StatsFavContainer",
+                                                                "type": "horizontal_container",
+                                                                "margin_left": 5,
+                                                                "elements": [
+                                                                    {
+                                                                        "name": "StatsFavContentContainer",
+                                                                        "type": "horizontal_container",
+                                                                        "elements": [
+                                                                            {
+                                                                                "name": "StatsFavContentImage",
+                                                                                "margin_top": 1,
+                                                                                "type": "image_column",
+                                                                                "image": "fav"
+                                                                            },
+                                                                            {
+                                                                                "name": "StatsFavContentCount",
+                                                                                "type": "text_column",
+                                                                                "font": "TwitterUserName",
+                                                                                "color": "TwitterRetweetedUserDisplayName",
+                                                                                "text": "0"
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "name": "TwitterRelativeTime",
+                                                        "type": "text_column",
+                                                        "margin_right": 5,
+                                                        "VAR_IS_URL": true,
+                                                        "font": "TwitterRelativeTime",
+                                                        "font_selected": "TwitterRelativeTimeSelected",
+                                                        "color": "TwitterRelativeTime",
+                                                        "align_horizontal": "right",
+                                                        "text": "24 Sep 2015"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "name": "TweetText",
+                                                "type": "text_multi_column",
+                                                "fit_horizontal": "parent",
+                                                "margin_right": 5,
+                                                "font": "TwitterNormalizedText",
+                                                "color": "TwitterNormalizedText",
+                                                "column_definitions": [
+                                                    {
+                                                        "EndIndex": 70,
+                                                        "StartIndex": 49,
+                                                        "TwitterUrl": "http://t.co/hvXqxS8DDU",
+                                                        "column_definition_key": {
+                                                            "VAR_IS_URL": true,
+                                                            "color": "TwitterUrl",
+                                                            "color_background": "BrushBackground",
+                                                            "font": "TwitterUrl",
+                                                            "font_selected": "TwitterUrlSelected",
+                                                            "name": "TwitterUrl",
+                                                            "type": "text_column",
+                                                            "visible": true
+                                                        }
+                                                    },
+                                                    {
+                                                        "EndIndex": 116,
+                                                        "StartIndex": 114,
+                                                        "TwitterUrl": "БЖ",
+                                                        "column_definition_key": {
+                                                            "VAR_IS_URL": true,
+                                                            "color": "TwitterUrl",
+                                                            "color_background": "BrushBackground",
+                                                            "font": "TwitterUrl",
+                                                            "font_selected": "TwitterUrlSelected",
+                                                            "name": "TwitterUrl",
+                                                            "type": "text_column",
+                                                            "visible": true
+                                                        }
+                                                    }
+                                                ],
+                                                "text": "Активисты обустроили зеленый берег реки Лыбеди \n\nhttp://t.co/hvXqxS8DDU\n\nИ создали небольшю площадку для отдыха | #БЖ"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
                 "name": "MainTabContainerHeaderLayout",
                 "type": "horizontal_container",
                 "fit_horizontal": "parent",

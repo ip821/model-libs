@@ -12,5 +12,5 @@ using namespace testing;
 
 class CObjectTests : public testing::Test
 {
-
+protected:
 };

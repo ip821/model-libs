@@ -10,7 +10,7 @@ void CLayoutTests::SetUp()
 	Gdiplus::GdiplusStartup(&m_gdiPlusToken, &m_GdiplusStartupInput, NULL);
 
     m_wnd.Create(NULL, {0}, 0, WS_BORDER | WS_SYSMENU, WS_EX_CONTROLPARENT);
-    m_wnd.ResizeClient(WIDTH, HEIGHT1);
+    m_wnd.ResizeClient(WIDTH1, HEIGHT1);
     CRect clientRect;
     m_wnd.GetClientRect(&clientRect);
 }
@@ -78,6 +78,7 @@ STDMETHODIMP CLayoutTests::BuildAndCompareLayout(ILayoutManager* pLayoutManager,
 
     UINT uiIndex = 0;
     EXPECT_HRESULT_SUCCEEDED(CompareLayouts(pColumnsInfo, &results, &uiIndex));
+    EXPECT_EQ(results.size(), uiIndex);
     return S_OK;
 }
 
