@@ -2,7 +2,7 @@
 
 using namespace ATL;
 
-#include "ViewMdl_i.h"
+#include "viewmdl_contract_i.h"
 
 class ATL_NO_VTABLE IInitializeWithControlImpl : public IInitializeWithControl
 {
