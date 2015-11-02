@@ -103,3 +103,30 @@
 /asyncmdl/viewmdl_contract_p.c
 /asyncmdl/NotificationServices_i.c
 /asyncmdl/Release
+/curl/build/Win32/VC12/LIB Debug - DLL Windows SSPI/lib/libcurl.idb
+/curl/build/Win32/VC12/LIB Debug - DLL Windows SSPI/lib/libcurl.log
+/curl/build/Win32/VC12/LIB Debug - DLL Windows SSPI/lib/libcurl.res
+/curl/build/Win32/VC12/LIB Debug - DLL Windows SSPI/lib/libcurl.tlog/CL.command.1.tlog
+/curl/build/Win32/VC12/LIB Debug - DLL Windows SSPI/lib/libcurl.tlog/CL.read.1.tlog
+/curl/build/Win32/VC12/LIB Debug - DLL Windows SSPI/lib/libcurl.tlog/CL.write.1.tlog
+/curl/build/Win32/VC12/LIB Debug - DLL Windows SSPI/lib/libcurl.tlog/Lib-link-cvtres.read.1.tlog
+/curl/build/Win32/VC12/LIB Debug - DLL Windows SSPI/lib/libcurl.tlog/Lib-link-cvtres.write.1.tlog
+/curl/build/Win32/VC12/LIB Debug - DLL Windows SSPI/lib/libcurl.tlog/lib.command.1.tlog
+/curl/build/Win32/VC12/LIB Debug - DLL Windows SSPI/lib/libcurl.tlog/libcurl.lastbuildstate
+/curl/build/Win32/VC12/LIB Debug - DLL Windows SSPI/lib/libcurl.tlog/rc.command.1.tlog
+/curl/build/Win32/VC12/LIB Debug - DLL Windows SSPI/lib/libcurl.tlog/rc.read.1.tlog
+/curl/build/Win32/VC12/LIB Debug - DLL Windows SSPI/lib/libcurl.tlog/rc.write.1.tlog
+/curl/build/Win32/VC12/LIB Debug - DLL Windows SSPI/lib/libcurld.Build.CppClean.log
+/curl/build/Win32/VC12/LIB Debug - DLL Windows SSPI/libcurld.lib.lastcodeanalysissucceeded
+/curl/build/Win32/VC12/LIB Release - DLL Windows SSPI/lib/libcurl.log
+/curl/build/Win32/VC12/LIB Release - DLL Windows SSPI/lib/libcurl.res
+/curl/build/Win32/VC12/LIB Release - DLL Windows SSPI/lib/libcurl.tlog/CL.read.1.tlog
+/curl/build/Win32/VC12/LIB Release - DLL Windows SSPI/lib/libcurl.tlog/CL.write.1.tlog
+/curl/build/Win32/VC12/LIB Release - DLL Windows SSPI/lib/libcurl.tlog/Lib-link-cvtres.read.1.tlog
+/curl/build/Win32/VC12/LIB Release - DLL Windows SSPI/lib/libcurl.tlog/Lib-link-cvtres.write.1.tlog
+/curl/build/Win32/VC12/LIB Release - DLL Windows SSPI/lib/libcurl.tlog/cl.command.1.tlog
+/curl/build/Win32/VC12/LIB Release - DLL Windows SSPI/lib/libcurl.tlog/lib.command.1.tlog
+/curl/build/Win32/VC12/LIB Release - DLL Windows SSPI/lib/libcurl.tlog/libcurl.lastbuildstate
+/curl/build/Win32/VC12/LIB Release - DLL Windows SSPI/lib/libcurl.tlog/rc.command.1.tlog
+/curl/build/Win32/VC12/LIB Release - DLL Windows SSPI/lib/libcurl.tlog/rc.read.1.tlog
+/curl/build/Win32/VC12/LIB Release - DLL Windows SSPI/lib/libcurl.tlog/rc.write.1.tlog
