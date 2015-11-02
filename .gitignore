@@ -101,3 +101,4 @@
 /asyncmdl/viewmdl_contract_i.c
 /asyncmdl/viewmdl_contract_i.h
 /asyncmdl/viewmdl_contract_p.c
+/asyncmdl/NotificationServices_i.c
