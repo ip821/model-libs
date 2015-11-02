@@ -89,3 +89,15 @@
 /ModelLibsTests/Release/ModelLibsTests.tlog/midl.read.1.tlog
 /ModelLibsTests/Release/ModelLibsTests.tlog/midl.write.1.tlog
 /ModelLibsTests/Release/ModelLibsTests.tlog/unsuccessfulbuild
+/asyncmdl/Debug
+/asyncmdl/NotificationServices_i.h
+/asyncmdl/asyncmdl_contract_i.c
+/asyncmdl/asyncmdl_contract_i.h
+/asyncmdl/asyncmdl_contract_i_p.c
+/asyncmdl/asyncsvc_contract_p.c
+/asyncmdl/objmdl_contract_i.c
+/asyncmdl/objmdl_contract_i.h
+/asyncmdl/objmdl_contract_p.c
+/asyncmdl/viewmdl_contract_i.c
+/asyncmdl/viewmdl_contract_i.h
+/asyncmdl/viewmdl_contract_p.c

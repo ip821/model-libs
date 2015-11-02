@@ -20,6 +20,7 @@ extern "C"   {
 #endif
 
 EXTERN_PROXY_FILE( NotificationServices_contract_i )
+EXTERN_PROXY_FILE( asyncmdl_contract_i )
 EXTERN_PROXY_FILE( asyncsvc_contract_i )
 EXTERN_PROXY_FILE( jiranotifier_contract_i )
 EXTERN_PROXY_FILE( notifierhost_contract_i )
@@ -30,6 +31,7 @@ EXTERN_PROXY_FILE( viewmdl_contract_i )
 PROXYFILE_LIST_START
 /* Start of list */
   REFERENCE_PROXY_FILE( NotificationServices_contract_i ),
+  REFERENCE_PROXY_FILE( asyncmdl_contract_i ),
   REFERENCE_PROXY_FILE( asyncsvc_contract_i ),
   REFERENCE_PROXY_FILE( jiranotifier_contract_i ),
   REFERENCE_PROXY_FILE( notifierhost_contract_i ),

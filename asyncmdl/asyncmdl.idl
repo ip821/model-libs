@@ -9,7 +9,7 @@ import "ocidl.idl";
 
 import "..\objmdl\objmdl_contract_i.idl";
 import "..\viewmdl\viewmdl_contract_i.idl";
-import "asyncsvc_contract_i.idl";
+import "asyncmdl_contract_i.idl";
 
 [
 	uuid(615BB430-F917-462B-A53E-D2599F45D33E),

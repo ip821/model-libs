@@ -64,11 +64,11 @@
     <ClCompile Include="ThreadService.cpp">
       <Filter>ThreadService</Filter>
     </ClCompile>
-    <ClCompile Include="asyncsvc_contract_i.c">
-      <Filter>ZZZMisc\Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="ThreadPoolService.cpp">
       <Filter>ThreadPoolService</Filter>
+    </ClCompile>
+    <ClCompile Include="asyncmdl_contract_i.c">
+      <Filter>ZZZMisc\Generated Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -105,9 +105,6 @@
     <ClInclude Include="ThreadService.h">
       <Filter>ThreadService</Filter>
     </ClInclude>
-    <ClInclude Include="asyncsvc_contract_i.h">
-      <Filter>ZZZMisc\Generated Files</Filter>
-    </ClInclude>
     <ClInclude Include="ThreadPoolService.h">
       <Filter>ThreadPoolService</Filter>
     </ClInclude>
@@ -116,6 +113,9 @@
     </ClInclude>
     <ClInclude Include="Metadata.h">
       <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="asyncmdl_contract_i.h">
+      <Filter>ZZZMisc\Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -138,16 +138,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="NotificationServices.idl">
-      <Filter>ZZZMisc\Source Files</Filter>
-    </Midl>
     <Midl Include="..\ObjMdl\objmdl_contract_i.idl">
       <Filter>ZZZMisc\Source Files</Filter>
     </Midl>
     <Midl Include="..\ViewMdl\viewmdl_contract_i.idl">
       <Filter>ZZZMisc\Source Files</Filter>
     </Midl>
-    <Midl Include="asyncsvc_contract_i.idl">
+    <Midl Include="asyncmdl_contract_i.idl">
+      <Filter>ZZZMisc\Source Files</Filter>
+    </Midl>
+    <Midl Include="asyncmdl.idl">
       <Filter>ZZZMisc\Source Files</Filter>
     </Midl>
   </ItemGroup>
