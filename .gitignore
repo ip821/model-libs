@@ -130,3 +130,7 @@
 /curl/build/Win32/VC12/LIB Release - DLL Windows SSPI/lib/libcurl.tlog/rc.command.1.tlog
 /curl/build/Win32/VC12/LIB Release - DLL Windows SSPI/lib/libcurl.tlog/rc.read.1.tlog
 /curl/build/Win32/VC12/LIB Release - DLL Windows SSPI/lib/libcurl.tlog/rc.write.1.tlog
+/curl/build/Win32/VC12/LIB Release - LIB OpenSSL - LIB LibSSH2/lib/libcurl.log
+/curl/build/Win32/VC12/LIB Release - LIB OpenSSL - LIB LibSSH2/lib/libcurl.tlog/CL.command.1.tlog
+/curl/build/Win32/VC12/LIB Release - LIB OpenSSL - LIB LibSSH2/lib/libcurl.tlog/libcurl.lastbuildstate
+/curl/build/Win32/VC12/LIB Release - LIB OpenSSL - LIB LibSSH2/lib/libcurl.tlog/unsuccessfulbuild
