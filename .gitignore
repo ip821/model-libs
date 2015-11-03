@@ -156,3 +156,5 @@
 /netmdl/objmdl_contract_i.c
 /netmdl/objmdl_contract_i.h
 /netmdl/objmdl_contract_i_p.c
+/netmdl/netmdl_i.c
+/netmdl/netmdl_i.h
