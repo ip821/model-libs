@@ -1,0 +1,13 @@
+import "oaidl.idl";
+import "ocidl.idl";
+import "objmdl_contract_i.idl";
+
+[
+    object,
+    uuid(6E6BC634-B0E2-485A-B1FE-8C02B548482E),
+    pointer_default(unique)
+]
+interface IHttpConnection : IUnknown
+{
+    HRESULT RemoteCall();
+};

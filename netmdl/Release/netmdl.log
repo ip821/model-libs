@@ -1,5 +1,20 @@
-﻿Build started 03.11.2015 10:14:27.
+﻿Build started 03.11.2015 10:20:32.
+     1>Project "C:\_dev\JiraNotifier\model-libs\netmdl\netmdl.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oy- /D WIN32 /D _WINDOWS /D NDEBUG /D _USRDLL /D _WINDLL /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TC /analyze- /errorReport:prompt netmdl_contract_i.c
+         netmdl_contract_i.c
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\_dev\JiraNotifier\Release\netmdl.dll" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /DEF:".\netmdl.def" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\_dev\JiraNotifier\Release\netmdl.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /TLBID:1 /DYNAMICBASE /NXCOMPAT /MACHINE:X86 /SAFESEH /DLL Release\netmdl.res
+         Release\dllmain.obj
+         Release\netmdl.obj
+         Release\netmdl_contract_i.obj
+         Release\netmdl_i.obj
+         Release\stdafx.obj
+         Release\xdlldata.obj
+            Creating library C:\_dev\JiraNotifier\Release\netmdl.lib and object C:\_dev\JiraNotifier\Release\netmdl.exp
+         netmdl.vcxproj -> C:\_dev\JiraNotifier\Release\netmdl.dll
+     1>Done Building Project "C:\_dev\JiraNotifier\model-libs\netmdl\netmdl.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.03
+Time Elapsed 00:00:00.61

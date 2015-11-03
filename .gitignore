@@ -147,3 +147,12 @@
 /curl/build/Win32/VC12/Debug_XP/lib/libcurl.tlog/rc.command.1.tlog
 /curl/build/Win32/VC12/Debug_XP/lib/libcurl.tlog/rc.read.1.tlog
 /curl/build/Win32/VC12/Debug_XP/lib/libcurl.tlog/rc.write.1.tlog
+/netmdl/Debug
+/netmdl/Release
+/netmdl/netmdl_contract_i.c
+/netmdl/netmdl_contract_i.h
+/netmdl/netmdl_contract_i_p.c
+/netmdl/netmdl_p.c
+/netmdl/objmdl_contract_i.c
+/netmdl/objmdl_contract_i.h
+/netmdl/objmdl_contract_i_p.c
