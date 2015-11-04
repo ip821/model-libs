@@ -1,0 +1,35 @@
+// netmdl.idl : IDL source for netmdl
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (netmdl.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "netmdl_contract_i.idl";
+
+[
+	uuid(C025C3C0-4368-42EC-BB98-205E0E98B0F9),
+	version(1.0),
+]
+library netmdlLib
+{
+	importlib("stdole2.tlb");
+
+    [
+        uuid(6EA78630-DC6D-4D2B-91F0-686B260F29D6)
+    ]
+    coclass PluginTable
+    {
+        [default] interface IPluginTable;
+    };
+
+    [
+        uuid(A9389038-016C-456E-A1F7-487D1221EE03)
+    ]
+    coclass HttpConnection
+    {
+        [default] interface IHttpConnection;
+    };
+};
+
