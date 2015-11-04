@@ -273,6 +273,17 @@ interface IMainWindow : IControl
 };
 
 [
+    object,
+    uuid(2BF8E597-A874-459A-84DC-1B2CAC00F6B1),
+    nonextensible,
+    pointer_default(unique)
+]
+interface IMainWindowEventSink : IUnknown
+{
+    HRESULT OnDestroy();
+};
+
+[
 	object,
 	uuid(90461CD7-13A5-4E88-9551-F67119E18BEE),
 	dual,
