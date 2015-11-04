@@ -9,5 +9,5 @@ import "objmdl_contract_i.idl";
 ]
 interface IHttpConnection : IUnknown
 {
-    HRESULT RemoteCall();
+    HRESULT RemoteCall(BSTR bstrQuery, BSTR bstrUser, BSTR bstrPass, BSTR* pbstrResult);
 };

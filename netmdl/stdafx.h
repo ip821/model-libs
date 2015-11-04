@@ -18,7 +18,15 @@
 #include "resource.h"
 #include <atlbase.h>
 #include <atlcom.h>
+#include <atlcomcli.h>
 #include <atlctl.h>
+
+#include <vector>
+#include <string>
+
+#include <curl/curl.h>
+#include <curl/easy.h>
+#include <Winhttp.h>
 
 #include <initguid.h>
 #include "..\ObjMdl\Plugins.h"
@@ -26,3 +34,7 @@
 #include "..\ObjMdl\Functions.h"
 #include "..\ObjMdl\Metadata.h"
 #include "Metadata.h"
+
+#pragma comment(lib, "ws2_32.lib")
+#pragma comment(lib, "winhttp.lib")
+#pragma comment(lib, "wldap32.lib")

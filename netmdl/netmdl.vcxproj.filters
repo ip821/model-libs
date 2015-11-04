@@ -29,6 +29,9 @@
     <Filter Include="PluginTable">
       <UniqueIdentifier>{10885281-16fb-4ce8-b524-36fae55b6ad8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="base64">
+      <UniqueIdentifier>{fb8d78df-850c-421b-804d-52915310d244}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -57,6 +60,9 @@
     </ClCompile>
     <ClCompile Include="objmdl_contract_i.c">
       <Filter>ZZZMisc\Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\json\src\base64.cpp">
+      <Filter>base64</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -95,6 +101,9 @@
     </ClInclude>
     <ClInclude Include="objmdl_contract_i.h">
       <Filter>ZZZMisc\Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\json\src\base64.h">
+      <Filter>base64</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -25,11 +25,15 @@ public:
 
 private:
 
-protected:
+    string m_callbackData;
+    string m_strUrl;
+
+    static int CurlCallback(char* data, size_t size, size_t nmemb, CHttpConnection* pObj);
+    int SaveLastWebResponse(char*& data, size_t size);
 
 public:
 
-    STDMETHOD(RemoteCall)();
+    STDMETHOD(RemoteCall)(BSTR bstrQuery, BSTR bstrUser, BSTR bstrPass, BSTR* pbstrResult);
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(HttpConnection), CHttpConnection)
