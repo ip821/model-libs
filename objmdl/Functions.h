@@ -86,7 +86,6 @@ static HRESULT HrSettingsGetBSTR(ISettings* pSettings, BSTR bstrKey, BSTR* pbstr
 static HRESULT HrInitializeWithVariantObject(IUnknown* pObject, IVariantObject* pVariantObject)
 {
 	CHECK_E_POINTER(pObject);
-	CHECK_E_POINTER(pVariantObject);
 	CComQIPtr<IInitializeWithVariantObject> pObj = pObject;
 	if (pObj)
 	{
