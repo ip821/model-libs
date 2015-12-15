@@ -42,7 +42,7 @@ static inline HRESULT StrGuidToString(const GUID& guid, CString& strGuid)
 	return S_OK;
 }
 
-static inline void StrSplit(const CString& str, const CString& strSeparators, std::vector<CString>& result, bool bTrim = true)
+static inline void StrSplit(const CString& str, const CString& strSeparators, std::vector<CString>& result)
 {
 	int i = 0;
 	for (CString strLine = str.Tokenize(strSeparators, i); i >= 0; strLine = str.Tokenize(strSeparators, i))

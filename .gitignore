@@ -160,3 +160,7 @@
 /netmdl/netmdl_i.h
 /curl/build/Win32/VC12/Debug_XP/lib/libcurl.tlog/unsuccessfulbuild
 /curl/build/Win32/VC12/Debug_XP/lib/libcurld.Build.CppClean.log
+/objmdl/x64/Release
+/viewmdl/x64/Release
+/viewmdl/objmdl_contract_i_p.c
+/viewmdl/viewmdl_contract_i_p.c

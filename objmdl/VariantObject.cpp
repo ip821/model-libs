@@ -31,7 +31,7 @@ STDMETHODIMP CVariantObject::CopyTo(IVariantObject* pVariantObject)
 				RETURN_IF_FAILED(CObjectCollection::_CreatorClass::CreateInstance(NULL, __uuidof(IObjCollection), (LPVOID*)&pCollection));
 				UINT uiCount = 0;
 				RETURN_IF_FAILED(pArray->GetCount(&uiCount));
-				for (size_t i = 0; i < uiCount; i++)
+				for (UINT i = 0; i < uiCount; i++)
 				{
 					CComPtr<IUnknown> pUnk;
 					RETURN_IF_FAILED(pArray->GetAt(i, __uuidof(IUnknown), (LPVOID*)&pUnk));
