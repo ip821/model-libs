@@ -11,9 +11,9 @@ vector<ResultItem> UserAccountControlLayoutResult =
     { L"TwitterUserImageContainer", CRect(119, 24, 177, 82) },
     { L"TwitterUserImage", CRect(124, 29, 172, 77) },
     { L"UserInfoContainer", CRect(187, 20, 351, 86) },
-    { L"UserDisplayName", CRect(187, 20, 291, 53) },
+    { L"UserDisplayName", CRect(187, 20, 281, 53) },
     { L"UserName", CRect(187, 53, 351, 86) },
-    { L"UserInfoString", CRect(131, 96, 339, 128) },
+    { L"UserInfoString", CRect(146, 96, 325, 128) },
     { L"BottomContainer", CRect(0, 182, 470, 240) },
     { L"CounterContainer", CRect(30, 182, 129, 230) },
     { L"CounterContainerCatpion", CRect(30, 182, 94, 230) },
@@ -25,7 +25,7 @@ vector<ResultItem> UserAccountControlLayoutResult =
     { L"FollowingCounter", CRect(94, 198, 115, 214) },
     { L"FollowedCounter", CRect(94, 214, 122, 230) },
     { L"FollowButtonContainer", CRect(374, 185, 460, 220) },
-    { L"TwitterItemFollowButton", CRect(384, 193, 450, 212) }
+    { L"TwitterItemFollowButton", CRect(384, 193, 450, 212) },
 };
 
 TEST_F(CLayoutTests, UserAccountControlLayout)

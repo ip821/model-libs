@@ -222,17 +222,18 @@ LRESULT CMainFrame::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*
 {
 	// unregister message filtering and idle updates
 	ATLASSERT(m_pMessageLoop != NULL);
+    m_pMessageLoop->RemoveMessageFilter(this);
+    m_pMessageLoop->RemoveIdleHandler(this);
+
+    GetWindowPlacement(&m_placement);
+    GetWindowRect(&m_rectForSettingsSave);
+
+    if (m_pSettings)
+    {
+        RETURN_IF_FAILED(Save(m_pSettings));
+    }
+
     Fire_OnDestroy();
-	m_pMessageLoop->RemoveMessageFilter(this);
-	m_pMessageLoop->RemoveIdleHandler(this);
-
-	GetWindowPlacement(&m_placement);
-	GetWindowRect(&m_rectForSettingsSave);
-
-	if (m_pSettings)
-	{
-		RETURN_IF_FAILED(Save(m_pSettings));
-	}
 
 	CComQIPtr<IPluginSupportNotifications> pPluginSupportNotifications = m_pContainerControl;
 	if (pPluginSupportNotifications)
