@@ -31,9 +31,12 @@ private:
     static int CurlCallback(char* data, size_t size, size_t nmemb, CHttpConnection* pObj);
     int SaveLastWebResponse(char*& data, size_t size);
 
+    int m_cp = CP_THREAD_ACP;
+
 public:
 
     STDMETHOD(RemoteCall)(BSTR bstrQuery, BSTR bstrUser, BSTR bstrPass, BSTR* pbstrResult);
+    STDMETHOD(SetEncoding)(INT cp);
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(HttpConnection), CHttpConnection)

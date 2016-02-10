@@ -42,6 +42,19 @@ static inline HRESULT StrGuidToString(const GUID& guid, CString& strGuid)
 	return S_OK;
 }
 
+static inline CString StrJoin(const CString& strSeparator, std::vector<CString>& elements)
+{
+    CString result;
+    auto size = elements.size();
+    for (size_t i = 0; i < size; i++)
+    {
+        result += elements[i];
+        if (i != size - 1)
+            result += strSeparator;
+    }
+    return result;
+}
+
 static inline void StrSplit(const CString& str, const CString& strSeparators, std::vector<CString>& result, bool bTrim = true)
 {
 	int i = 0;

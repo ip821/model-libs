@@ -5,6 +5,12 @@
 #include "..\objmdl\StringUtils.h"
 #include "..\json\src\base64.h"
 
+STDMETHODIMP CHttpConnection::SetEncoding(INT cp)
+{
+    m_cp = cp;
+    return S_OK;
+}
+
 STDMETHODIMP CHttpConnection::RemoteCall(BSTR bstrQuery, BSTR bstrUser, BSTR bstrPass, BSTR* pbstrResult)
 {
     CHECK_E_POINTER(bstrQuery);
@@ -102,7 +108,7 @@ STDMETHODIMP CHttpConnection::RemoteCall(BSTR bstrQuery, BSTR bstrUser, BSTR bst
     }
 
     curl_easy_cleanup(curl);
-    *pbstrResult = CComBSTR(CA2W(m_callbackData.c_str())).Detach();
+    *pbstrResult = CComBSTR(CA2W(m_callbackData.c_str(), m_cp)).Detach();
     m_callbackData.clear();
 
     return curlHr;
