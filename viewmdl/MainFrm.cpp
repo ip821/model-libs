@@ -222,26 +222,26 @@ LRESULT CMainFrame::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*
 {
 	// unregister message filtering and idle updates
 	ATLASSERT(m_pMessageLoop != NULL);
-	m_pMessageLoop->RemoveMessageFilter(this);
-	m_pMessageLoop->RemoveIdleHandler(this);
+    m_pMessageLoop->RemoveMessageFilter(this);
+    m_pMessageLoop->RemoveIdleHandler(this);
 
-	GetWindowPlacement(&m_placement);
-	GetWindowRect(&m_rectForSettingsSave);
+    GetWindowPlacement(&m_placement);
+    GetWindowRect(&m_rectForSettingsSave);
 
-	if (m_pSettings)
-	{
-		RETURN_IF_FAILED(Save(m_pSettings));
-	}
+    if (m_pSettings)
+    {
+        RETURN_IF_FAILED(Save(m_pSettings));
+    }
 
-	//TODO: unknown crash in minitwi, commented in release build...
-#ifdef DEBUG
+    Fire_OnDestroy();
+
 	CComQIPtr<IPluginSupportNotifications> pPluginSupportNotifications = m_pContainerControl;
 	if (pPluginSupportNotifications)
 	{
 		RETURN_IF_FAILED(pPluginSupportNotifications->OnShutdown());
 	}
-#endif
-	m_pPluginSupport->OnShutdown();
+	
+    m_pPluginSupport->OnShutdown();
 	m_pCommandSupport->UninstallAll();
 
 	m_pSettings.Release();
@@ -503,4 +503,28 @@ void CMainFrame::UpdateLayout(BOOL bResizeBars = TRUE)
 			SWP_NOZORDER | SWP_NOACTIVATE
 			);
 	}
+}
+
+HRESULT CMainFrame::Fire_OnDestroy()
+{
+    CComPtr<IUnknown> pUnk;
+    RETURN_IF_FAILED(this->QueryInterface(__uuidof(IUnknown), (LPVOID*)&pUnk));
+    HRESULT hr = S_OK;
+    CMainFrame* pThis = static_cast<CMainFrame*>(this);
+    int cConnections = m_vec.GetSize();
+
+    for (int iConnection = 0; iConnection < cConnections; iConnection++)
+    {
+        pThis->Lock();
+        CComPtr<IUnknown> punkConnection = m_vec.GetAt(iConnection);
+        pThis->Unlock();
+
+        IMainWindowEventSink* pConnection = static_cast<IMainWindowEventSink*>(punkConnection.p);
+
+        if (pConnection)
+        {
+            hr = pConnection->OnDestroy();
+        }
+    }
+    return hr;
 }

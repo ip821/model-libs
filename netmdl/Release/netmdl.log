@@ -1,9 +1,8 @@
-﻿  dllmain.cpp
+﻿  stdafx.cpp
+  dllmain.cpp
   HttpConnection.cpp
   PluginTable.cpp
   netmdl.cpp
   Generating Code...
-  netmdl_contract_i.c
-  netmdl_i.c
      Creating library C:\_dev\JiraNotifier\Release\netmdl.lib and object C:\_dev\JiraNotifier\Release\netmdl.exp
   netmdl.vcxproj -> C:\_dev\JiraNotifier\Release\netmdl.dll

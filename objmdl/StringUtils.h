@@ -55,7 +55,7 @@ static inline CString StrJoin(const CString& strSeparator, std::vector<CString>&
     return result;
 }
 
-static inline void StrSplit(const CString& str, const CString& strSeparators, std::vector<CString>& result, bool bTrim = true)
+static inline void StrSplit(const CString& str, const CString& strSeparators, std::vector<CString>& result)
 {
 	int i = 0;
 	for (CString strLine = str.Tokenize(strSeparators, i); i >= 0; strLine = str.Tokenize(strSeparators, i))

@@ -27,7 +27,9 @@ class ATL_NO_VTABLE CMainFrame :
 	public IMainWindow,
 	public IMsgFilter,
 	public IIdleHandler,
-	public IPersistSettings
+	public IPersistSettings,
+    public IConnectionPointContainerImpl<CMainFrame>,
+    public IConnectionPointImpl<CMainFrame, &__uuidof(IMainWindowEventSink)>
 {
 public:
 	CMainFrame()
@@ -45,6 +47,7 @@ public:
 		COM_INTERFACE_ENTRY(IControl)
 		COM_INTERFACE_ENTRY(IMsgFilter)
 		COM_INTERFACE_ENTRY(IPersistSettings)
+        COM_INTERFACE_ENTRY(IConnectionPointContainer)
 		COM_INTERFACE_ENTRY_AGGREGATE(IID_ICommandSupport, m_pCommandSupport)
 		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMenu, m_pCommandSupport)
 		COM_INTERFACE_ENTRY_AGGREGATE(IID_IToolbar, m_pCommandSupport)
@@ -71,6 +74,10 @@ public:
 		DEFAULT_MESSAGE_HANDLER(OnMessage)
 	END_MSG_MAP()
 
+    BEGIN_CONNECTION_POINT_MAP(CMainFrame)
+        CONNECTION_POINT_ENTRY(__uuidof(IMainWindowEventSink))
+    END_CONNECTION_POINT_MAP()
+
 // Handler prototypes (uncomment arguments if needed):
 //	LRESULT MessageHandler(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 //	LRESULT CommandHandler(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
@@ -81,6 +88,8 @@ public:
 	LRESULT OnWindowActivate(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 	LRESULT OnMessage(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 	void UpdateLayout(BOOL bResizeBars);
+
+    HRESULT Fire_OnDestroy();
 
 private:
 

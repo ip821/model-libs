@@ -86,7 +86,6 @@ static HRESULT HrSettingsGetBSTR(ISettings* pSettings, BSTR bstrKey, BSTR* pbstr
 static HRESULT HrInitializeWithVariantObject(IUnknown* pObject, IVariantObject* pVariantObject)
 {
 	CHECK_E_POINTER(pObject);
-	CHECK_E_POINTER(pVariantObject);
 	CComQIPtr<IInitializeWithVariantObject> pObj = pObject;
 	if (pObj)
 	{
@@ -118,7 +117,7 @@ static HRESULT HrGetResourceStream(HMODULE hModule, DWORD dwResourceId, LPCWSTR 
 
 static HRESULT HrCopyProps(IVariantObject* pSourceObject, IVariantObject* pDestObject)
 {
-	UINT uiPropsCount = 0;
+	UINT_PTR uiPropsCount = 0;
 	RETURN_IF_FAILED(pSourceObject->GetCount(&uiPropsCount));
 	for (size_t j = 0; j < uiPropsCount; j++)
 	{

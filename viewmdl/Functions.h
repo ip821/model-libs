@@ -46,6 +46,19 @@ static HRESULT HrInitializeWithSettings(IUnknown* pObject, ISettings* pSettings)
 	return S_OK;
 }
 
+template<class TObject, class TControl>
+static HRESULT HrInitializeWithControlT(TObject* pObject, TControl* pControl)
+{
+    CComPtr<IUnknown> pUnkObj;
+    RETURN_IF_FAILED(pObject->QueryInterface(IID_IUnknown, (LPVOID*)&pUnkObj));
+    CComPtr<IUnknown> pUnkControl;
+    RETURN_IF_FAILED(pControl->QueryInterface(IID_IUnknown, (LPVOID*)&pUnkControl));
+    ATLASSERT(pUnkObj);
+    ATLASSERT(pUnkControl);
+    RETURN_IF_FAILED(HrInitializeWithControl(pUnkObj, pUnkControl));
+    return S_OK;
+}
+
 static HRESULT HrInitializeWithControl(IUnknown* pObject, IUnknown* pControl)
 {
 	CHECK_E_POINTER(pObject);
