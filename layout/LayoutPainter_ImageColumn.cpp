@@ -35,7 +35,7 @@ STDMETHODIMP CLayoutPainter::PaintImageColumn(HDC hdc, IImageManagerService* pIm
 	RETURN_IF_FAILED(pColumnInfoItem->GetVariantValue(Layout::Metadata::ImageColumn::ImageStyle, &vImageStyle));
 
 	CRect imageRect(0, 0, rect.Width(), rect.Height());
-	if (vImageStyle.vt == VT_BSTR && vImageStyle.bstrVal == Layout::Metadata::ImageStyles::Fill)
+	if (vImageStyle.vt == VT_BSTR && CComBSTR(vImageStyle.bstrVal) == Layout::Metadata::ImageStyles::Fill)
 	{
 		if (imageRect.Width() > rect.Width())
 		{
@@ -62,6 +62,20 @@ STDMETHODIMP CLayoutPainter::PaintImageColumn(HDC hdc, IImageManagerService* pIm
 	{ //sometimes desired height does not equal real image height
 		imageRect.bottom -= imageRect.Height() - tb.Height;
 	}
+
+    if (vImageStyle.vt == VT_BSTR && CComBSTR(vImageStyle.bstrVal) == Layout::Metadata::ImageStyles::Center)
+    {
+        if (tb.Width > (UINT)rect.Width())
+        {
+            imageRect.left = tb.Width / 2 - rect.Width() / 2;
+            imageRect.right = imageRect.left + rect.Width();
+        }
+        if (tb.Height > (UINT)rect.Height())
+        {
+            imageRect.top = tb.Height / 2 - rect.Height() / 2;
+            imageRect.bottom = imageRect.top + rect.Height();
+        }
+    }
 
 	if (vAlpha.vt == VT_UI4)
 	{

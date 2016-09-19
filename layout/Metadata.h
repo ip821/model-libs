@@ -92,6 +92,7 @@ namespace IP
 			namespace ImageStyles
 			{
 				const static CComBSTR Fill(L"fill");
+                const static CComBSTR Center(L"center");
 			}
 
 			namespace BackgroundStyles
