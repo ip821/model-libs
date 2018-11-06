@@ -68,7 +68,7 @@ static inline void StrSplit(const CString& str, const CString& strSeparators, st
 static inline CString StrQuote(const CString& str)
 {
 	CString strQuote;
-	strQuote.Format(CString(L"\"%s\""), str);
+	strQuote.Format(CString(L"\"%s\""), (LPCTSTR)str);
 	return strQuote;
 }
 
